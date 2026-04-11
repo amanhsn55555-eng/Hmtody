@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>الواجهة الرئيسية • منصتي</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Tajawal', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f5f7fa 0%, #e8eef5 100%);
+      min-height: 100vh;
+      padding-bottom: 85px;
+      padding-top: 95px;
+      color: #0f172a;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ========== هيدر علوي مصغر ========== */
+    .compact-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 8px 12px;
+      z-index: 999;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .resources-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, #ffffff, #fafcff);
+      padding: 4px 10px 4px 8px;
+      border-radius: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border: 1px solid rgba(120, 80, 200, 0.06);
+      flex: 1;
+      justify-content: center;
+    }
+
+    .resource-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      background: #f8fafc;
+    }
+
+    .gold .resource-icon { background: linear-gradient(145deg, #fbbf24, #f59e0b); color: white; }
+    .elixir .resource-icon { background: linear-gradient(145deg, #a78bfa, #8b5cf6); color: white; }
+    .money .resource-icon { background: linear-gradient(145deg, #34d399, #10b981); color: white; }
+    .oil .resource-icon { background: linear-gradient(145deg, #2dd4bf, #0d9488); color: white; }
+
+    .resource-value { 
+      font-weight: 800; 
+      font-size: 13px; 
+      color: #1e293b; 
+    }
+    .resource-label { 
+      font-size: 8px; 
+      color: #64748b; 
+      font-weight: 600; 
+      margin-right: 2px; 
+    }
+
+    .search-row {
+      margin-top: 8px;
+    }
+
+    .mini-search-wrapper {
+      display: flex;
+      align-items: center;
+      background: #f1f5f9;
+      border-radius: 40px;
+      padding: 2px 2px 2px 10px;
+      border: 1px solid rgba(251, 191, 36, 0.15);
+    }
+
+    .mini-search-wrapper i { 
+      color: #fbbf24; 
+      font-size: 13px; 
+      margin-left: 5px;
+    }
+    
+    .mini-search-wrapper input {
+      flex: 1;
+      border: none;
+      padding: 8px 8px 8px 0;
+      font-size: 13px;
+      background: transparent;
+      outline: none;
+      direction: rtl;
+      font-weight: 500;
+    }
+    
+    .mini-search-wrapper input::placeholder { 
+      color: #94a3b8; 
+      font-size: 12px; 
+    }
+    
+    .mini-search-wrapper button {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border: none;
+      color: #0f172a;
+      padding: 7px 12px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    /* ========== المحتوى ========== */
+    .app-container {
+      padding: 5px 10px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* بطاقة منشور */
+    .post-card {
+      background: linear-gradient(145deg, #ffffff 0%, #fbfdff 100%);
+      border-radius: 24px;
+      padding: 16px 14px 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px -8px rgba(0, 20, 60, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .post-card.promoted {
+      border: 2px solid transparent;
+      background: linear-gradient(white, white) padding-box,
+                  linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6) border-box;
+    }
+
+    .post-card.promoted::before {
+      content: "✨ مروّج ✨";
+      position: absolute;
+      top: 10px;
+      left: 14px;
+      background: linear-gradient(135deg, #fbbf24, #ec4899);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 30px;
+      z-index: 2;
+    }
+
+    .follow-badge {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 30px;
+      z-index: 2;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .post-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px -4px rgba(99, 102, 241, 0.2);
+      border: 3px solid white;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .post-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .post-user-details { flex: 1; }
+
+    .post-username {
+      font-weight: 800;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      margin-bottom: 3px;
+    }
+
+    .user-id-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .post-time {
+      font-size: 10px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .post-menu {
+      color: #94a3b8;
+      padding: 6px 3px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .post-content {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 10px 0 14px;
+      word-break: break-word;
+      padding: 0 2px;
+    }
+
+    .post-interactions {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #eef2f6;
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+
+    .interact-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .interact-btn i { font-size: 16px; }
+    .interact-btn.liked { color: #e11d48; background: #ffe4e6; }
+
+    /* ========== هيدر سفلي مصغر ========== */
+    .compact-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      padding: 6px 8px 10px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid rgba(251, 191, 36, 0.15);
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.03);
+      z-index: 1000;
+      border-radius: 25px 25px 0 0;
+    }
+
+    .footer-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 5px 8px;
+      border-radius: 25px;
+      min-width: 55px;
+      transition: all 0.2s;
+    }
+
+    .footer-icon i { font-size: 20px; margin-bottom: 2px; }
+    .footer-icon.active { color: #fbbf24; background: rgba(251, 191, 36, 0.08); }
+
+    .publish-oil-btn {
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px -5px #0f172a80, 0 0 0 3px rgba(255,255,255,0.9);
+      margin-top: -30px;
+      border: 2px solid #fbbf24;
+      cursor: pointer;
+    }
+
+    .publish-oil-btn i { 
+      font-size: 24px; 
+      color: #fbbf24; 
+    }
+
+    /* ========== نوافذ ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.25s;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-sheet {
+      background: white;
+      width: 100%;
+      height: 100%;
+      max-height: 100vh;
+      overflow-y: auto;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+      box-shadow: 0 -10px 50px rgba(0,0,0,0.15);
+      padding: 20px 16px 30px;
+    }
+
+    .active .modal-sheet { transform: scale(1); }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #eef2f6;
+    }
+
+    .modal-header h3 { 
+      font-size: 20px; 
+      font-weight: 800; 
+      color: #0f172a; 
+    }
+    
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+      background: #f1f5f9;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+    }
+
+    /* ========== تنسيق التعليقات ========== */
+    .comment-item {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+      border: 2px solid;
+      flex-shrink: 0;
+    }
+
+    .comment-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .comment-author {
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .comment-badge {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 15px;
+    }
+
+    .comment-text {
+      font-size: 13px;
+      margin: 8px 0;
+      padding-right: 8px;
+    }
+
+    .comment-time {
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    /* ========== صفحة تعديل الحساب ========== */
+    .avatar-selector {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .avatar-option {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: #f8fafc;
+      border: 3px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .avatar-option img { 
+      width: 100%; 
+      height: 100%; 
+      border-radius: 50%; 
+      object-fit: cover; 
+    }
+    
+    .avatar-option.selected { 
+      border-color: #fbbf24; 
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2); 
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .image-item {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      border: 3px solid transparent;
+    }
+
+    .image-item img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+    }
+    
+    .image-item.selected { 
+      border-color: #fbbf24; 
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 10px;
+      background: #f8fafc;
+      border-radius: 14px;
+    }
+
+    .color-row label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #334155;
+      font-size: 14px;
+    }
+
+    .color-row input[type="color"] {
+      width: 55px;
+      height: 38px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .user-id-section {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      padding: 15px;
+      border-radius: 18px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .user-id-section label {
+      display: block;
+      font-size: 12px;
+      color: #92400e;
+      margin-bottom: 5px;
+    }
+
+    .user-id-section .id-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #0f172a;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      border: none;
+      padding: 16px;
+      border-radius: 18px;
+      font-weight: 800;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 18px;
+      font-weight: 700;
+      font-size: 14px;
+      width: 100%;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* ========== إشعار ========== */
+    #toastMsg {
+      position: fixed;
+      bottom: 100px;
+      left: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 50px;
+      text-align: center;
+      z-index: 5000;
+      opacity: 0;
+      transition: 0.25s;
+      pointer-events: none;
+      max-width: 400px;
+      margin: 0 auto;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    #toastMsg.show { opacity: 1; bottom: 110px; }
+
+    /* تحميل */
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+    
+    .loading-spinner i {
+      font-size: 35px;
+      color: #fbbf24;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="compact-header">
+  <div class="resources-row">
+    <div class="resource-item gold">
+      <span class="resource-icon"><i class="fas fa-coins"></i></span>
+      <div><span class="resource-value" id="goldAmount">0</span><span class="resource-label">D</span></div>
+    </div>
+    <div class="resource-item elixir">
+      <span class="resource-icon"><i class="fas fa-flask"></i></span>
+      <div><span class="resource-value" id="elixirAmount">0</span><span class="resource-label">X</span></div>
+    </div>
+    <div class="resource-item money">
+      <span class="resource-icon"><i class="fas fa-money-bill"></i></span>
+      <div><span class="resource-value" id="moneyAmount">0</span><span class="resource-label">TMX</span></div>
+    </div>
+    <div class="resource-item oil">
+      <span class="resource-icon"><i class="fas fa-oil-can"></i></span>
+      <div><span class="resource-value" id="oilAmount">0</span><span class="resource-label">N</span></div>
+    </div>
+  </div>
+  <div class="search-row">
+    <div class="mini-search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="ابحث..." autocomplete="off">
+      <button onclick="clearSearch()"><i class="fas fa-times"></i>X</button>
+    </div>
+  </div>
+</div>
+
+<main class="app-container" id="postsContainer">
+  <div class="loading-spinner"><i class="fas fa-spinner"></i></div>
+</main>
+
+<footer class="compact-footer">
+ 
+<div class="footer-icon" onclick="window.open('https://hsn5mlk.github.io/Masngrtody/', '_blank')">
+  <i class="fab fa-facebook-messenger"></i>
+</div>
+
+  
+  <div class="footer-icon" data-page="account" id="accountBtn"><i class="fas fa-user-circle"></i><span></span></div>
+  <div class="publish-oil-btn" id="mainPublishBtn"><i class="fas fa-tint"></i></div>
+  
+  <!-- أيقونة ماسنجر -->
+  <div class="footer-icon" onclick="window.open('https://hsn5mlk.github.io/Masngrtody/', '_blank')">
+    <i class="fas fa-gamepad"></i>
+    <span></span>
+  </div>
+  <!-- أيقونة القائمة -->
+<div class="footer-icon" onclick="document.getElementById('menuModal').classList.add('active')">
+  <i class="fas fa-bars"></i>
+  <span></span>
+</div>
+</footer>
+
+<!-- نافذة النشر -->
+<div class="modal-overlay" id="publishModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>✍️ منشور جديد</h3>
+      <button class="close-btn" onclick="closeModal('publishModal')">&times;</button>
+    </div>
+    <textarea id="postText" placeholder="اكتب شيئاً رائعاً..." rows="4" style="width:100%; border-radius:18px; padding:16px; border:2px solid #e2e8f0; font-size:14px;"></textarea>
+    <div style="margin:20px 0;">
+      <label style="font-weight:600; margin-left:10px;"> ترويج (X):</label>
+      <select id="promoDays" style="padding:12px; border-radius:30px; border:2px solid #e2e8f0;">
+        <option value="0">بدون</option>
+        <option value="1">يوم - 1</option>
+        <option value="7">7 أيام - 7</option>
+        <option value="30">30 يوم - 30</option>
+      </select>
+    </div>
+    <div style="display:flex; justify-content:space-between;">
+      <span id="charCounter">0/500</span>
+      <button class="btn-save" style="width:auto; padding:14px 30px;" onclick="publishPost()">نشر <i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة التعليقات -->
+<div class="modal-overlay" id="commentsModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>💬 التعليقات</h3>
+      <button class="close-btn" onclick="closeModal('commentsModal')">&times;</button>
+    </div>
+    <div id="commentsListContainer" style="max-height:60vh; overflow-y:auto;"></div>
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <input id="newCommentInput" placeholder="أضف تعليقاً..." style="flex:1; padding:14px; border-radius:30px; border:2px solid #e2e8f0;">
+      <button onclick="submitComment()" style="background:#1e293b; color:white; border:none; width:50px; border-radius:30px; font-size:16px;"><i class="fas fa-arrow-left"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة تعديل الحساب -->
+<div class="modal-overlay" id="accountModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3><i class="fas fa-user-cog"></i> تعديل الحساب</h3>
+      <button class="close-btn" onclick="closeModal('accountModal')">&times;</button>
+    </div>
+    <div id="accountEditForm"></div>
+  </div>
+</div>
+
+<!-- نافذة الملف الشخصي -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+    
+      <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
+    </div>
+    <div id="profileDetails"></div>
+    <div id="profileStatsGrid"></div>
+    <div style="display:flex; gap:10px; margin:20px 0;">
+      <button onclick="followUser()" id="followBtn" style="flex:1; background:#4f46e5; color:white; border:none; padding:14px; border-radius:40px; font-weight:700;">
+        <i class="fas fa-user-plus"></i> <span id="followBtnText">متابعة</span>
+      </button>
+      
+      <button onclick="openPrivateChat()" style="background:#0ea5e9; color:white; border:none; padding:16px; border-radius:40px;">
+        <i class="fas fa-comment"></i>💬 
+      </button>
+    </div>
+    <h4 style="margin:20px 0 15px;">📋 المنشورات</h4>
+    <div id="profilePostsContainer"></div>
+  </div>
+</div>
+
+<div id="toastMsg"></div>
+<!-- نافذة القائمة الرئيسية -->
+<div class="modal-overlay" id="menuModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3><i class="fas fa-bars"></i> القائمة الرئيسية</h3>
+      <button class="close-btn" onclick="document.getElementById('menuModal').classList.remove('active')">&times;</button>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px 10px;">
+      
+      <div onclick="window.location.href='https://hsn5mlk.github.io/Notifications/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 20px;">
+        <i class="fas fa-bell" style="font-size: 40px; color: #f59e0b;"></i>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #92400e;">🔔 الإشعارات</p>
+      </div>
+      
+      <div onclick="window.location.href='https://hsn5mlk.github.io/Tsqeltody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 20px;">
+        <i class="fas fa-user-plus" style="font-size: 40px; color: #3b82f6;"></i>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #1e3a8a;">📝 تسجيل</p>
+      </div>
+      
+      <div onclick="window.location.href='https://hsn5mlk.github.io/Beertody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(135deg, #ccfbf1, #99f6e4); border-radius: 20px;">
+        <i class="fas fa-oil-can" style="font-size: 40px; color: #0d9488;"></i>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #115e59;">🛢️ بئر النفط</p>
+      </div>
+      
+      <div onclick="window.location.href='https://hsn5mlk.github.io/Grftody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(135deg, #f3e8ff, #e9d5ff); border-radius: 20px;">
+        <i class="fas fa-users" style="font-size: 40px; color: #8b5cf6;"></i>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #4c1d95;">🏠 الغرف</p>
+      </div>
+      
+      <div onclick="window.location.href='https://hsn5mlk.github.io/Mhfdahtody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: 20px;">
+        <i class="fas fa-wallet" style="font-size: 40px; color: #16a34a;"></i>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #14532d;">💰 المحفظة</p>
+      </div>
+      
+      <div onclick="window.location.href='https://hsn5mlk.github.io/Store/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(135deg, #fee2e2, #fecaca); border-radius: 20px;">
+        <i class="fas fa-store" style="font-size: 40px; color: #dc2626;"></i>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #7f1d1d;">🛒 المتجر</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, getDocs, addDoc, deleteDoc, onSnapshot, arrayUnion, arrayRemove, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDYKCCTcurNcJslrNKqdiJCoIIK-YZArB4",
+    authDomain: "sbaq-fc46f.firebaseapp.com",
+    projectId: "sbaq-fc46f",
+    storageBucket: "sbaq-fc46f.firebasestorage.app",
+    appId: "1:1026865750415:web:0ee39a717bcafaa0d06bfa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let currentUserData = null;
+  let resources = { gold: 10, elixir: 10, money: 1000, oil: 100 };
+  let posts = [];
+  let followers = {};
+  let activePostId = null;
+  let activeProfileUserId = null;
+  let searchTerm = '';
+  let unsubscribePosts = null;
+
+  const emojis = ['😎', '👑', '🦊', '🐼', '🐸', '🐶', '🦁', '🐧', '🐨', '🦝', '🐱', '🐻', '🦄', '🐙', '🦋', '👀 ', '⭐', '🌙', '☀️', '🔥', '💎', '🎮', '🫦 ', '💫'];
+  
+  const imageUrls = [
+    'https://i.pravatar.cc/150?img=1', 'https://i.pravatar.cc/150?img=2', 'https://i.pravatar.cc/150?img=3',
+    'https://i.pravatar.cc/150?img=4', 'https://i.pravatar.cc/150?img=5', 'https://i.pravatar.cc/150?img=6',
+    'https://i.pravatar.cc/150?img=7', 'https://i.pravatar.cc/150?img=8', 'https://i.pravatar.cc/150?img=9',
+    'https://i.pravatar.cc/150?img=10', 'https://i.pravatar.cc/150?img=11', 'https://i.pravatar.cc/150?img=12'
+  ];
+
+  // دوال مساعدة
+  function showToast(msg, isSuccess = true) { 
+    const t = document.getElementById('toastMsg'); 
+    if (!t) return;
+    t.textContent = msg; 
+    t.style.background = isSuccess ? '#10b981' : '#ef4444';
+    t.classList.add('show'); 
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function closeModal(id) { 
+    document.getElementById(id)?.classList.remove('active'); 
+  }
+  
+  function openModal(id) { 
+    document.getElementById(id)?.classList.add('active'); 
+  }
+
+  function updateResourcesUI() {
+    document.getElementById('goldAmount').textContent = resources.gold || 0;
+    document.getElementById('elixirAmount').textContent = resources.elixir || 0;
+    document.getElementById('moneyAmount').textContent = resources.money || 0;
+    document.getElementById('oilAmount').textContent = resources.oil || 0;
+  }
+
+  function renderAvatar(user) {
+    if (!user) return '👤';
+    if (user.avatarType === 'image' && user.avatarUrl) {
+      return `<img src="${user.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.innerHTML='👤'">`;
+    }
+    return user.emoji || '😎';
+  }
+
+  function isFollowing(userId) { 
+    return followers[currentUser?.uid]?.includes(userId) || false; 
+  }
+
+  // تحميل البيانات
+  async function loadUserData(uid) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        currentUserData = userDoc.data();
+      }
+      
+      const resourcesDoc = await getDoc(doc(db, "resources", uid));
+      if (resourcesDoc.exists()) {
+        resources = resourcesDoc.data();
+      }
+      updateResourcesUI();
+
+      const followersDoc = await getDoc(doc(db, "social", "followers"));
+      if (followersDoc.exists()) {
+        followers = followersDoc.data();
+      }
+    } catch (error) {
+      console.error("خطأ في تحميل البيانات:", error);
+    }
+  }
+
+  // مراقبة المنشورات
+  function subscribeToPosts() {
+    if (unsubscribePosts) unsubscribePosts();
+    
+    const postsQuery = query(collection(db, "posts"));
+    unsubscribePosts = onSnapshot(postsQuery, (snapshot) => {
+      posts = [];
+      snapshot.forEach(doc => {
+        posts.push({ id: doc.id, ...doc.data() });
+      });
+      renderPosts();
+    });
+  }
+
+  // عرض المنشورات
+  function renderPosts() {
+    const container = document.getElementById('postsContainer');
+    if (!container) return;
+    
+    let filtered = posts.filter(p => 
+      (p.content || '').includes(searchTerm) || 
+      (p.username || '').includes(searchTerm) || 
+      (p.userId || '').includes(searchTerm)
+    );
+    
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="text-align:center;padding:50px"><i class="fas fa-feather" style="font-size:45px;opacity:0.3"></i><p style="margin-top:15px;color:#64748b;">لا توجد منشورات</p></div>`;
+      return;
+    }
+
+    const now = Date.now();
+    const sorted = [...filtered].sort((a, b) => {
+      const aPromo = (a.promotedUntil || 0) > now ? 1 : 0;
+      const bPromo = (b.promotedUntil || 0) > now ? 1 : 0;
+      if (aPromo !== bPromo) return bPromo - aPromo;
+      
+      const aFollowed = isFollowing(a.userId) ? 1 : 0;
+      const bFollowed = isFollowing(b.userId) ? 1 : 0;
+      if (aFollowed !== bFollowed) return bFollowed - aFollowed;
+      
+      return (b.timestamp || 0) - (a.timestamp || 0);
+    });
+
+    container.innerHTML = sorted.map(post => {
+      const isLiked = (post.likedBy || []).includes(currentUser?.uid);
+      const isPromoted = (post.promotedUntil || 0) > now;
+      const isOwner = post.userId === currentUser?.uid;
+      const followed = isFollowing(post.userId);
+      
+      return `
+      <div class="post-card ${isPromoted ? 'promoted' : ''}">
+        ${followed ? '<div class="follow-badge"><i class="fas fa-check"></i> متابَع</div>' : ''}
+        <div class="post-header">
+          <div class="post-avatar" onclick="window.openProfile('${post.userId}')" style="border-color: ${post.colors?.frame || '#fbbf24'};">${renderAvatar(post)}</div>
+          <div class="post-user-details">
+            <div class="post-username" onclick="window.openProfile('${post.userId}')" style="color:${post.colors?.name || '#0f172a'}">
+              ${post.username || 'مستخدم'}
+              <span class="user-id-badge" style="background:${post.colors?.frame || '#fbbf24'}; color:${post.colors?.id || '#8b5cf6'};">#${post.userId || ''}</span>
+            </div>
+            <div class="post-time"><i class="far fa-clock"></i> ${post.timestamp ? new Date(post.timestamp).toLocaleString('ar-SA') : 'الآن'}</div>
+          </div>
+          ${isOwner ? `<div class="post-menu" onclick="window.deletePost('${post.id}')"><i class="fas fa-trash"></i></div>` : ''}
+        </div>
+        <div class="post-content" style="color:${post.colors?.postText || post.colors?.text || '#334155'}">${post.content || ''}</div>
+        <div class="post-interactions">
+          <div class="interact-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike('${post.id}')"><i class="fas fa-heart"></i> <span>${post.likes || 0}</span></div>
+          <div class="interact-btn" onclick="window.openComments('${post.id}')"><i class="fas fa-comment"></i> ${(post.comments || []).length}</div>
+          <div class="interact-btn"><i class="fas fa-eye"></i> ${post.views || 0}</div>
+          ${isOwner ? `<div class="interact-btn" onclick="window.promotePost('${post.id}')"><i class="fas fa-chart-line"></i></div>` : '<div style="width:50px;"></div>'}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // دوال المنشورات
+  window.toggleLike = async function(postId) {
+    if (!currentUser) return;
+    const postRef = doc(db, "posts", postId);
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+    
+    const liked = post.likedBy || [];
+    if (liked.includes(currentUser.uid)) {
+      await updateDoc(postRef, { likedBy: arrayRemove(currentUser.uid), likes: increment(-1) });
+    } else {
+      await updateDoc(postRef, { likedBy: arrayUnion(currentUser.uid), likes: increment(1) });
+    }
+  };
+
+  window.openComments = function(postId) {
+    activePostId = postId;
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+    
+    const comments = post.comments || [];
+    const commentsHtml = comments.map(c => `
+      <div class="comment-item">
+        <div class="comment-header">
+          <div class="comment-avatar" style="border-color: ${c.colors?.frame || '#fbbf24'};">
+            ${c.avatarType === 'image' && c.avatarUrl ? `<img src="${c.avatarUrl}">` : (c.emoji || '👤')}
+          </div>
+          <div style="flex:1;">
+            <div class="comment-author">
+              <span style="color: ${c.colors?.name || '#0f172a'};">${c.username || 'مستخدم'}</span>
+              <span class="comment-badge" style="background: ${c.colors?.frame || '#fbbf24'}; color: ${c.colors?.id || '#8b5cf6'};">#${c.userId || ''}</span>
+            </div>
+            <div class="comment-time">${c.timestamp ? new Date(c.timestamp).toLocaleString('ar-SA') : ''}</div>
+          </div>
+          ${c.userId === currentUser?.uid ? `<i class="fas fa-trash" style="color:#ef4444; cursor:pointer;" onclick="window.deleteComment('${postId}','${c.id}')"></i>` : ''}
+        </div>
+        <div class="comment-text" style="color: ${c.colors?.commentText || '#475569'};">${c.text || ''}</div>
+      </div>
+    `).join('') || '<p style="text-align:center;color:#94a3b8;padding:30px;">لا توجد تعليقات</p>';
+
+    document.getElementById('commentsListContainer').innerHTML = commentsHtml;
+    openModal('commentsModal');
+  };
+
+  window.submitComment = async function() {
+    const inp = document.getElementById('newCommentInput');
+    if (!inp) return;
+    const text = inp.value.trim();
+    if (!text || !activePostId || !currentUser) return;
+    
+    const comment = {
+      id: 'c' + Date.now() + Math.random().toString(36),
+      userId: currentUserData?.userId || currentUser.uid.slice(0, 6),
+      username: currentUserData?.username || 'مستخدم',
+      emoji: currentUserData?.emoji || '😎',
+      avatarType: currentUserData?.avatarType || 'emoji',
+      avatarUrl: currentUserData?.avatarUrl || '',
+      colors: currentUserData?.colors || {},
+      text: text,
+      timestamp: Date.now()
+    };
+    
+    await updateDoc(doc(db, "posts", activePostId), {
+      comments: arrayUnion(comment)
+    });
+    
+    inp.value = '';
+    closeModal('commentsModal');
+    showToast('تم إضافة التعليق');
+  };
+
+  window.deleteComment = async function(postId, commentId) {
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+    const comment = post.comments?.find(c => c.id === commentId);
+    if (comment) {
+      await updateDoc(doc(db, "posts", postId), {
+        comments: arrayRemove(comment)
+      });
+    }
+  };
+
+  window.promotePost = async function(postId) {
+    const post = posts.find(p => p.id === postId);
+    if (!post || post.userId !== currentUser?.uid) return;
+    
+    const days = parseInt(prompt('أدخل عدد الأيام (1 إكسير لليوم):', '1'));
+    if (!days || days < 1) return;
+    if ((resources.elixir || 0) < days) { 
+      showToast('إكسير غير كافٍ', false); 
+      return; 
+    }
+    
+    resources.elixir -= days;
+    await setDoc(doc(db, "resources", currentUser.uid), resources);
+    
+    await updateDoc(doc(db, "posts", postId), {
+      promotedUntil: Date.now() + days * 86400000
+    });
+    
+    updateResourcesUI();
+    showToast('✨ تم ترويج المنشور');
+  };
+
+  window.publishPost = async function() {
+    const content = document.getElementById('postText')?.value.trim();
+    if (!content || !currentUser) return;
+    
+    const promoDays = parseInt(document.getElementById('promoDays')?.value || '0');
+    if (promoDays > 0 && (resources.elixir || 0) < promoDays) { 
+      showToast('إكسير غير كافٍ', false); 
+      return; 
+    }
+    
+    if (promoDays > 0) {
+      resources.elixir -= promoDays;
+      await setDoc(doc(db, "resources", currentUser.uid), resources);
+    }
+    
+    const newPost = {
+      userId: currentUserData?.userId || currentUser.uid.slice(0, 6),
+      username: currentUserData?.username || 'مستخدم',
+      emoji: currentUserData?.emoji || '😎',
+      avatarType: currentUserData?.avatarType || 'emoji',
+      avatarUrl: currentUserData?.avatarUrl || '',
+      colors: currentUserData?.colors || { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6', postText: '#334155', commentText: '#475569' },
+      content: content,
+      timestamp: Date.now(),
+      likes: 0,
+      likedBy: [],
+      comments: [],
+      views: 0,
+      promotedUntil: promoDays > 0 ? Date.now() + promoDays * 86400000 : 0
+    };
+    
+    await addDoc(collection(db, "posts"), newPost);
+    
+    updateResourcesUI();
+    closeModal('publishModal');
+    document.getElementById('postText').value = '';
+    showToast('✨ تم نشر منشورك');
+  };
+
+  window.deletePost = async function(postId) {
+    if (!confirm('هل أنت متأكد من حذف المنشور؟')) return;
+    await deleteDoc(doc(db, "posts", postId));
+    showToast('تم حذف المنشور');
+  };
+
+  // الملف الشخصي
+  window.openProfile = async function(userId) {
+    activeProfileUserId = userId;
+    const isOwnProfile = userId === currentUserData?.userId;
+    
+    let userData = isOwnProfile ? currentUserData : null;
+    if (!userData) {
+      const userDoc = await getDoc(doc(db, "users_by_id", userId));
+      if (userDoc.exists()) {
+        const uid = userDoc.data().uid;
+        const mainUserDoc = await getDoc(doc(db, "users", uid));
+        if (mainUserDoc.exists()) {
+          userData = mainUserDoc.data();
+        }
+      }
+    }
+    
+    if (!userData) {
+      const userPost = posts.find(p => p.userId === userId);
+      userData = userPost || { 
+        userId: userId, 
+        username: 'مستخدم ' + userId, 
+        emoji: '👤', 
+        colors: { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6' } 
+      };
+    }
+
+    const followersCount = Object.values(followers).filter(arr => arr?.includes(userId)).length;
+    const isFollowed = isFollowing(userId);
+    
+    document.getElementById('profileDetails').innerHTML = `
+      <div style="text-align:center">
+        <div style="width:90px;height:90px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:45px;border:4px solid ${userData.colors?.frame || '#fbbf24'};overflow:hidden;">
+          ${renderAvatar(userData)}
+        </div>
+        <h2 style="color:${userData.colors?.name || '#0f172a'}; margin:15px 0 5px;">${userData.username || 'مستخدم'}</h2>
+        <p style="color:${userData.colors?.id || '#8b5cf6'}; font-weight:600;">#${userData.userId || userId}</p>
+      </div>
+    `;
+    
+    document.getElementById('profileStatsGrid').innerHTML = `
+      <div style="display:flex; justify-content:space-around; margin:20px 0; padding:15px; background:#f8fafc; border-radius:20px;">
+        <div style="text-align:center;"><span style="font-size:22px; font-weight:800;">${posts.filter(p => p.userId === userId).length}</span><br><span style="color:#64748b;">منشور</span></div>
+        <div style="text-align:center;"><span style="font-size:22px; font-weight:800;">${followersCount}</span><br><span style="color:#64748b;">متابع</span></div>
+      </div>
+    `;
+    
+    document.getElementById('followBtnText').textContent = isFollowed ? 'متابَع ✓' : 'متابعة';
+    
+    renderProfilePosts(userId);
+    openModal('profileModal');
+  };
+
+  function renderProfilePosts(userId) {
+    const userPosts = posts.filter(p => p.userId === userId);
+    const container = document.getElementById('profilePostsContainer');
+    if (!container) return;
+    
+    if (userPosts.length === 0) { 
+      container.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:30px;">لا توجد منشورات</p>'; 
+      return; 
+    }
+    
+    const isOwner = userId === currentUserData?.userId;
+    container.innerHTML = userPosts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).map(post => `
+      <div class="post-card" style="margin-bottom:12px;">
+        <div class="post-header">
+          <div class="post-avatar" style="border-color:${post.colors?.frame || '#fbbf24'};">${renderAvatar(post)}</div>
+          <div><strong style="color:${post.colors?.name || '#0f172a'};">${post.username}</strong><br><small>${post.timestamp ? new Date(post.timestamp).toLocaleString('ar-SA') : ''}</small></div>
+        </div>
+        <div style="color:${post.colors?.postText || '#334155'};">${post.content}</div>
+        <div class="post-interactions" style="margin-top:10px;">
+          <div class="interact-btn ${(post.likedBy||[]).includes(currentUser?.uid) ? 'liked' : ''}" onclick="window.toggleLike('${post.id}')"><i class="fas fa-heart"></i> ${post.likes||0}</div>
+          <div class="interact-btn" onclick="window.openComments('${post.id}')"><i class="fas fa-comment"></i> ${(post.comments||[]).length}</div>
+          ${isOwner ? `<div class="interact-btn" onclick="window.deletePost('${post.id}')"><i class="fas fa-trash"></i></div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.followUser = async function() {
+    if (!activeProfileUserId || !currentUser) return;
+    if (activeProfileUserId === currentUserData?.userId) { 
+      showToast('لا يمكنك متابعة نفسك', false); 
+      return; 
+    }
+    
+    if (!followers[currentUser.uid]) followers[currentUser.uid] = [];
+    const idx = followers[currentUser.uid].indexOf(activeProfileUserId);
+    
+    if (idx === -1) { 
+      followers[currentUser.uid].push(activeProfileUserId); 
+      showToast('✓ تمت المتابعة'); 
+    } else { 
+      followers[currentUser.uid].splice(idx, 1); 
+      showToast('تم إلغاء المتابعة'); 
+    }
+    
+    await setDoc(doc(db, "social", "followers"), { [currentUser.uid]: followers[currentUser.uid] }, { merge: true });
+    renderPosts();
+    if (activeProfileUserId) window.openProfile(activeProfileUserId);
+  };
+
+  window.openPrivateChat = function() {
+    if (!activeProfileUserId) return;
+    if (activeProfileUserId === currentUserData?.userId) {
+      showToast('لا يمكنك مراسلة نفسك', false);
+      return;
+    }
+    // حفظ معرف المستخدم في localStorage للاستخدام في صفحة الماسنجر
+    localStorage.setItem('openChatWith', activeProfileUserId);
+    showToast('💬 جاهز للمحادثة مع المستخدم #' + activeProfileUserId);
+    closeModal('profileModal');
+  };
+
+  // تعديل الحساب
+  function openAccountModal() {
+    if (!currentUserData) return;
+    
+    const form = document.getElementById('accountEditForm');
+    
+    form.innerHTML = `
+      <div class="user-id-section">
+        <label><i class="fas fa-id-card"></i> المعرف الخاص بك</label>
+        <div class="id-value">${currentUserData.userId || currentUser.uid.slice(0, 6)}</div>
+        <small style="color:#92400e;">معرف فريد لا يمكن تغييره</small>
+      </div>
+      
+      <div style="margin-bottom:15px;">
+        <label style="font-weight:600; display:block; margin-bottom:8px;">📛 الاسم</label>
+        <input id="editUsername" value="${currentUserData.username || ''}" style="width:100%; padding:14px; border-radius:14px; border:2px solid #e2e8f0;">
+      </div>
+      
+      <div class="avatar-section">
+        <div style="font-weight:600; margin:15px 0 10px;"><i class="fas fa-smile"></i> اختر إيموجي</div>
+        <div class="avatar-selector">${emojis.map(e => `<div class="avatar-option ${currentUserData.emoji === e && currentUserData.avatarType === 'emoji' ? 'selected' : ''}" onclick="window.selectEmoji('${e}')">${e}</div>`).join('')}</div>
+      </div>
+      
+      <div class="avatar-section">
+        <div style="font-weight:600; margin:15px 0 10px;"><i class="fas fa-image"></i> اختر صورة</div>
+        <div class="image-grid">${imageUrls.map(url => `<div class="image-item ${currentUserData.avatarUrl === url && currentUserData.avatarType === 'image' ? 'selected' : ''}" onclick="window.selectImage('${url}')"><img src="${url}"></div>`).join('')}</div>
+      </div>
+      
+      <div class="colors-section">
+        <div style="font-weight:600; margin:15px 0 10px;"><i class="fas fa-palette"></i> تخصيص الألوان</div>
+        
+        <div class="color-row"><label><i class="fas fa-border-all"></i> لون الإطار</label><input type="color" id="editFrameColor" value="${currentUserData.colors?.frame || '#fbbf24'}"></div>
+        <div class="color-row"><label><i class="fas fa-signature"></i> لون الاسم</label><input type="color" id="editNameColor" value="${currentUserData.colors?.name || '#0f172a'}"></div>
+        <div class="color-row"><label><i class="fas fa-id-badge"></i> لون المعرف</label><input type="color" id="editIdColor" value="${currentUserData.colors?.id || '#8b5cf6'}"></div>
+        <div class="color-row"><label><i class="fas fa-pen"></i> لون كتابة المنشور</label><input type="color" id="editPostTextColor" value="${currentUserData.colors?.postText || '#334155'}"></div>
+        <div class="color-row"><label><i class="fas fa-comment"></i> لون خط التعليق</label><input type="color" id="editCommentTextColor" value="${currentUserData.colors?.commentText || '#475569'}"></div>
+      </div>
+      
+      <button class="btn-save" onclick="window.saveAccountChanges()">💾 حفظ التعديلات</button>
+      <button class="btn-danger" onclick="window.handleLogout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+    `;
+    
+    openModal('accountModal');
+  }
+
+  window.selectEmoji = function(emoji) {
+    currentUserData.emoji = emoji;
+    currentUserData.avatarType = 'emoji';
+    currentUserData.avatarUrl = '';
+    document.querySelectorAll('.avatar-option, .image-item').forEach(el => el.classList.remove('selected'));
+    event.target.closest('.avatar-option')?.classList.add('selected');
+  };
+
+  window.selectImage = function(url) {
+    currentUserData.avatarUrl = url;
+    currentUserData.avatarType = 'image';
+    document.querySelectorAll('.avatar-option, .image-item').forEach(el => el.classList.remove('selected'));
+    event.target.closest('.image-item')?.classList.add('selected');
+  };
+
+  window.saveAccountChanges = async function() {
+    if (!currentUser) return;
+    
+    currentUserData.username = document.getElementById('editUsername')?.value || currentUserData.username;
+    currentUserData.colors = {
+      frame: document.getElementById('editFrameColor')?.value || '#fbbf24',
+      name: document.getElementById('editNameColor')?.value || '#0f172a',
+      id: document.getElementById('editIdColor')?.value || '#8b5cf6',
+      postText: document.getElementById('editPostTextColor')?.value || '#334155',
+      commentText: document.getElementById('editCommentTextColor')?.value || '#475569',
+      text: document.getElementById('editPostTextColor')?.value || '#334155'
+    };
+    
+    await setDoc(doc(db, "users", currentUser.uid), currentUserData, { merge: true });
+    
+    closeModal('accountModal');
+    renderPosts();
+    showToast('✅ تم حفظ التغييرات');
+  };
+
+  // تسجيل الخروج - بدون توجيه لصفحة 404
+  window.handleLogout = async function() {
+    try {
+      await signOut(auth);
+      localStorage.removeItem('currentUser');
+      showToast('تم تسجيل الخروج بنجاح');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (error) {
+      showToast('خطأ في تسجيل الخروج', false);
+    }
+  };
+
+  // البحث
+  window.clearSearch = function() {
+    document.getElementById('searchInput').value = '';
+    searchTerm = '';
+    renderPosts();
+  };
+
+  // مراقبة المصادقة - بدون توجيه لصفحة 404
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      await loadUserData(user.uid);
+      subscribeToPosts();
+    } else {
+      // عرض رسالة بدلاً من التوجيه لصفحة غير موجودة
+      const container = document.getElementById('postsContainer');
+      if (container) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:50px;">
+            <i class="fas fa-sign-in-alt" style="font-size:50px;opacity:0.5;margin-bottom:20px;"></i>
+            <h3 style="color:#0f172a;margin-bottom:10px;">يرجى تسجيل الدخول</h3>
+            <p style="color:#64748b;margin-bottom:20px;">يجب عليك تسجيل الدخول للوصول إلى المنصة</p>
+            <button onclick="window.location.reload()" style="background:#fbbf24;border:none;padding:12px 30px;border-radius:30px;font-weight:700;cursor:pointer;">
+              <i class="fas fa-sync-alt"></i> تحديث الصفحة
+            </button>
+          </div>
+        `;
+      }
+    }
+  });
+
+  // تهيئة الأحداث
+  window.addEventListener('load', () => {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        renderPosts();
+      });
+    }
+
+    document.getElementById('accountBtn')?.addEventListener('click', openAccountModal);
+    
+    document.getElementById('mainPublishBtn')?.addEventListener('click', () => openModal('publishModal'));
+    
+    const postText = document.getElementById('postText');
+    if (postText) {
+      postText.addEventListener('input', function() {
+        document.getElementById('charCounter').innerText = this.value.length + '/500';
+      });
+    }
+
+    document.querySelectorAll('.close-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.closest('.modal-overlay')?.classList.remove('active');
+      });
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('active');
+      });
+    });
+  });
+
+  // تعريض الدوال
+  window.showToast = showToast;
+  window.closeModal = closeModal;
+  window.openModal = openModal;
+  window.openProfile = window.openProfile;
+  window.toggleLike = window.toggleLike;
+  window.openComments = window.openComments;
+  window.submitComment = window.submitComment;
+  window.deleteComment = window.deleteComment;
+  window.promotePost = window.promotePost;
+  window.publishPost = window.publishPost;
+  window.deletePost = window.deletePost;
+  window.followUser = window.followUser;
+  window.openPrivateChat = window.openPrivateChat;
+  window.selectEmoji = window.selectEmoji;
+  window.selectImage = window.selectImage;
+  window.saveAccountChanges = window.saveAccountChanges;
+  window.clearSearch = window.clearSearch;
+  window.handleLogout = window.handleLogout;
+  // دالة فتح نافذة القائمة - ضعها هنا في النهاية
+function openMenuModal() {
+  var modal = document.getElementById('menuModal');
+  if (modal) {
+    modal.classList.add('active');
+  } else {
+    console.log('النافذة غير موجودة');
+  }
+}
+
+// تأكد من تعريضها للنافذة
+window.openMenuModal = openMenuModal;
+</script>
+</body>
+</html>
