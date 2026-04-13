@@ -1367,15 +1367,13 @@
       }
     });
   }
-
-  function playNotificationSound() {
-    try {
-      const audio = new Audio('data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YTgAAAB9AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AA==');
-      audio.volume = 0.3;
-      audio.play().catch(() => {});
-    } catch (e) {}
-  }
-
+function playNotificationSound() {
+  try {
+    const audio = new Audio('https://www.soundjay.com/communications/sounds/notification-1-269296.mp3');
+    audio.volume = 0.3;
+    audio.play().catch(() => {});
+  } catch (e) {}
+}
   function subscribeToPosts() {
     if (unsubscribePosts) unsubscribePosts();
     
