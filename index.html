@@ -1369,23 +1369,52 @@
   }
 function playNotificationSound() {
   try {
+    // استخدام Web Audio API لتوليد صوت البوسة
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
+    
+    // منشئ الصوت الرئيسي (Oscillator) لصوت "مممم" الناعم
+    const osc = audioContext.createOscillator();
+    osc.type = 'sine'; // موجة جيبية ناعمة
+    osc.frequency.value = 400; // تردد متوسط النعومة
+
+    // منشئ ثاني لإضافة طبقة صوتية "بوب"
+    const osc2 = audioContext.createOscillator();
+    osc2.type = 'triangle'; // موجة مثلثة تعطي تأثير "فرقعة" ناعمة
+    osc2.frequency.value = 800;
+
+    // عقدة التحكم في الصوت (Gain) لعمل تلاشي سريع
     const gainNode = audioContext.createGain();
-
-    oscillator.type = 'sine'; // نوع الصوت: جرس ناعم
-    oscillator.frequency.value = 880; // تردد الصوت (نغمة مرتفعة)
-    gainNode.gain.value = 0.1; // مستوى الصوت (منخفض)
-
-    oscillator.connect(gainNode);
+    const gainNode2 = audioContext.createGain();
+    
+    // توصيل المكونات
+    osc.connect(gainNode);
+    osc2.connect(gainNode2);
     gainNode.connect(audioContext.destination);
+    gainNode2.connect(audioContext.destination);
 
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.15); // مدة قصيرة
+    const now = audioContext.currentTime;
+
+    // ضبط مستوى الصوت العام
+    gainNode.gain.setValueAtTime(0.1, now);
+    gainNode2.gain.setValueAtTime(0.05, now);
+
+    // انخفاض سريع جداً (تلاشي) لعمل تأثير "بوس"
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+    gainNode2.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+
+    // بدء الصوت
+    osc.start(now);
+    osc2.start(now);
+    
+    // إيقاف بعد 0.15 ثانية
+    osc.stop(now + 0.15);
+    osc2.stop(now + 0.15);
+
   } catch (e) {
-    // فشل التشغيل (يتم تجاهل الخطأ)
+    // فشل آمن (يتم التجاهل)
   }
-}  function subscribeToPosts() {
+}
+  function subscribeToPosts() {
     if (unsubscribePosts) unsubscribePosts();
     
     const postsQuery = query(collection(db, "posts"));
