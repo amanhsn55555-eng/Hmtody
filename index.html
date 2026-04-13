@@ -1369,12 +1369,23 @@
   }
 function playNotificationSound() {
   try {
-    const audio = new Audio('https://www.soundjay.com/communications/sounds/notification-1-269296.mp3');
-    audio.volume = 0.3;
-    audio.play().catch(() => {});
-  } catch (e) {}
-}
-  function subscribeToPosts() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.type = 'sine'; // نوع الصوت: جرس ناعم
+    oscillator.frequency.value = 880; // تردد الصوت (نغمة مرتفعة)
+    gainNode.gain.value = 0.1; // مستوى الصوت (منخفض)
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.15); // مدة قصيرة
+  } catch (e) {
+    // فشل التشغيل (يتم تجاهل الخطأ)
+  }
+}  function subscribeToPosts() {
     if (unsubscribePosts) unsubscribePosts();
     
     const postsQuery = query(collection(db, "posts"));
