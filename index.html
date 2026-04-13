@@ -240,6 +240,13 @@
       display: inline-block;
     }
 
+    /* علامة التوثيق */
+    .verified-badge {
+      color: #3b82f6;
+      font-size: 14px;
+      margin-right: 4px;
+    }
+
     /* تنسيق خاص للمعرف حسب عدد الأرقام */
     .id-1-digit {
       color: #00ff00 !important;
@@ -416,6 +423,68 @@
       box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
     }
 
+    /* أيقونة الماسنجر مع عداد الإشعارات */
+    .messenger-icon-wrapper {
+      position: relative;
+    }
+
+    .unread-badge-messenger {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ef4444;
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+      border: 2px solid white;
+      z-index: 2;
+    }
+
+    /* أيقونة حسابي بشكل الصورة الشخصية */
+  #accountAvatarCircle{border:1px solid rgba(251,191,36,0.15)!important;}
+    .account-icon-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .account-avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      overflow: hidden;
+      border: 3px solid;
+      box-shadow: 0 6px 15px -4px rgba(99, 102, 241, 0.2);
+      background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+      margin-bottom: 3px;
+    }
+
+    .account-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .account-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+  
     .publish-oil-btn {
       background: linear-gradient(145deg, #0f172a, #1e293b);
       width: 55px;
@@ -949,14 +1018,17 @@
 </main>
 
 <footer class="compact-footer">
-  <div class="footer-icon" onclick="window.open('https://amanhsn55555-eng.github.io/Msgtdy/', '_blank')">
+  <div class="footer-icon messenger-icon-wrapper" onclick="window.open('https://amanhsn55555-eng.github.io/Msgtdy/', '_blank')">
     <i class="fab fa-facebook-messenger"></i>
     <span>ماسنجر</span>
+    <span class="unread-badge-messenger" id="unreadMessageBadge" style="display: none;">0</span>
   </div>
   
-  <div class="footer-icon" id="accountBtn">
-    <i class="fas fa-user-circle"></i>
-    <span>حسابي</span>
+  <div class="account-icon-wrapper" id="accountBtn">
+    <div class="account-avatar-circle" id="accountAvatarCircle" style="border-color: #fbbf24;">
+      <span>👤</span>
+    </div>
+    <span class="account-label">حسابي</span>
   </div>
   
   <div class="publish-oil-btn" id="mainPublishBtn"><i class="fas fa-tint"></i></div>
@@ -1085,7 +1157,6 @@
   </div>
 </div>
 
-<!-- نافذة القائمة الرئيسية -->
 <div class="modal-overlay" id="menuModal">
   <div class="modal-sheet">
     <div class="modal-header">
@@ -1163,8 +1234,10 @@
   let activeProfileUserId = null;
   let searchTerm = '';
   let unsubscribePosts = null;
+  let unsubscribeChats = null;
   let currentFollowersListType = 'followers';
-  let viewedPosts = new Set(); // لتتبع المنشورات التي شاهدها المستخدم
+  let viewedPosts = new Set();
+  let unreadMessagesCount = 0;
 
   const emojis = ['😎', '👑', '🦊', '🐼', '🐸', '🐶', '🦁', '🐧', '🐨', '🦝', '🐱', '🐻', '🦄', '🐙', '🦋', '👀', '⭐', '🌙', '☀️', '🔥', '💎', '🎮', '🫦', '💫'];
   
@@ -1175,7 +1248,6 @@
     'https://i.pravatar.cc/150?img=10', 'https://i.pravatar.cc/150?img=11', 'https://i.pravatar.cc/150?img=12'
   ];
 
-  // دوال مساعدة
   function showToast(msg, isSuccess = true) { 
     const t = document.getElementById('toastMsg'); 
     if (!t) return;
@@ -1208,6 +1280,22 @@
     return user.emoji || '😎';
   }
 
+  function updateAccountIcon() {
+    const avatarCircle = document.getElementById('accountAvatarCircle');
+    if (!avatarCircle) return;
+    
+    if (currentUserData) {
+      const frameColor = currentUserData.colors?.frame || '#fbbf24';
+      avatarCircle.style.borderColor = frameColor;
+      
+      if (currentUserData.avatarType === 'image' && currentUserData.avatarUrl) {
+        avatarCircle.innerHTML = `<img src="${currentUserData.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.innerHTML='<span>👤</span>'">`;
+      } else {
+        avatarCircle.innerHTML = `<span>${currentUserData.emoji || '😎'}</span>`;
+      }
+    }
+  }
+
   function isFollowing(userId) { 
     return followers[currentUser?.uid]?.includes(userId) || false; 
   }
@@ -1222,12 +1310,12 @@
     return '';
   }
 
-  // تحميل بيانات المستخدم
   async function loadUserData(uid) {
     try {
       const userDoc = await getDoc(doc(db, "users", uid));
       if (userDoc.exists()) {
         currentUserData = userDoc.data();
+        updateAccountIcon();
       }
       
       const resourcesDoc = await getDoc(doc(db, "resources", uid));
@@ -1241,7 +1329,6 @@
         followers = followersDoc.data();
       }
       
-      // تحميل المنشورات التي شاهدها المستخدم
       const viewedDoc = await getDoc(doc(db, "viewed_posts", uid));
       if (viewedDoc.exists()) {
         viewedPosts = new Set(viewedDoc.data().posts || []);
@@ -1251,7 +1338,44 @@
     }
   }
 
-  // مراقبة المنشورات
+  function subscribeToUnreadMessages() {
+    if (!currentUser) return;
+    if (unsubscribeChats) unsubscribeChats();
+    
+    const chatsQuery = query(
+      collection(db, "chats"),
+      where("participants", "array-contains", currentUser.uid)
+    );
+    
+    unsubscribeChats = onSnapshot(chatsQuery, (snapshot) => {
+      let totalUnread = 0;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const unread = data.unreadCount?.[currentUser.uid] || 0;
+        totalUnread += unread;
+      });
+      
+      unreadMessagesCount = totalUnread;
+      const badge = document.getElementById('unreadMessageBadge');
+      if (badge) {
+        if (totalUnread > 0) {
+          badge.textContent = totalUnread > 99 ? '99+' : totalUnread;
+          badge.style.display = 'flex';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  function playNotificationSound() {
+    try {
+      const audio = new Audio('data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YTgAAAB9AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AH4AfgB+AA==');
+      audio.volume = 0.3;
+      audio.play().catch(() => {});
+    } catch (e) {}
+  }
+
   function subscribeToPosts() {
     if (unsubscribePosts) unsubscribePosts();
     
@@ -1267,7 +1391,6 @@
     });
   }
 
-  // عرض المنشورات
   function renderPosts() {
     const container = document.getElementById('postsContainer');
     if (!container) return;
@@ -1302,6 +1425,7 @@
       const isOwner = post.userId === currentUserData?.userId;
       const followed = isFollowing(post.userId);
       const idClass = getIdClass(post.userId);
+      const isVerified = post.verified || false;
       
       return `
       <div class="post-card ${isPromoted ? 'promoted' : ''}">
@@ -1311,6 +1435,7 @@
           <div class="post-user-details">
             <div class="post-username" onclick="window.openProfile('${post.userId}')" style="color:${post.colors?.name || '#0f172a'}">
               ${post.username || 'مستخدم'}
+              ${isVerified ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}
               <span class="user-id-badge ${idClass}" style="background:${post.colors?.frame || '#fbbf24'};">#${post.userId || ''}</span>
             </div>
             <div class="post-time"><i class="far fa-clock"></i> ${post.timestamp ? new Date(post.timestamp).toLocaleString('ar-SA') : 'الآن'}</div>
@@ -1334,7 +1459,6 @@
     }).join('');
   }
 
-  // دوال المنشورات
   window.toggleLike = async function(postId) {
     if (!currentUser) return;
     const postRef = doc(db, "posts", postId);
@@ -1354,11 +1478,9 @@
     const post = posts.find(p => p.id === postId);
     if (!post) return;
     
-    // زيادة المشاهدات مرة واحدة فقط
     if (!viewedPosts.has(postId)) {
       viewedPosts.add(postId);
       await updateDoc(doc(db, "posts", postId), { views: increment(1) });
-      // حفظ المنشورات التي شاهدها المستخدم
       await setDoc(doc(db, "viewed_posts", currentUser.uid), { 
         posts: Array.from(viewedPosts) 
       });
@@ -1367,6 +1489,7 @@
     const comments = post.comments || [];
     const commentsHtml = comments.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).map(c => {
       const idClass = getIdClass(c.userId);
+      const isVerified = c.verified || false;
       return `
       <div class="comment-item">
         <div class="comment-header">
@@ -1376,6 +1499,7 @@
           <div style="flex:1;">
             <div class="comment-author">
               <span style="color: ${c.colors?.name || '#0f172a'};">${c.username || 'مستخدم'}</span>
+              ${isVerified ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}
               <span class="comment-badge ${idClass}" style="background: ${c.colors?.frame || '#fbbf24'};">#${c.userId || ''}</span>
             </div>
             <div class="comment-time">${c.timestamp ? new Date(c.timestamp).toLocaleString('ar-SA') : ''}</div>
@@ -1404,6 +1528,7 @@
       avatarType: currentUserData?.avatarType || 'emoji',
       avatarUrl: currentUserData?.avatarUrl || '',
       colors: currentUserData?.colors || {},
+      verified: currentUserData?.verified || false,
       text: text,
       timestamp: Date.now()
     };
@@ -1433,33 +1558,50 @@
     const post = posts.find(p => p.id === postId);
     if (!post || post.userId !== currentUserData?.userId) return;
     
-    const days = parseInt(prompt('أدخل عدد الأيام (1 إكسير لليوم):', '1'));
-    if (!days || days < 1) return;
-    if ((resources.elixir || 0) < days) { 
-      showToast('إكسير غير كافٍ', false); 
-      return; 
-    }
-    
-    resources.elixir -= days;
-    await setDoc(doc(db, "resources", currentUser.uid), resources);
-    
-    await updateDoc(doc(db, "posts", postId), {
-      promotedUntil: Date.now() + days * 86400000
-    });
-    
-    updateResourcesUI();
-    showToast('✨ تم ترويج المنشور');
+    showBeautifulPrompt(
+        '📈 ترويج المنشور',
+        `أدخل عدد الأيام (1 إكسير لليوم)\nالإكسير المتوفر: ${resources.elixir || 0}`,
+        '1',
+        async (days) => {
+            const daysNum = parseInt(days);
+            if (!daysNum || daysNum < 1) {
+                showToast('❌ الرجاء إدخال رقم صحيح', false);
+                return;
+            }
+            
+            if ((resources.elixir || 0) < daysNum) {
+                showToast('❌ إكسير غير كافٍ', false);
+                return;
+            }
+            
+            resources.elixir -= daysNum;
+            await setDoc(doc(db, "resources", currentUser.uid), resources);
+            
+            await updateDoc(doc(db, "posts", postId), {
+                promotedUntil: Date.now() + daysNum * 86400000
+            });
+            
+            updateResourcesUI();
+            showToast(`✨ تم ترويج المنشور لمدة ${daysNum} يوم`);
+        }
+    );
   };
 
   window.editPost = async function(postId) {
     const post = posts.find(p => p.id === postId);
     if (!post || post.userId !== currentUserData?.userId) return;
     
-    const newContent = prompt('عدل المنشور:', post.content);
-    if (newContent && newContent !== post.content) {
-      await updateDoc(doc(db, "posts", postId), { content: newContent });
-      showToast('تم تعديل المنشور');
-    }
+    showBeautifulPrompt(
+        '✏️ تعديل المنشور',
+        'قم بتعديل محتوى المنشور',
+        post.content,
+        async (newContent) => {
+            if (newContent && newContent !== post.content) {
+                await updateDoc(doc(db, "posts", postId), { content: newContent });
+                showToast('✅ تم تعديل المنشور');
+            }
+        }
+    );
   };
 
   window.publishPost = async function() {
@@ -1489,6 +1631,7 @@
       avatarType: currentUserData?.avatarType || 'emoji',
       avatarUrl: currentUserData?.avatarUrl || '',
       colors: currentUserData?.colors || { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6', postText: '#334155', commentText: '#475569' },
+      verified: currentUserData?.verified || false,
       content: content,
       timestamp: Date.now(),
       likes: 0,
@@ -1507,12 +1650,20 @@
   };
 
   window.deletePost = async function(postId) {
-    if (!confirm('هل أنت متأكد من حذف المنشور؟')) return;
-    await deleteDoc(doc(db, "posts", postId));
-    showToast('تم حذف المنشور');
+    showConfirmDialog(
+        '🗑️ حذف المنشور',
+        'هل أنت متأكد من حذف هذا المنشور؟',
+        'حذف',
+        'إلغاء',
+        async (confirmed) => {
+            if (confirmed) {
+                await deleteDoc(doc(db, "posts", postId));
+                showToast('✅ تم حذف المنشور');
+            }
+        }
+    );
   };
 
-  // الملف الشخصي
   window.openProfile = async function(userId) {
     activeProfileUserId = userId;
     const isOwnProfile = userId === currentUserData?.userId;
@@ -1535,7 +1686,6 @@
       };
     }
 
-    // حساب المتابعين
     const userFollowers = [];
     const userFollowing = [];
     
@@ -1551,13 +1701,18 @@
     
     const isFollowed = isFollowing(userId);
     const idClass = getIdClass(userId);
+    const isVerified = userData.verified || false;
+    
     document.querySelector('#profileModal .settings-icon').style.display = (userId === currentUserData?.userId) ? 'flex' : 'none';
     document.getElementById('profileDetails').innerHTML = `
       <div style="text-align:center">
         <div style="width:90px;height:90px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:45px;border:4px solid ${userData.colors?.frame || '#fbbf24'};overflow:hidden;">
           ${renderAvatar(userData)}
         </div>
-        <h2 style="color:${userData.colors?.name || '#0f172a'}; margin:15px 0 5px;">${userData.username || 'مستخدم'}</h2>
+        <h2 style="color:${userData.colors?.name || '#0f172a'}; margin:15px 0 5px;">
+          ${userData.username || 'مستخدم'}
+          ${isVerified ? '<i class="fas fa-check-circle" style="color:#3b82f6; margin-right:5px;"></i>' : ''}
+        </h2>
         <p><span class="user-id-badge ${idClass}" style="background: ${userData.colors?.frame || '#fbbf24'}; font-size: 14px; padding: 5px 15px;">#${userData.userId || userId}</span></p>
       </div>
     `;
@@ -1593,12 +1748,17 @@
     const isOwner = userId === currentUserData?.userId;
     container.innerHTML = userPosts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).map(post => {
       const idClass = getIdClass(post.userId);
+      const isVerified = post.verified || false;
       return `
       <div class="post-card" style="margin-bottom:12px;">
         <div class="post-header">
           <div class="post-avatar" style="border-color:${post.colors?.frame || '#fbbf24'};">${renderAvatar(post)}</div>
           <div style="flex:1;">
-            <div><strong style="color:${post.colors?.name || '#0f172a'};">${post.username}</strong> <span class="user-id-badge ${idClass}" style="background:${post.colors?.frame || '#fbbf24'};">#${post.userId}</span></div>
+            <div>
+              <strong style="color:${post.colors?.name || '#0f172a'};">${post.username}</strong>
+              ${isVerified ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}
+              <span class="user-id-badge ${idClass}" style="background:${post.colors?.frame || '#fbbf24'};">#${post.userId}</span>
+            </div>
             <small>${post.timestamp ? new Date(post.timestamp).toLocaleString('ar-SA') : ''}</small>
           </div>
           ${isOwner ? `<div class="post-menu">
@@ -1681,6 +1841,7 @@
     
     container.innerHTML = usersData.map(user => {
       const idClass = getIdClass(user.userId || user.uid);
+      const isVerified = user.verified || false;
       return `
       <div class="follower-item">
         <div class="follower-info" onclick="window.openProfile('${user.userId || user.uid}')">
@@ -1688,7 +1849,10 @@
             ${user.avatarType === 'image' && user.avatarUrl ? `<img src="${user.avatarUrl}">` : (user.emoji || '👤')}
           </div>
           <div>
-            <div style="font-weight: 700; color: ${user.colors?.name || '#0f172a'};">${user.username || 'مستخدم'}</div>
+            <div style="font-weight: 700; color: ${user.colors?.name || '#0f172a'};">
+              ${user.username || 'مستخدم'}
+              ${isVerified ? '<i class="fas fa-check-circle" style="color:#3b82f6; margin-right:3px; font-size:12px;"></i>' : ''}
+            </div>
             <span class="user-id-badge ${idClass}" style="background: ${user.colors?.frame || '#fbbf24'}; font-size: 10px;">#${user.userId || user.uid}</span>
           </div>
         </div>
@@ -1748,13 +1912,11 @@
     closeModal('profileModal');
   };
 
-  // فتح إعدادات الحساب
   window.openAccountSettings = function() {
     closeModal('profileModal');
     openAccountModal();
   };
 
-  // تعديل الحساب
   function openAccountModal() {
     if (!currentUserData) return;
     
@@ -1841,6 +2003,7 @@
     
     await setDoc(doc(db, "users", currentUser.uid), currentUserData, { merge: true });
     
+    updateAccountIcon();
     closeModal('accountModal');
     renderPosts();
     showToast('✅ تم حفظ التغييرات');
@@ -1874,12 +2037,11 @@
       document.getElementById('currentPassword').value = '';
       document.getElementById('newPassword').value = '';
       document.getElementById('confirmPassword').value = '';
-} catch (error) {
-    showToast('❌ كلمة المرور الحالية غير صحيحة', false);
-}
+    } catch (error) {
+      showToast('❌ كلمة المرور الحالية غير صحيحة', false);
+    }
   };
 
-  // تسجيل الخروج
   window.handleLogout = async function() {
     try {
       await signOut(auth);
@@ -1893,7 +2055,6 @@
     }
   };
 
-  // البحث
   window.clearSearch = function() {
     document.getElementById('searchInput').value = '';
     searchTerm = '';
@@ -1904,84 +2065,10 @@
     openModal('menuModal');
   };
 
-  // مراقبة المصادقة
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      currentUser = user;
-      await loadUserData(user.uid);
-      
-      if (!currentUserData?.userId) {
-        const userId = user.uid.slice(0, 6);
-        currentUserData = { ...currentUserData, userId: userId };
-        await setDoc(doc(db, "users", user.uid), currentUserData, { merge: true });
-        await setDoc(doc(db, "users_by_id", userId), { uid: user.uid });
-      }
-      
-      subscribeToPosts();
-    } else {
-      const container = document.getElementById('postsContainer');
-      if (container) {
-        container.innerHTML = `
-          <div style="text-align:center;padding:50px;">
-            <i class="fas fa-sign-in-alt" style="font-size:50px;opacity:0.5;margin-bottom:20px;"></i>
-            <h3 style="color:#0f172a;margin-bottom:10px;">يرجى تسجيل الدخول</h3>
-            <p style="color:#64748b;margin-bottom:20px;">يجب عليك تسجيل الدخول للوصول إلى المنصة</p>
-            <button onclick="window.location.reload()" style="background:#fbbf24;border:none;padding:12px 30px;border-radius:30px;font-weight:700;cursor:pointer;">
-              <i class="fas fa-sync-alt"></i> تحديث الصفحة
-            </button>
-          </div>
-        `;
-      }
-    }
-  });
-
-  // تهيئة الأحداث
-  window.addEventListener('load', () => {
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        searchTerm = e.target.value;
-        renderPosts();
-      });
-    }
-
-    document.getElementById('accountBtn')?.addEventListener('click', () => {
-      if (currentUserData) {
-        window.openProfile(currentUserData.userId);
-      } else {
-        openAccountModal();
-      }
-    });
-    
-    document.getElementById('mainPublishBtn')?.addEventListener('click', () => openModal('publishModal'));
-    
-    const postText = document.getElementById('postText');
-    if (postText) {
-      postText.addEventListener('input', function() {
-        document.getElementById('charCounter').innerText = this.value.length + '/500';
-      });
-    }
-
-    document.querySelectorAll('.close-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        this.closest('.modal-overlay')?.classList.remove('active');
-      });
-    });
-
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-      m.addEventListener('click', function(e) {
-        if (e.target === this) this.classList.remove('active');
-      });
-    });
-  });
-
-  // دالة إنشاء مربع حوار جميل
-function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
-    // إزالة أي مربع سابق
+  function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
     const existingBox = document.getElementById('beautifulPromptBox');
     if (existingBox) existingBox.remove();
     
-    // إنشاء المربع
     const promptBox = document.createElement('div');
     promptBox.id = 'beautifulPromptBox';
     promptBox.style.cssText = `
@@ -2000,7 +2087,6 @@ function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
         animation: popIn 0.3s ease;
     `;
     
-    // إضافة الأنيميشن
     if (!document.getElementById('promptAnimation')) {
         const style = document.createElement('style');
         style.id = 'promptAnimation';
@@ -2017,7 +2103,6 @@ function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
         document.head.appendChild(style);
     }
     
-    // خلفية معتمة
     const overlay = document.createElement('div');
     overlay.style.cssText = `
         position: fixed;
@@ -2036,7 +2121,6 @@ function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
         }, 200);
     };
     
-    // محتوى المربع
     promptBox.innerHTML = `
         <div style="text-align: center; margin-bottom: 20px;">
             <i class="fas fa-pen" style="font-size: 40px; color: #fbbf24; background: #fef3c7; padding: 12px; border-radius: 50%;"></i>
@@ -2088,7 +2172,6 @@ function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
     input.focus();
     input.select();
     
-    // معالجة الأحداث
     const closePrompt = (value) => {
         promptBox.style.animation = 'popOut 0.2s ease forwards';
         overlay.style.opacity = '0';
@@ -2108,7 +2191,6 @@ function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
         }
     });
     
-    // إضافة fadeIn أنيميشن
     const fadeStyle = document.createElement('style');
     fadeStyle.textContent = `
         @keyframes fadeIn {
@@ -2117,78 +2199,9 @@ function showBeautifulPrompt(title, placeholder, defaultValue, callback) {
         }
     `;
     document.head.appendChild(fadeStyle);
-}
+  }
 
-// دالة تعديل المنشور (معدلة)
-window.editPost = async function(postId) {
-    const post = posts.find(p => p.id === postId);
-    if (!post || post.userId !== currentUserData?.userId) return;
-    
-    showBeautifulPrompt(
-        '✏️ تعديل المنشور',
-        'قم بتعديل محتوى المنشور',
-        post.content,
-        async (newContent) => {
-            if (newContent && newContent !== post.content) {
-                await updateDoc(doc(db, "posts", postId), { content: newContent });
-                showToast('✅ تم تعديل المنشور');
-            }
-        }
-    );
-};
-
-// دالة ترويج المنشور (معدلة)
-window.promotePost = async function(postId) {
-    const post = posts.find(p => p.id === postId);
-    if (!post || post.userId !== currentUserData?.userId) return;
-    
-    showBeautifulPrompt(
-        '📈 ترويج المنشور',
-        `أدخل عدد الأيام (1 إكسير لليوم)\nالإكسير المتوفر: ${resources.elixir || 0}`,
-        '1',
-        async (days) => {
-            const daysNum = parseInt(days);
-            if (!daysNum || daysNum < 1) {
-                showToast('❌ الرجاء إدخال رقم صحيح', false);
-                return;
-            }
-            
-            if ((resources.elixir || 0) < daysNum) {
-                showToast('❌ إكسير غير كافٍ', false);
-                return;
-            }
-            
-            resources.elixir -= daysNum;
-            await setDoc(doc(db, "resources", currentUser.uid), resources);
-            
-            await updateDoc(doc(db, "posts", postId), {
-                promotedUntil: Date.now() + daysNum * 86400000
-            });
-            
-            updateResourcesUI();
-            showToast(`✨ تم ترويج المنشور لمدة ${daysNum} يوم`);
-        }
-    );
-};
-
-// دالة رسالة تأكيد الحذف الجميلة
-window.deletePost = async function(postId) {
-    showConfirmDialog(
-        '🗑️ حذف المنشور',
-        'هل أنت متأكد من حذف هذا المنشور؟',
-        'حذف',
-        'إلغاء',
-        async (confirmed) => {
-            if (confirmed) {
-                await deleteDoc(doc(db, "posts", postId));
-                showToast('✅ تم حذف المنشور');
-            }
-        }
-    );
-};
-
-// دالة مربع تأكيد جميل
-function showConfirmDialog(title, message, confirmText, cancelText, callback) {
+  function showConfirmDialog(title, message, confirmText, cancelText, callback) {
     const existingBox = document.getElementById('beautifulPromptBox');
     if (existingBox) existingBox.remove();
     
@@ -2268,8 +2281,96 @@ function showConfirmDialog(title, message, confirmText, cancelText, callback) {
     
     document.getElementById('confirmYes').onclick = () => closeDialog(true);
     document.getElementById('confirmNo').onclick = () => closeDialog(false);
-}
-  // تعريض الدوال
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      await loadUserData(user.uid);
+      
+      if (!currentUserData?.userId) {
+        const userId = user.uid.slice(0, 6);
+        currentUserData = { ...currentUserData, userId: userId };
+        await setDoc(doc(db, "users", user.uid), currentUserData, { merge: true });
+        await setDoc(doc(db, "users_by_id", userId), { uid: user.uid });
+      }
+      
+      subscribeToPosts();
+      subscribeToUnreadMessages();
+      
+      // مراقبة الرسائل الجديدة وتشغيل الصوت
+      const messagesQuery = query(collection(db, "chats"));
+      onSnapshot(messagesQuery, (snapshot) => {
+        let hasNewMessage = false;
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'modified') {
+            const data = change.doc.data();
+            const unread = data.unreadCount?.[currentUser.uid] || 0;
+            if (unread > 0) {
+              hasNewMessage = true;
+            }
+          }
+        });
+        if (hasNewMessage) {
+          playNotificationSound();
+        }
+      });
+    } else {
+      const container = document.getElementById('postsContainer');
+      if (container) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:50px;">
+            <i class="fas fa-sign-in-alt" style="font-size:50px;opacity:0.5;margin-bottom:20px;"></i>
+            <h3 style="color:#0f172a;margin-bottom:10px;">يرجى تسجيل الدخول</h3>
+            <p style="color:#64748b;margin-bottom:20px;">يجب عليك تسجيل الدخول للوصول إلى المنصة</p>
+            <button onclick="window.location.reload()" style="background:#fbbf24;border:none;padding:12px 30px;border-radius:30px;font-weight:700;cursor:pointer;">
+              <i class="fas fa-sync-alt"></i> تحديث الصفحة
+            </button>
+          </div>
+        `;
+      }
+    }
+  });
+
+  window.addEventListener('load', () => {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        renderPosts();
+      });
+    }
+
+    document.getElementById('accountBtn')?.addEventListener('click', () => {
+      if (currentUserData) {
+        window.openProfile(currentUserData.userId);
+      } else {
+        openAccountModal();
+      }
+    });
+    
+    document.getElementById('mainPublishBtn')?.addEventListener('click', () => openModal('publishModal'));
+    
+    const postText = document.getElementById('postText');
+    if (postText) {
+      postText.addEventListener('input', function() {
+        document.getElementById('charCounter').innerText = this.value.length + '/500';
+      });
+    }
+
+    document.querySelectorAll('.close-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.closest('.modal-overlay')?.classList.remove('active');
+      });
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('active');
+      });
+    });
+  });
+
   window.showToast = showToast;
   window.closeModal = closeModal;
   window.openModal = openModal;
