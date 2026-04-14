@@ -12,7 +12,16 @@
       box-sizing: border-box;
       font-family: 'Segoe UI', 'Tajawal', sans-serif;
     }
+  #profileModal .modal-sheet{background:linear-gradient(145deg,#1a1a2e,#16213e,#0f0f0f)!important;}#profileModal .modal-header{background:transparent!important;border-bottom:1px solid #2a2a4a!important;}#profileModal .modal-header h3{color:#ffffff!important;text-shadow:0 1px 3px rgba(0,0,0,0.5)!important;}#profileModal .modal-header .close-btn{background:#2a2a4a!important;color:#ffffff!important;}#profileModal #profileDetails,#profileModal #profileDetails h2,#profileModal #profileDetails p{color:#ffffff!important;}#profileModal #profileDetails .user-id-badge{color:#ffffff!important;}#profileModal #profileDetails .relationship-status{background:#2a2a4a!important;color:#e0e0ff!important;border:1px solid #3a3a6a!important;}#profileModal .followers-stats{background:linear-gradient(145deg,#1e1e3a,#16162e)!important;border:1px solid #2a2a4a!important;border-radius:20px!important;}#profileModal .stat-number{color:#ffffff!important;font-weight:800!important;}#profileModal .stat-label{color:#a0a0c0!important;}#profileModal h4{color:#ffffff!important;}#profileModal .post-card{background:linear-gradient(145deg,#1e1e3a,#16162e)!important;border:1px solid #2a2a4a!important;}#profileModal .post-content{color:#e0e0e0!important;}#profileModal .post-time{color:#9090b0!important;}#profileModal .interact-btn{background:#1a1a30!important;color:#c0c0e0!important;border:1px solid #2a2a4a!important;}#profileModal .post-username,#profileModal .post-username strong{color:#ffffff!important;}#profileModal .partner-info{background:linear-gradient(145deg,#2a2a00,#1a1a00)!important;color:#ffd700!important;border:1px solid #ffd700!important;}
+  .mini-search-wrapper{background:linear-gradient(145deg,#f8fafc,#e2e8f0)!important;border:none!important;box-shadow:inset 2px 2px 5px #ffffff,inset -2px -2px 5px #94a3b8,3px 3px 8px rgba(0,0,0,0.1),-1px -1px 4px rgba(255,255,255,0.6)!important;border-radius:30px!important;padding:0 2px 0 8px!important;height:30px!important;}.mini-search-wrapper i{font-size:11px!important;color:#64748b!important;text-shadow:1px 1px 2px rgba(255,255,255,0.8)!important;}.mini-search-wrapper input{font-size:11px!important;padding:4px 4px 4px 0!important;height:28px!important;}.mini-search-wrapper input::placeholder{font-size:9px!important;color:#94a3b8!important;}.mini-search-wrapper button{padding:3px 8px!important;font-size:9px!important;height:24px!important;background:linear-gradient(145deg,#e2e8f0,#cbd5e1)!important;box-shadow:inset 1px 1px 3px #ffffff,inset -1px -1px 3px #94a3b8,2px 2px 5px rgba(0,0,0,0.1)!important;color:#475569!important;}
+  .resource-item{background:linear-gradient(145deg,#f8fafc,#e2e8f0)!important;border:none!important;box-shadow:inset 2px 2px 5px #ffffff,inset -2px -2px 5px #94a3b8,3px 3px 8px rgba(0,0,0,0.1),-1px -1px 4px rgba(255,255,255,0.6)!important;border-radius:20px!important;padding:3px 8px!important;transform:none!important;transition:none!important;}.resource-item:hover{transform:none!important;box-shadow:inset 2px 2px 5px #ffffff,inset -2px -2px 5px #94a3b8,3px 3px 8px rgba(0,0,0,0.1),-1px -1px 4px rgba(255,255,255,0.6)!important;}.resource-icon{width:22px!important;height:22px!important;border-radius:8px!important;box-shadow:inset 1px 1px 3px rgba(0,0,0,0.1),2px 2px 5px rgba(0,0,0,0.1)!important;font-size:10px!important;}.resource-value{font-size:11px!important;text-shadow:1px 1px 2px rgba(255,255,255,0.8),-1px -1px 2px rgba(0,0,0,0.1)!important;}.resource-label{font-size:7px!important;}.gold .resource-icon{background:linear-gradient(145deg,#fbbf24,#d97706)!important;}.elixir .resource-icon{background:linear-gradient(145deg,#a78bfa,#7c3aed)!important;}.money .resource-icon{background:linear-gradient(145deg,#34d399,#059669)!important;}.oil .resource-icon{background:linear-gradient(145deg,#2dd4bf,#0f766e)!important;}
 
+  #profileModal .profile-header ~ div button[onclick*="openPrivateChat"]{display:none!important;}#profileModal .profile-header ~ div button[onclick*="openPrivateChat"]#followBtn{display:none!important;}button[onclick*="openPrivateChat"]{display:inline-block!important;}
+.id-1-digit{color:#ff1a1a!important;text-shadow:2px 2px 0 #990000,4px 4px 0 #660000!important;font-weight:900!important;}.id-2-digit{color:#00ff00!important;font-weight:900!important;}.id-3-digit{color:#FFD700!important;font-weight:900!important;}
+  
+  .post-card[style*="border:"] { border: none !important; box-shadow: 0 10px 25px -8px rgba(0, 20, 60, 0.1) !important; }
+  
+ .stories-row{display:none!important;}#profileModal .stories-row{display:flex!important;position:relative!important;border:3px solid #000000!important;border-radius:10px!important;margin-top:30px!important;}#profileModal .stories-row::before{content:"📸 الستوريات"!important;position:absolute!important;top:-25px!important;right:10px!important;background:transparent!important;color:#000!important;padding:0!important;font-size:14px!important;font-weight:bold!important;}
     body {
       background: linear-gradient(145deg, #f5f7fa 0%, #e8eef5 100%);
       min-height: 100vh;
@@ -333,6 +342,18 @@
       margin: 10px 0 14px;
       word-break: break-word;
       padding: 0 2px;
+    }
+
+    .post-media {
+      margin: 12px 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .post-media img, .post-media iframe {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 16px;
     }
 
     .post-interactions {
@@ -981,6 +1002,7 @@
       margin-bottom: 10px;
       font-size: 14px;
     }
+
     /* تنسيق حالة العلاقة */
     .relationship-status {
         background: #f8fafc;
@@ -1137,6 +1159,7 @@
     </div>
     <div class="publish-form">
       <textarea id="postText" class="publish-textarea" placeholder="اكتب شيئاً رائعاً..." rows="4"></textarea>
+      <input type="text" id="postMediaUrl" placeholder="رابط صورة أو فيديو يوتيوب (اختياري)" style="width:100%; padding:12px; border-radius:30px; border:2px solid #e2e8f0; margin:10px 0;">
       <div style="margin:20px 0; display: flex; align-items: center; gap: 15px;">
         <label style="font-weight:600; display: flex; align-items: center; gap: 8px;">
           <i class="fas fa-chart-line" style="color: #fbbf24;"></i> ترويج (X):
@@ -1195,6 +1218,15 @@
     </div>
     
     <div class="profile-header">
+      <div class="profile-header">
+  <div></div>
+  <div style="display: flex; gap: 10px;">
+    <div class="settings-icon" onclick="window.openReportsModal()" title="البلاغات" style="background: #fee2e2; color: #dc2626;">
+      <i class="fas fa-flag"></i>
+    </div>
+    
+  </div>
+</div>
       <div></div>
       <div class="settings-icon" onclick="window.openAccountSettings()" title="إعدادات الحساب">
         <i class="fas fa-cog"></i>
@@ -1202,6 +1234,9 @@
     </div>
     
     <div id="profileDetails"></div>
+    
+    <!-- صف الستوريات داخل الملف الشخصي -->
+    <div id="profileStoriesContainer" class="stories-row"></div>
     
     <!-- إحصائيات المتابعين -->
     <div class="followers-stats">
@@ -1314,6 +1349,7 @@
 
 <div id="toastMsg"></div>
 
+  
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
   import { getAuth, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
@@ -1530,11 +1566,15 @@
         stories.push({ id: doc.id, ...doc.data() });
       });
       renderStoriesRow();
+      if (activeProfileUserId) {
+        renderProfileStories(activeProfileUserId);
+      }
     });
   }
 
   function renderStoriesRow() {
     const container = document.getElementById('storiesContainer');
+    document.getElementById('profileDetails').insertAdjacentHTML('afterend', '<div style="position:relative; margin:15px 0 5px;"><span style="font-weight:bold; font-size:14px; color:#000;">📸 القصص</span></div>');
     if (!container) return;
     if (stories.length === 0) {
         container.innerHTML = '';
@@ -1561,9 +1601,44 @@
     }).join('');
   }
 
+  function renderProfileStories(userId) {
+    const container = document.getElementById('profileStoriesContainer');
+    if (!container) return;
+    
+    const followingList = followers[currentUser?.uid] || [];
+    const isOwnProfile = userId === currentUserData?.userId;
+    
+    let filteredStories;
+    if (isOwnProfile) {
+        // عرض ستورياتي وستوريات المتابعين
+        filteredStories = stories.filter(s => followingList.includes(s.userId) || s.userId === userId);
+    } else {
+        // عرض ستوريات المستخدم فقط
+        filteredStories = stories.filter(s => s.userId === userId);
+    }
+    
+    if (filteredStories.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+    
+    container.innerHTML = filteredStories.map(story => {
+        return `
+        <div class="story-item" onclick="window.viewStory('${story.id}')">
+            <div class="story-avatar">
+                ${story.avatarType === 'image' && story.avatarUrl ? `<img src="${story.avatarUrl}">` : `<span style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#1e293b;border-radius:50%;color:white;font-size:30px;">${story.emoji || '👤'}</span>`}
+            </div>
+            <span class="story-name">${story.username || 'مستخدم'}</span>
+        </div>
+        `;
+    }).join('');
+  }
+
   window.viewStory = function(storyId) {
       const story = stories.find(s => s.id === storyId);
       if (!story) return;
+      
+      const isOwner = story.userId === currentUserData?.userId;
       
       const contentDiv = document.getElementById('storyViewContent');
       contentDiv.innerHTML = `
@@ -1573,22 +1648,64 @@
             </div>
             <span style="font-weight:bold;">${story.username}</span>
             <span class="user-id-badge" style="background:gold;">#${story.userId}</span>
+            ${isOwner ? `
+                <div style="margin-right:auto; display:flex; gap:10px;">
+                    <i class="fas fa-edit" onclick="window.editStory('${story.id}')" style="cursor:pointer; color:#fbbf24;"></i>
+                    <i class="fas fa-trash" onclick="window.deleteStory('${story.id}')" style="cursor:pointer; color:#ef4444;"></i>
+                </div>
+            ` : ''}
         </div>
         <img src="${story.imageUrl}" style="max-width:100%; max-height:70vh; border-radius:20px; margin-bottom:20px;" onerror="this.src='https://via.placeholder.com/400x600?text=Story'">
         <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
             <button onclick="window.toggleStoryLike('${story.id}')" style="background:#fbbf24; border:none; padding:10px 20px; border-radius:30px; font-weight:bold;">
                 <i class="fas fa-heart"></i> <span id="storyLikes_${story.id}">${story.likes || 0}</span>
             </button>
-            <button onclick="window.openModal('storyCommentModal'); window.setActiveStory('${story.id}')" style="background:#3b82f6; color:white; border:none; padding:10px 20px; border-radius:30px; font-weight:bold;">
+            <button onclick="window.showStoryCommentInput('${story.id}')" style="background:#3b82f6; color:white; border:none; padding:10px 20px; border-radius:30px; font-weight:bold;">
                 <i class="fas fa-comment"></i> تعليق
             </button>
-            ${story.userId === currentUserData?.userId ? `<button onclick="window.deleteStory('${story.id}')" style="background:#ef4444; color:white; border:none; padding:10px 20px; border-radius:30px;"><i class="fas fa-trash"></i></button>` : ''}
         </div>
         <div id="storyComments_${story.id}" style="margin-top:20px; max-height:200px; overflow-y:auto;">
             ${(story.comments || []).map(c => `<p><strong>${c.username}:</strong> ${c.text}</p>`).join('')}
         </div>
       `;
       openModal('storyViewModal');
+  };
+
+  window.editStory = function(storyId) {
+      const story = stories.find(s => s.id === storyId);
+      if (!story) return;
+      showBeautifulPrompt('تعديل الستوري', 'أدخل رابط الصورة الجديد', story.imageUrl, async (newUrl) => {
+          if (newUrl && newUrl.startsWith('http')) {
+              await updateDoc(doc(db, "stories", storyId), { imageUrl: newUrl });
+              showToast('تم تعديل الستوري');
+              closeModal('storyViewModal');
+          }
+      });
+  };
+
+  window.showStoryCommentInput = function(storyId) {
+      showBeautifulPrompt('إضافة تعليق', 'اكتب تعليقك', '', async (text) => {
+          if (!text) return;
+          const comment = {
+              username: currentUserData?.username || 'مستخدم',
+              userId: currentUserData?.userId,
+              text: text,
+              timestamp: Date.now()
+          };
+          await updateDoc(doc(db, "stories", storyId), {
+              comments: arrayUnion(comment)
+          });
+          showToast('تم إضافة التعليق');
+          // تحديث العرض
+          const story = stories.find(s => s.id === storyId);
+          if (story) {
+              const commentsDiv = document.getElementById(`storyComments_${storyId}`);
+              if (commentsDiv) {
+                  const updatedComments = [...(story.comments || []), comment];
+                  commentsDiv.innerHTML = updatedComments.map(c => `<p><strong>${c.username}:</strong> ${c.text}</p>`).join('');
+              }
+          }
+      });
   };
 
   window.toggleStoryLike = async function(storyId) {
@@ -1630,7 +1747,7 @@
                   avatarUrl: currentUserData?.avatarUrl,
                   imageUrl: url,
                   timestamp: Date.now(),
-                  expiresAt: Date.now() + 86400000, // 24 ساعة
+                  expiresAt: Date.now() + 86400000,
                   likes: 0,
                   likedBy: [],
                   comments: []
@@ -1706,13 +1823,21 @@
       
       if (promoIndex !== -1) {
           const colors = ['#dc2626', '#10b981', '#3b82f6'];
-          const animations = ['fireGlow 1.5s infinite alternate', 'greenGlow 1.5s infinite alternate', 'blueGlow 1.5s infinite alternate'];
-          trendBadge = `<span class="trend-badge" style="background:${colors[promoIndex]}; animation:${animations[promoIndex]};">🔥 ترند #${promoIndex+1}</span>`;
+          trendBadge = `<span class="trend-badge" style="background:${colors[promoIndex]};">🔥 ترند #${promoIndex+1}</span>`;
           trendStyle = `border: 4px solid ${colors[promoIndex]}; box-shadow: 0 0 20px ${colors[promoIndex]};`;
       } else if (organicIndex !== -1) {
           const colors = ['#dc2626', '#10b981', '#3b82f6'];
-          trendBadge = `<span class="trend-badge" style="background:${colors[organicIndex]}; animation:fireGlow 1.5s infinite alternate;">✨ الأفضل #${organicIndex+1}</span>`;
+          trendBadge = `<span class="trend-badge" style="background:${colors[organicIndex]};">✨ الأفضل #${organicIndex+1}</span>`;
           trendStyle = `border: 4px solid ${colors[organicIndex]}; box-shadow: 0 0 20px ${colors[organicIndex]};`;
+      }
+      
+      let mediaHtml = '';
+      if (post.mediaUrl) {
+          if (post.mediaType === 'image') {
+              mediaHtml = `<div class="post-media"><img src="${post.mediaUrl}" onerror="this.style.display='none'"></div>`;
+          } else if (post.mediaType === 'youtube') {
+              mediaHtml = `<div class="post-media"><iframe src="${post.mediaUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+          }
       }
       
       return `
@@ -1734,6 +1859,7 @@
           </div>
         </div>
         <div class="post-content" style="color:${post.colors?.postText || post.colors?.text || '#334155'}">${post.content || ''}</div>
+        ${mediaHtml}
         <div class="post-interactions">
           <div class="interact-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike('${post.id}')"><i class="fas fa-heart"></i> <span>${post.likes || 0}</span></div>
           <div class="interact-btn" onclick="window.openComments('${post.id}')"><i class="fas fa-comment"></i> ${(post.comments || []).length}</div>
@@ -1745,108 +1871,355 @@
   }
 
   window.sharePost = async function(postId) {
-      const post = posts.find(p => p.id === postId);
-      if (!post) return;
-      
-      const shareData = {
-          title: 'وات تودي',
-          text: `شاهد منشور ${post.username} على وات تودي!\n${post.content?.substring(0, 50)}...\nحمل تطبيق وات تودي`,
-          url: `https://amanhsn55555-eng.github.io/Welcometody/?post=${postId}`
-      };
-      
-      if (navigator.share) {
-          try {
-              await navigator.share(shareData);
-              await updateDoc(doc(db, "posts", postId), { shares: increment(1) });
-          } catch (err) {}
-      } else {
-          // Fallback
-          prompt('انسخ الرابط للمشاركة:', shareData.url);
-          await updateDoc(doc(db, "posts", postId), { shares: increment(1) });
-      }
+  const post = posts.find(p => p.id === postId);
+  if (!post) return;
+  
+  const shareText = `📱 ${post.content?.substring(0, 150) || 'شاهد هذا المنشور'}${post.content?.length > 150 ? '...' : ''}\n\n✨ حمل تطبيق وات تودي`;
+  
+  const shareData = {
+    title: 'وات تودي',
+    text: shareText
   };
-
-  window.showPostMenu = function(event, postId) {
-      const post = posts.find(p => p.id === postId);
-      if (!post) return;
-      
-      const isOwner = post.userId === currentUserData?.userId;
-      const menuItems = [];
-      
-      if (isOwner) {
-          menuItems.push({ text: 'حذف', icon: 'trash', action: () => window.deletePost(postId) });
-          menuItems.push({ text: 'تعديل', icon: 'edit', action: () => window.editPost(postId) });
-          menuItems.push({ text: 'ترويج', icon: 'chart-line', action: () => window.promotePost(postId) });
-      }
-      menuItems.push({ text: 'إبلاغ', icon: 'flag', action: () => window.reportPost(postId) });
-      
-      const menuHtml = `
-        <div style="position:fixed; background:white; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,0.2); padding:10px; z-index:10000; min-width:150px;">
-            ${menuItems.map(item => `
-                <div style="padding:12px; cursor:pointer; border-radius:15px; display:flex; align-items:center; gap:10px;" onclick="(${item.action.toString()})(); this.parentElement.remove();">
-                    <i class="fas fa-${item.icon}" style="width:20px; color:#f59e0b;"></i>
-                    <span>${item.text}</span>
-                </div>
-            `).join('')}
+  
+  if (post.mediaUrl && post.mediaType === 'image') {
+    try {
+      const response = await fetch(post.mediaUrl);
+      const blob = await response.blob();
+      const file = new File([blob], 'post-image.jpg', { type: blob.type });
+      shareData.files = [file];
+    } catch (e) {
+      console.log('تعذر تحميل الصورة');
+    }
+  }
+  
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+      await updateDoc(doc(db, "posts", postId), { shares: increment(1) });
+      showToast('✅ تمت المشاركة بنجاح');
+    } catch (err) {
+      // المستخدم ألغى المشاركة
+    }
+  } else {
+    // إنشاء overlay
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);z-index:10000;display:flex;align-items:center;justify-content:center;';
+    
+    // إنشاء صندوق المشاركة
+    const shareBox = document.createElement('div');
+    shareBox.style.cssText = `
+      width: 90%;
+      max-width: 350px;
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      border-radius: 30px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 30px 50px rgba(0,0,0,0.3), 0 0 0 3px #fbbf24;
+    `;
+    
+    shareBox.innerHTML = `
+      <div style="margin-bottom: 20px;">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+          <i class="fas fa-share-alt" style="font-size: 35px; color: white;"></i>
         </div>
-      `;
+      </div>
+      <h2 style="color: #0f172a; margin: 0 0 10px; font-weight: 800;">📱 مشاركة المنشور</h2>
+      <p style="color: #64748b; margin: 0 0 25px; font-size: 14px; padding: 0 15px;">${shareText}</p>
+      <div style="display: flex; gap: 10px;">
+        <button id="copyShareBtn" style="flex: 1; background: #3b82f6; border: none; padding: 14px; border-radius: 40px; color: white; font-weight: 700; cursor: pointer;">
+          <i class="fas fa-copy"></i> نسخ
+        </button>
+        <button id="closeShareBtn" style="flex: 1; background: #f1f5f9; border: none; padding: 14px; border-radius: 40px; color: #64748b; font-weight: 700; cursor: pointer;">
+          <i class="fas fa-times"></i> إغلاق
+        </button>
+      </div>
+    `;
+    
+    overlay.appendChild(shareBox);
+    document.body.appendChild(overlay);
+    
+    // إضافة الأحداث للأزرار بعد إضافتها للـ DOM
+    const copyBtn = shareBox.querySelector('#copyShareBtn');
+    const closeBtn = shareBox.querySelector('#closeShareBtn');
+    
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        showToast('📋 تم نسخ النص');
+        await updateDoc(doc(db, "posts", postId), { shares: increment(1) });
+      } catch (e) {
+        showToast('❌ فشل النسخ', false);
+      }
+      overlay.remove();
+    });
+    
+    closeBtn.addEventListener('click', () => {
+      overlay.remove();
+    });
+    
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+  }
+};
+  
+
+window.showPostMenu = function(event, postId) {
+  const post = posts.find(p => p.id === postId);
+  if (!post) return;
+  
+  const isOwner = post.userId === currentUserData?.userId;
+  const existing = document.querySelector('.post-menu-popup');
+  if (existing) existing.remove();
+  
+  const popup = document.createElement('div');
+  popup.className = 'post-menu-popup';
+  popup.style.cssText = `
+    position: fixed !important;
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: auto !important;
+    min-width: 160px !important;
+    background: white !important;
+    border-radius: 20px !important;
+    padding: 8px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+    z-index: 10000 !important;
+  `;
+  
+  let html = '';
+  
+  if (isOwner) {
+    html += `
+      <div onclick="window.deletePost('${postId}'); this.closest('.post-menu-popup').remove();" style="padding:14px 18px; cursor:pointer; border-radius:15px; display:flex; align-items:center; gap:12px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+        <i class="fas fa-trash" style="width:22px; color:#ef4444;"></i>
+        <span style="font-weight:600; color:#1e293b;">حذف</span>
+      </div>
+      <div onclick="window.editPost('${postId}'); this.closest('.post-menu-popup').remove();" style="padding:14px 18px; cursor:pointer; border-radius:15px; display:flex; align-items:center; gap:12px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+        <i class="fas fa-edit" style="width:22px; color:#3b82f6;"></i>
+        <span style="font-weight:600; color:#1e293b;">تعديل</span>
+      </div>
+      <div onclick="window.promotePost('${postId}'); this.closest('.post-menu-popup').remove();" style="padding:14px 18px; cursor:pointer; border-radius:15px; display:flex; align-items:center; gap:12px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+        <i class="fas fa-chart-line" style="width:22px; color:#fbbf24;"></i>
+        <span style="font-weight:600; color:#1e293b;">ترويج</span>
+      </div>
+    `;
+  }
+  
+  html += `
+    <div onclick="window.reportPost('${postId}'); this.closest('.post-menu-popup').remove();" style="padding:14px 18px; cursor:pointer; border-radius:15px; display:flex; align-items:center; gap:12px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+      <i class="fas fa-flag" style="width:22px; color:#f97316;"></i>
+      <span style="font-weight:600; color:#1e293b;">إبلاغ</span>
+    </div>
+  `;
+  
+  popup.innerHTML = html;
+  document.body.appendChild(popup);
+  
+  setTimeout(() => {
+    document.addEventListener('click', function closeMenu(e) {
+      if (!popup.contains(e.target)) {
+        popup.remove();
+        document.removeEventListener('click', closeMenu);
+      }
+    });
+  }, 100);
+};
+window.openReportsModal = async function() {
+  if (!currentUserData) return;
+  
+  const reportsSnapshot = await getDocs(collection(db, "reports"));
+  const reports = [];
+  
+  reportsSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.status === 'pending') {
+      reports.push({ id: doc.id, ...data });
+    }
+  });
+  
+  const container = document.getElementById('reportsListContainer');
+  
+  if (reports.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:40px;"><i class="fas fa-check-circle" style="color:#10b981; font-size:40px; margin-bottom:15px;"></i><br>لا توجد بلاغات معلقة</p>';
+    openModal('reportsModal');
+    return;
+  }
+  
+  container.innerHTML = reports.map(report => `
+    <div style="background:#f8fafc; border-radius:20px; padding:16px; margin-bottom:15px;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+        <div style="width:45px; height:45px; border-radius:50%; background:#fee2e2; display:flex; align-items:center; justify-content:center; color:#dc2626;">
+          <i class="fas fa-flag"></i>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:700; margin-bottom:3px;">${report.reporterName || 'مستخدم'} #${report.reporterId}</div>
+          <div style="font-size:12px; color:#64748b;">${report.timestamp ? new Date(report.timestamp).toLocaleString('ar-SA') : ''}</div>
+        </div>
+        <span style="background:#fef3c7; color:#92400e; padding:4px 10px; border-radius:30px; font-size:11px; font-weight:600;">
+          ${report.reportCount || 1} بلاغ
+        </span>
+      </div>
       
-      const existing = document.querySelector('.post-menu-popup');
-      if (existing) existing.remove();
+      <div style="background:white; border-radius:15px; padding:12px; margin:12px 0;">
+        <i class="fas fa-quote-right" style="color:#cbd5e1; margin-left:8px;"></i>
+        <span style="color:#475569;">${report.reason}</span>
+      </div>
       
-      const popup = document.createElement('div');
-      popup.className = 'post-menu-popup';
-      popup.innerHTML = menuHtml;
-      popup.style.position = 'absolute';
-      popup.style.left = event.clientX + 'px';
-      popup.style.top = event.clientY + 'px';
-      document.body.appendChild(popup);
+      <div style="background:#f1f5f9; border-radius:15px; padding:12px; margin-bottom:15px;">
+        <div style="font-size:12px; color:#64748b; margin-bottom:8px;">المنشور المبلغ عليه:</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-user-circle" style="font-size:20px; color:#94a3b8;"></i>
+          <span style="font-weight:600;">${report.postOwnerName || 'صاحب المنشور'} #${report.postOwnerId}</span>
+        </div>
+        <div style="margin-top:8px; padding:8px; background:white; border-radius:10px; color:#334155; font-size:13px;">
+          "${report.postContent?.substring(0, 100)}${report.postContent?.length > 100 ? '...' : ''}"
+        </div>
+      </div>
       
-      setTimeout(() => {
-          document.addEventListener('click', function closeMenu(e) {
-              if (!popup.contains(e.target)) {
-                  popup.remove();
-                  document.removeEventListener('click', closeMenu);
-              }
+      <div style="display:flex; gap:10px;">
+        <button onclick="window.acceptReport('${report.id}', '${report.postId}')" style="flex:1; background:#10b981; color:white; border:none; padding:12px; border-radius:30px; font-weight:700; cursor:pointer;">
+          <i class="fas fa-check"></i> قبول
+        </button>
+        <button onclick="window.rejectReport('${report.id}')" style="flex:1; background:#ef4444; color:white; border:none; padding:12px; border-radius:30px; font-weight:700; cursor:pointer;">
+          <i class="fas fa-times"></i> رفض
+        </button>
+      </div>
+    </div>
+  `).join('');
+  
+  openModal('reportsModal');
+};
+window.acceptReport = async function(reportId, postId) {
+  const reportRef = doc(db, "reports", reportId);
+  const reportDoc = await getDoc(reportRef);
+  const reportData = reportDoc.data();
+  
+  const newCount = (reportData.acceptedCount || 0) + 1;
+  
+  if (newCount >= 3) {
+    // حذف المنشور فقط عند قبول 3 بلاغات
+    try {
+      await deleteDoc(doc(db, "posts", postId));
+    } catch (e) {
+      console.log('المنشور محذوف مسبقاً');
+    }
+    
+    await updateDoc(reportRef, { 
+      status: 'deleted', 
+      acceptedCount: newCount 
+    });
+    
+    showToast('✅ تم حذف المنشور لتجاوز ٣ بلاغات مقبولة');
+  } else {
+    // زيادة العداد فقط بدون حذف
+    await updateDoc(reportRef, { 
+      acceptedCount: newCount 
+    });
+    
+    showToast(`✅ تم قبول البلاغ (${newCount}/3)`);
+  }
+  
+  closeModal('reportsModal');
+};
+
+window.rejectReport = async function(reportId) {
+  // رفض البلاغ يبقيه معلقاً لكن يغيره إلى مرفوض
+  await updateDoc(doc(db, "reports", reportId), { 
+    status: 'rejected'
+  });
+  
+  showToast('❌ تم رفض البلاغ');
+  closeModal('reportsModal');
+};
+
+window.rejectReport = async function(reportId) {
+  await updateDoc(doc(db, "reports", reportId), { status: 'rejected' });
+  showToast('❌ تم رفض البلاغ');
+  closeModal('reportsModal');
+};
+ window.reportPost = function(postId) {
+  const post = posts.find(p => p.id === postId);
+  if (!post) {
+    showToast('المنشور غير موجود', false);
+    return;
+  }
+  
+  const popup = document.querySelector('.post-menu-popup');
+  if (popup) popup.remove();
+  
+  showBeautifulPrompt(
+    '🚨 إبلاغ عن منشور',
+    'اكتب سبب البلاغ',
+    'محتوى غير لائق',
+    async (reason) => {
+      if (!reason || reason.trim() === '') return;
+      
+      try {
+        const reportsRef = collection(db, "reports");
+        const q = query(reportsRef, where("postId", "==", postId), where("status", "==", "pending"));
+        const reportsSnapshot = await getDocs(q);
+        
+        let reportId;
+        let reportCount = 1;
+        
+        if (!reportsSnapshot.empty) {
+          const existingReport = reportsSnapshot.docs[0];
+          reportId = existingReport.id;
+          const data = existingReport.data();
+          reportCount = (data.reportCount || 0) + 1;
+          
+          const reporters = data.reporters || [];
+          reporters.push({
+            reporterId: currentUserData?.userId || currentUser?.uid || 'unknown',
+            reporterName: currentUserData?.username || 'مستخدم',
+            reason: reason,
+            timestamp: Date.now()
           });
-      }, 100);
-  };
-
-  window.reportPost = function(postId) {
-      showBeautifulPrompt(
-          '🚨 إبلاغ عن منشور',
-          'اكتب سبب البلاغ',
-          'محتوى غير لائق',
-          async (reason) => {
-              if (!reason) return;
-              
-              const report = {
-                  postId: postId,
-                  reportedBy: currentUser.uid,
-                  reporterName: currentUserData?.username,
-                  reporterId: currentUserData?.userId,
-                  reason: reason,
-                  timestamp: Date.now(),
-                  status: 'pending'
-              };
-              
-              const postRef = doc(db, "posts", postId);
-              await updateDoc(postRef, {
-                  reports: arrayUnion(report)
-              });
-              
-              // التحقق من عدد البلاغات
-              const post = posts.find(p => p.id === postId);
-              if (post && post.reports && post.reports.length >= 3) {
-                  await deleteDoc(postRef);
-                  showToast('تم حذف المنشور لتجاوز عدد البلاغات');
-              } else {
-                  showToast('تم إرسال البلاغ');
-              }
-          }
-      );
-  };
-
+          
+          await updateDoc(doc(db, "reports", reportId), {
+            reportCount: reportCount,
+            reporters: reporters,
+            reason: reason
+          });
+        } else {
+          const newReport = {
+            postId: postId,
+            postContent: post.content || '',
+            postOwnerId: post.userId || 'unknown',
+            postOwnerName: post.username || 'مستخدم',
+            postOwnerAvatar: post.emoji || '👤',
+            status: 'pending',
+            reportCount: 1,
+            acceptedCount: 0,
+            reason: reason,
+            reporterId: currentUserData?.userId || currentUser?.uid || 'unknown',
+            reporterName: currentUserData?.username || 'مستخدم',
+            reporterAvatar: currentUserData?.emoji || '👤',
+            timestamp: Date.now(),
+            reporters: [{
+              reporterId: currentUserData?.userId || currentUser?.uid || 'unknown',
+              reporterName: currentUserData?.username || 'مستخدم',
+              reason: reason,
+              timestamp: Date.now()
+            }]
+          };
+          
+          const docRef = await addDoc(collection(db, "reports"), newReport);
+          reportId = docRef.id;
+        }
+        
+        // تم إزالة الحذف التلقائي - فقط إرسال البلاغ
+        showToast(`📢 تم إرسال البلاغ بنجاح (${reportCount} بلاغات)`);
+        
+      } catch (error) {
+        console.error('خطأ في إرسال البلاغ:', error);
+        showToast('❌ فشل إرسال البلاغ، حاول مرة أخرى', false);
+      }
+    }
+  );
+};
   window.toggleLike = async function(postId) {
     if (!currentUser) return;
     const postRef = doc(db, "posts", postId);
@@ -1994,7 +2367,12 @@
 
   window.publishPost = async function() {
     const content = document.getElementById('postText')?.value.trim();
-    if (!content || !currentUser) return;
+    const mediaUrl = document.getElementById('postMediaUrl')?.value.trim();
+    if (!content && !mediaUrl) {
+        showToast('الرجاء كتابة نص أو إضافة رابط وسائط', false);
+        return;
+    }
+    if (!currentUser) return;
     
     if (content.length > 500) {
       showToast('الحد الأقصى 500 حرف', false);
@@ -2012,6 +2390,19 @@
       await setDoc(doc(db, "resources", currentUser.uid), resources);
     }
     
+    let mediaType = null;
+    let finalMediaUrl = mediaUrl;
+    if (mediaUrl) {
+        if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) {
+            mediaType = 'youtube';
+            // تحويل إلى رابط تضمين
+            const videoId = mediaUrl.split('v=')[1]?.split('&')[0] || mediaUrl.split('/').pop();
+            finalMediaUrl = `https://www.youtube.com/embed/${videoId}`;
+        } else {
+            mediaType = 'image';
+        }
+    }
+    
     const newPost = {
       userId: currentUserData?.userId || currentUser.uid.slice(0, 6),
       username: currentUserData?.username || 'مستخدم',
@@ -2021,6 +2412,8 @@
       colors: currentUserData?.colors || { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6', postText: '#334155', commentText: '#475569' },
       verified: currentUserData?.verified || false,
       content: content,
+      mediaUrl: finalMediaUrl,
+      mediaType: mediaType,
       timestamp: Date.now(),
       likes: 0,
       likedBy: [],
@@ -2036,6 +2429,7 @@
     updateResourcesUI();
     closeModal('publishModal');
     document.getElementById('postText').value = '';
+    document.getElementById('postMediaUrl').value = '';
     showToast('✨ تم نشر منشورك');
   };
 
@@ -2149,6 +2543,7 @@
       followBtn.style.background = isFollowed ? '#10b981' : '#4f46e5';
     }
     
+    renderProfileStories(userId);
     renderProfilePosts(userId);
     openModal('profileModal');
   };
@@ -2167,6 +2562,14 @@
     container.innerHTML = userPosts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).map(post => {
       const idClass = getIdClass(post.userId);
       const isVerified = post.verified || false;
+      let mediaHtml = '';
+      if (post.mediaUrl) {
+          if (post.mediaType === 'image') {
+              mediaHtml = `<div class="post-media"><img src="${post.mediaUrl}" onerror="this.style.display='none'"></div>`;
+          } else if (post.mediaType === 'youtube') {
+              mediaHtml = `<div class="post-media"><iframe src="${post.mediaUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+          }
+      }
       return `
       <div class="post-card" style="margin-bottom:12px;">
         <div class="post-header">
@@ -2185,6 +2588,7 @@
           </div>` : ''}
         </div>
         <div style="color:${post.colors?.postText || '#334155'}; margin: 10px 0;">${post.content}</div>
+        ${mediaHtml}
         <div class="post-interactions" style="margin-top:10px;">
           <div class="interact-btn ${(post.likedBy||[]).includes(currentUser?.uid) ? 'liked' : ''}" onclick="window.toggleLike('${post.id}')"><i class="fas fa-heart"></i> ${post.likes||0}</div>
           <div class="interact-btn" onclick="window.openComments('${post.id}')"><i class="fas fa-comment"></i> ${(post.comments||[]).length}</div>
@@ -2337,8 +2741,6 @@
           '',
           async (partnerId) => {
               if (!partnerId) return;
-              
-              // إرسال إشعار أو طلب ارتباط (يمكن تطويره لاحقاً)
               await updateDoc(doc(db, "users", currentUser.uid), {
                   partnerRequest: partnerId
               });
@@ -2856,6 +3258,7 @@
     });
   });
 
+  
   window.showToast = showToast;
   window.closeModal = closeModal;
   window.openModal = openModal;
@@ -2887,6 +3290,9 @@
   window.showPostMenu = window.showPostMenu;
   window.reportPost = window.reportPost;
   window.invitePartner = window.invitePartner;
+  window.editStory = window.editStory;
+  window.deleteStory = window.deleteStory;
+  window.showStoryCommentInput = window.showStoryCommentInput;
 </script>
 </body>
 </html>
