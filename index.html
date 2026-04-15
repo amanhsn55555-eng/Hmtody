@@ -7,8 +7,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
   <style>
-  #profileModal .modal-sheet { position: relative !important; } #profileModal .modal-sheet::before { content: "←" !important; position: absolute !important; top: 15px !important; left: 15px !important; color: #fbbf24 !important; font-size: 32px !important; font-weight: bold !important; cursor: pointer !important; z-index: 9999 !important; } #profileModal .modal-sheet::before { pointer-events: none !important; } #profileModal .close-btn { position: absolute !important; top: 15px !important; left: 15px !important; width: 40px !important; height: 40px !important; opacity: 0 !important; z-index: 10000 !important; cursor: pointer !important; }
-  #profileModal .modal-header { display: none !important; } #profileModal .settings-icon { display: none !important; } #profileModal .close-btn { display: flex !important; position: absolute !important; top: 15px !important; right: 15px !important; z-index: 9999 !important; background: #1a1a2e !important; color: #fff !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; align-items: center !important; justify-content: center !important; font-size: 22px !important; border: 2px solid #fbbf24 !important; cursor: pointer !important; }
+  .post-card, .interact-btn, .interact-btn *, .post-interactions, .post-interactions * { transform: none !important; transition: none !important; animation: none !important; }
+  
+    #profileModal .modal-header { display: none !important; } #profileModal .settings-icon { display: none !important; } #profileModal .close-btn { display: flex !important; position: absolute !important; top: 15px !important; right: 15px !important; z-index: 9999 !important; background: #1a1a2e !important; color: #fff !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; align-items: center !important; justify-content: center !important; font-size: 22px !important; border: 2px solid #fbbf24 !important; cursor: pointer !important; }
     * {
       margin: 0;
       padding: 0;
@@ -1096,6 +1097,7 @@
     40% { transform: rotate(-10deg); }
     50% { transform: rotate(0deg); }
 }
+  .app-container, .post-card, body { will-change: auto !important; contain: layout style !important; }
   </style>
 </head>
 <body>
@@ -1241,7 +1243,8 @@
         <button class="close-btn" onclick="window.closeModal('profileModal')" style="background: #333; color: #fff;">&times;</button>
       </div>
     </div>
-    
+    <!-- سهم الخروج المتحرك مع الصفحة -->
+<span onclick="window.closeModal('profileModal')" style="position: absolute; top: 15px; left: 15px; color: #fbbf24; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 9999; transition: all 0.3s; text-shadow: 0 0 10px rgba(251,191,36,0.5);">←</span>
     <div id="profileDetails" style="padding: 15px; color: #fff;">
       <!-- سيتم تعبئته ديناميكياً من JavaScript -->
     </div>
@@ -1593,7 +1596,7 @@
     });
   }
 
-  document.querySelector('#profileModal .modal-sheet')?.addEventListener('click', e => { const rect = e.target.getBoundingClientRect(); if (e.clientX - rect.left < 50 && e.clientY - rect.top < 50) window.closeModal('profileModal'); });
+  
   function playNotificationSound() {
     try {
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -2662,7 +2665,7 @@ window.rejectReport = async function(reportId) {
       
       <!-- أيقونات المنشورات والمتابعين -->
       <div style="display: flex; gap: 30px; margin: 15px 0; justify-content: flex-start; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 12px 0;">
-        <div style="text-align: center; cursor: pointer;" onclick="window.scrollToProfilePosts()">
+        <div style="text-align: center; cursor: pointer;" onclick="document.getElementById('profilePostsContainer')?.scrollIntoView({behavior: 'smooth'})">
             <i class="fas fa-image" style="font-size: 22px; color: #fff;"></i>
             <div style="font-weight: bold; margin-top: 5px;" id="profilePostsCount">${posts.filter(p => p.userId === userId).length}</div>
             <div style="font-size: 12px; color: #aaa;">منشورات</div>
