@@ -3209,6 +3209,80 @@ window.filterProfilePosts = function(type) {
     closeModal('profileModal');
   };
 
+  // ========== دالة إلغاء الارتباط (أضفها هنا) ==========
+window.cancelRelationship = async function() {
+    showConfirmDialog(
+        '💔 إلغاء الارتباط',
+        'هل أنت متأكد من إلغاء الارتباط؟ سيتم إلغاء الارتباط للطرفين.',
+        'نعم، إلغاء',
+        'تراجع',
+        async (confirmed) => {
+            if (!confirmed) return;
+            
+            try {
+                const myUid = currentUser.uid;
+                const partnerUid = currentUserData.partnerUid;
+                
+                console.log('🔄 جاري إلغاء الارتباط...');
+                
+                // تحديث بياناتي
+                const myUserRef = doc(db, "users", myUid);
+                const myUserDoc = await getDoc(myUserRef);
+                if (myUserDoc.exists()) {
+                    const myData = myUserDoc.data();
+                    delete myData.partnerId;
+                    delete myData.partnerName;
+                    delete myData.partnerEmoji;
+                    delete myData.partnerAvatarType;
+                    delete myData.partnerAvatarUrl;
+                    delete myData.partnerUid;
+                    myData.relationship = 'اعزب';
+                    
+                    await setDoc(myUserRef, myData);
+                    console.log('✅ تم تحديث بياناتي');
+                }
+                
+                // تحديث بيانات الطرف الآخر
+                if (partnerUid) {
+                    const partnerRef = doc(db, "users", partnerUid);
+                    const partnerDoc = await getDoc(partnerRef);
+                    if (partnerDoc.exists()) {
+                        const partnerData = partnerDoc.data();
+                        delete partnerData.partnerId;
+                        delete partnerData.partnerName;
+                        delete partnerData.partnerEmoji;
+                        delete partnerData.partnerAvatarType;
+                        delete partnerData.partnerAvatarUrl;
+                        delete partnerData.partnerUid;
+                        partnerData.relationship = 'اعزب';
+                        
+                        await setDoc(partnerRef, partnerData);
+                        console.log('✅ تم تحديث بيانات الطرف الآخر');
+                    }
+                }
+                
+                // تحديث البيانات المحلية
+                currentUserData.relationship = 'اعزب';
+                delete currentUserData.partnerId;
+                delete currentUserData.partnerName;
+                delete currentUserData.partnerEmoji;
+                delete currentUserData.partnerAvatarType;
+                delete currentUserData.partnerAvatarUrl;
+                delete currentUserData.partnerUid;
+                
+                showToast('💔 تم إلغاء الارتباط بنجاح');
+                
+                // إغلاق وإعادة فتح الملف الشخصي
+                closeModal('profileModal');
+                setTimeout(() => window.openProfile(currentUserData.userId), 100);
+                
+            } catch (error) {
+                console.error('❌ خطأ في إلغاء الارتباط:', error);
+                showToast('❌ حدث خطأ: ' + error.message, false);
+            }
+        }
+    );
+};
 window.invitePartner = async function() {
     showBeautifulPrompt(
         '💑 دعوة للارتباط',
