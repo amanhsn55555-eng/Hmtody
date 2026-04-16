@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
   <style>
+  
   .post-card, .interact-btn, .interact-btn *, .post-interactions, .post-interactions * { transform: none !important; transition: none !important; animation: none !important; }
   
     #profileModal .modal-header { display: none !important; } #profileModal .settings-icon { display: none !important; } #profileModal .close-btn { display: flex !important; position: absolute !important; top: 15px !important; right: 15px !important; z-index: 9999 !important; background: #1a1a2e !important; color: #fff !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; align-items: center !important; justify-content: center !important; font-size: 22px !important; border: 2px solid #fbbf24 !important; cursor: pointer !important; }
@@ -78,6 +79,7 @@
       justify-content: center;
     }
 
+  [data-testid="primaryColumn"] section[aria-label*="profile"] .footer-icon,[data-testid="primaryColumn"] section[aria-label*="Likes"] .footer-icon{all:unset!important;display:inline-flex!important}
     .resource-icon {
       width: 26px;
       height: 26px;
@@ -89,6 +91,13 @@
       background: #f8fafc;
     }
 
+  .footer-icon {
+  background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important;
+  border: none !important;
+  box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0, 0, 0, 0.1), -1px -1px 4px rgba(255, 255, 255, 0.6) !important;
+  border-radius: 15px !important;
+  color: #1e293b !important;
+}
     .gold .resource-icon { background: linear-gradient(145deg, #fbbf24, #f59e0b); color: white; }
     .elixir .resource-icon { background: linear-gradient(145deg, #a78bfa, #8b5cf6); color: white; }
     .money .resource-icon { background: linear-gradient(145deg, #34d399, #10b981); color: white; }
