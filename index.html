@@ -2610,7 +2610,8 @@ window.rejectReport = async function(reportId) {
     );
   };
 
-  window.openProfile = async function(userId) {
+  
+window.openProfile = async function(userId) {
     activeProfileUserId = userId;
     const isOwnProfile = userId === currentUserData?.userId;
     
@@ -2651,7 +2652,7 @@ window.rejectReport = async function(reportId) {
     const idClass = getIdClass(userId);
     const isVerified = userData.verified || false;
 
-    // 4. رسم واجهة الملف الشخصي (Profile Details) - الترتيب الأفقي الجديد
+    // 4. رسم واجهة الملف الشخصي (Profile Details)
     const profileDetailsDiv = document.getElementById('profileDetails');
     profileDetailsDiv.innerHTML = `
       <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
@@ -2697,10 +2698,182 @@ window.rejectReport = async function(reportId) {
 
       <!-- النبذة -->
       <p style="margin: 10px 0; color: #ddd; font-style: italic;">${userData.bio || 'لا يوجد نبذة'}</p>
-      <div class="relationship-status" style="background: #222; color: #fff; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 15px;">
+      
+      <!-- حالة العلاقة -->
+      <div class="relationship-status" style="background: #222; color: #fff; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 10px;">
           <i class="fas fa-heart" style="color: #f59e0b;"></i> ${userData.relationship || 'اعزب'}
       </div>
     `;
+
+    // ========== 🎉 قلب الحب للشريك المرتبط (تصميم جديد كلياً) ==========
+    if (userData.relationship === 'مرتبط' || userData.relationship === 'متزوج') {
+        if (userData.partnerId && userData.partnerName) {
+            
+            // إنشاء حاوية القلب
+            const heartContainer = document.createElement('div');
+            heartContainer.style.cssText = `
+                display: flex;
+                justify-content: center;
+                margin: 10px 0 15px;
+                position: relative;
+            `;
+            
+            // إنشاء القلب الذي يحتوي الصورتين
+            const heartBox = document.createElement('div');
+            heartBox.style.cssText = `
+                position: relative;
+                width: 120px;
+                height: 110px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                filter: drop-shadow(0 8px 15px rgba(236, 72, 153, 0.4));
+            `;
+            
+            // تأثير النبض عند hover
+            heartBox.onmouseover = () => {
+                heartBox.style.transform = 'scale(1.08)';
+                heartBox.style.filter = 'drop-shadow(0 12px 20px rgba(236, 72, 153, 0.6))';
+            };
+            heartBox.onmouseout = () => {
+                heartBox.style.transform = 'scale(1)';
+                heartBox.style.filter = 'drop-shadow(0 8px 15px rgba(236, 72, 153, 0.4))';
+            };
+            
+            // فتح ملف الشريك عند الضغط
+            heartBox.onclick = () => window.openProfile(userData.partnerId);
+            
+            // شكل القلب باستخدام SVG
+            heartBox.innerHTML = `
+                <svg viewBox="0 0 200 180" style="width: 100%; height: 100%;">
+                    <defs>
+                        <!-- تدرج لوني للقلب -->
+                        <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#f43f5e;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#e11d48;stop-opacity:1" />
+                        </linearGradient>
+                        
+                        <!-- قص الصورة الأولى على شكل دائرة -->
+                        <clipPath id="circleClip1">
+                            <circle cx="75" cy="70" r="35" />
+                        </clipPath>
+                        
+                        <!-- قص الصورة الثانية على شكل دائرة -->
+                        <clipPath id="circleClip2">
+                            <circle cx="125" cy="70" r="35" />
+                        </clipPath>
+                        
+                        <!-- تأثير متوهج -->
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    
+                    <!-- شكل القلب الرئيسي -->
+                    <path d="M100,160 
+                             C40,130 0,90 0,55 
+                             C0,25 25,0 55,0 
+                             C75,0 90,15 100,30 
+                             C110,15 125,0 145,0 
+                             C175,0 200,25 200,55 
+                             C200,90 160,130 100,160 Z" 
+                          fill="url(#heartGradient)" 
+                          opacity="0.3" />
+                    
+                    <!-- إطار القلب -->
+                    <path d="M100,160 
+                             C40,130 0,90 0,55 
+                             C0,25 25,0 55,0 
+                             C75,0 90,15 100,30 
+                             C110,15 125,0 145,0 
+                             C175,0 200,25 200,55 
+                             C200,90 160,130 100,160 Z" 
+                          fill="none" 
+                          stroke="#ec4899" 
+                          stroke-width="3" 
+                          filter="url(#glow)" />
+                    
+                    <!-- الصورة الأولى (صاحب الحساب) - الجهة اليسرى -->
+                    <circle cx="75" cy="70" r="35" fill="#1e293b" stroke="#fbbf24" stroke-width="2" />
+                    <image href="${userData.avatarType === 'image' && userData.avatarUrl ? userData.avatarUrl : ''}" 
+                           x="40" y="35" width="70" height="70" 
+                           preserveAspectRatio="xMidYMid slice"
+                           clip-path="url(#circleClip1)"
+                           onerror="this.parentElement.querySelector('.fallback-emoji-1').style.display='flex'; this.style.display='none';" />
+                    <circle class="fallback-emoji-1" cx="75" cy="70" r="35" fill="#1e293b" style="display: ${userData.avatarType === 'image' ? 'none' : 'flex'}; align-items: center; justify-content: center;">
+                        <text x="75" y="80" text-anchor="middle" font-size="40" fill="white">${userData.emoji || '😎'}</text>
+                    </circle>
+                    
+                    <!-- الصورة الثانية (الشريك) - الجهة اليمنى -->
+                    <circle cx="125" cy="70" r="35" fill="#1e293b" stroke="#fbbf24" stroke-width="2" />
+                    <image href="${userData.partnerAvatarType === 'image' && userData.partnerAvatarUrl ? userData.partnerAvatarUrl : ''}" 
+                           x="90" y="35" width="70" height="70" 
+                           preserveAspectRatio="xMidYMid slice"
+                           clip-path="url(#circleClip2)"
+                           onerror="this.parentElement.querySelector('.fallback-emoji-2').style.display='flex'; this.style.display='none';" />
+                    <circle class="fallback-emoji-2" cx="125" cy="70" r="35" fill="#1e293b" style="display: ${userData.partnerAvatarType === 'image' ? 'none' : 'flex'}; align-items: center; justify-content: center;">
+                        <text x="125" y="80" text-anchor="middle" font-size="40" fill="white">${userData.partnerEmoji || '👤'}</text>
+                    </circle>
+                    
+                    <!-- أيقونة قلب صغيرة في المنتصف -->
+                    <circle cx="100" cy="85" r="12" fill="#ec4899" stroke="white" stroke-width="2" />
+                    <text x="100" y="91" text-anchor="middle" font-size="14" fill="white">❤️</text>
+                    
+                    <!-- تأثير لامع على القلب -->
+                    <path d="M60,40 Q80,20 100,40" fill="none" stroke="white" stroke-width="1.5" opacity="0.4" />
+                </svg>
+            `;
+            
+            heartContainer.appendChild(heartBox);
+            
+            // إضافة تأثير نبض CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes heartPulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                }
+                .heart-container svg {
+                    animation: heartPulse 2s ease-in-out infinite;
+                }
+            `;
+            if (!document.getElementById('heartPulseStyle')) {
+                style.id = 'heartPulseStyle';
+                document.head.appendChild(style);
+            }
+            
+            profileDetailsDiv.appendChild(heartContainer);
+            
+            // إضافة زر إلغاء الارتباط صغير أسفل القلب (فقط لصاحب الحساب)
+            if (isOwnProfile) {
+                const cancelBtn = document.createElement('div');
+                cancelBtn.style.cssText = `
+                    text-align: center;
+                    margin-top: 5px;
+                `;
+                cancelBtn.innerHTML = `
+                    <button onclick="window.cancelRelationship()" style="
+                        background: transparent;
+                        border: 1px solid #ef4444;
+                        color: #ef4444;
+                        padding: 5px 15px;
+                        border-radius: 30px;
+                        font-size: 11px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    " onmouseover="this.style.background='#ef4444'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#ef4444';">
+                        <i class="fas fa-times"></i> إلغاء الارتباط
+                    </button>
+                `;
+                profileDetailsDiv.appendChild(cancelBtn);
+            }
+        }
+    }
 
     // 5. رسم الأزرار المستطيلة (ضبط/مشاركة) أو (متابعة/مراسلة)
     const actionButtonsContainer = document.createElement('div');
@@ -2727,7 +2900,7 @@ window.rejectReport = async function(reportId) {
     }
     profileDetailsDiv.appendChild(actionButtonsContainer);
 
-    // 6. رسم الأيقونات الثلاثة (تظهر فقط لصاحب الحساب)
+    // 6. رسم الأيقونات الثلاثة
     const tabsDiv = document.getElementById('profileTabsContainer');
     if (isOwnProfile) {
         tabsDiv.innerHTML = `
@@ -2742,7 +2915,7 @@ window.rejectReport = async function(reportId) {
             </div>
         `;
     } else {
-        tabsDiv.innerHTML = ''; // لا تظهر أيقونات لحسابات الآخرين
+        tabsDiv.innerHTML = '';
     }
     document.getElementById('postsSectionTitle').innerHTML = isOwnProfile ? '<i class="fas fa-th"></i> منشوراتي' : '<i class="fas fa-th"></i> المنشورات';
 
@@ -2751,8 +2924,6 @@ window.rejectReport = async function(reportId) {
     renderProfilePosts(userId);
     openModal('profileModal');
 };
-
-// دوال مساعدة جديدة للملف الشخصي
 window.scrollToProfilePosts = function() {
     document.getElementById('profilePostsContainer')?.scrollIntoView({ behavior: 'smooth' });
 };
@@ -3038,20 +3209,53 @@ window.filterProfilePosts = function(type) {
     closeModal('profileModal');
   };
 
-  window.invitePartner = async function() {
-      showBeautifulPrompt(
-          '💑 دعوة للارتباط',
-          'أدخل معرف الشخص الذي تريد الارتباط به',
-          '',
-          async (partnerId) => {
-              if (!partnerId) return;
-              await updateDoc(doc(db, "users", currentUser.uid), {
-                  partnerRequest: partnerId
-              });
-              showToast('تم إرسال طلب الارتباط');
-          }
-      );
-  };
+window.invitePartner = async function() {
+    showBeautifulPrompt(
+        '💑 دعوة للارتباط',
+        'أدخل معرف الشخص الذي تريد الارتباط به',
+        '',
+        async (partnerId) => {
+            if (!partnerId) return;
+            
+            // البحث عن UID للمستخدم المستهدف
+            const usersQuery = query(collection(db, "users"), where("userId", "==", partnerId));
+            const usersSnapshot = await getDocs(usersQuery);
+            
+            if (usersSnapshot.empty) {
+                showToast('❌ لم يتم العثور على المستخدم', false);
+                return;
+            }
+            
+            const targetUser = usersSnapshot.docs[0];
+            const targetUid = targetUser.id;
+            
+            // إرسال طلب الارتباط إلى إشعارات الطرف الآخر
+            const notifRef = doc(db, "notifications", targetUid);
+            const notifDoc = await getDoc(notifRef);
+            
+            const request = {
+                requesterId: currentUserData.userId,
+                requesterName: currentUserData.username,
+                requesterEmoji: currentUserData.emoji,
+                requesterUid: currentUser.uid,
+                avatarType: currentUserData.avatarType,
+                avatarUrl: currentUserData.avatarUrl,
+                colors: currentUserData.colors,
+                timestamp: Date.now()
+            };
+            
+            let requests = [];
+            if (notifDoc.exists()) {
+                requests = notifDoc.data().connectionRequests || [];
+            }
+            requests.push(request);
+            
+            await setDoc(notifRef, { connectionRequests: requests }, { merge: true });
+            
+            showToast('💌 تم إرسال طلب الارتباط');
+        }
+    );
+};
 
   window.openAccountSettings = function() {
     closeModal('profileModal');
