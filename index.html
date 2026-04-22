@@ -8,6 +8,164 @@
   
   <style>
   
+  
+  /* عكس اتجاه الصفحة بالكامل - يصبح المحتوى من اليسار إلى اليمين */
+  
+body, 
+.app-container, 
+.post-card, 
+.modal-sheet, 
+.compact-header, 
+.compact-footer,
+* {
+    direction: ltr !important;
+    text-align: left !important;
+}
+
+/* إعادة ضبط النصوص العربية لتظهر بشكل صحيح (من اليمين لليسار) */
+.post-content,
+.post-username,
+.user-id-badge,
+.comment-text,
+.comment-author,
+.modal-header h3,
+.resource-label,
+.resource-value,
+.footer-icon span,
+.account-label,
+.story-name,
+.btn-save,
+.btn-danger,
+input,
+textarea,
+select,
+button,
+#toastMsg,
+.relationship-status,
+.partner-info,
+.trend-badge,
+.profile-details *,
+.menu-modal *,
+.publish-form * {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* استثناء بعض العناصر التي يجب أن تبقى بالاتجاه الافتراضي (مثل الأيقونات أو الحاويات المرنة) */
+.post-interactions,
+.post-menu,
+.resources-row,
+.search-row,
+.modal-header,
+.profile-header,
+.followers-stats,
+.avatar-selector,
+.image-grid,
+.color-row,
+.modal-overlay .modal-sheet .modal-header button,
+.post-avatar,
+.follower-info,
+.comment-header {
+    direction: ltr !important;
+}
+
+/* عكس مكان الأزرار والعناصر في الهيدر والفوتر */
+.compact-header .resources-row {
+    flex-direction: row-reverse !important;
+}
+
+.mini-search-wrapper {
+    flex-direction: row-reverse !important;
+}
+
+.mini-search-wrapper input {
+    text-align: right !important;
+}
+
+.compact-footer {
+    flex-direction: row-reverse !important;
+}
+
+/* عكس اتجاه السهم والأيقونات في القوائم */
+.post-menu i,
+.settings-icon i,
+.close-btn i {
+    transform: scaleX(-1) !important;
+}
+
+/* تعديل الهوامش لتتناسب مع الوضع الجديد */
+.post-avatar {
+    margin-right: 0 !important;
+    margin-left: 12px !important;
+}
+
+.post-user-details {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
+.interact-btn i {
+    margin-right: 0 !important;
+    margin-left: 5px !important;
+}
+
+/* عكس النوافذ المنبثقة */
+.modal-sheet {
+    text-align: right !important;
+}
+
+.modal-header .close-btn {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+/* عكس أيقونة البحث */
+.mini-search-wrapper i.fa-search {
+    margin-right: 0 !important;
+    margin-left: 5px !important;
+}
+
+/* تصحيح مظهر قائمة التعليقات */
+.comment-item {
+    flex-direction: row !important;
+}
+
+.comment-avatar {
+    margin-right: 0 !important;
+    margin-left: 10px !important;
+}
+
+/* عكس صفحة الملف الشخصي */
+#profileModal .modal-sheet {
+    direction: ltr !important;
+}
+
+#profileDetails > div:first-child {
+    flex-direction: row-reverse !important;
+}
+
+#profileDetails .relationship-status {
+    display: inline-block !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
+/* ضبط مظهر الستوريات */
+.stories-row {
+    flex-direction: row !important;
+}
+
+.story-item {
+    margin-right: 0 !important;
+    margin-left: 15px !important;
+}
+
+/* أيقونات التفاعل في المنشورات */
+.post-interactions .interact-btn {
+    margin-right: 0 !important;
+    margin-left: 10px !important;
+}
+  
   .post-card, .interact-btn, .interact-btn *, .post-interactions, .post-interactions * { transform: none !important; transition: none !important; animation: none !important; }
   
     #profileModal .modal-header { display: none !important; } #profileModal .settings-icon { display: none !important; } #profileModal .close-btn { display: flex !important; position: absolute !important; top: 15px !important; right: 15px !important; z-index: 9999 !important; background: #1a1a2e !important; color: #fff !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; align-items: center !important; justify-content: center !important; font-size: 22px !important; border: 2px solid #fbbf24 !important; cursor: pointer !important; }
@@ -32,8 +190,11 @@
   
  .stories-row{display:none!important;}#profileModal .stories-row{display:flex!important;position:relative!important;border:3px solid #000000!important;border-radius:10px!important;margin-top:30px!important;}#profileModal .stories-row::before{content:"📸 الستوريات"!important;position:absolute!important;top:-25px!important;right:10px!important;background:transparent!important;color:#000!important;padding:0!important;font-size:14px!important;font-weight:bold!important;}
   
- body{background:linear-gradient(145deg,#e2e8f0,#cbd5e1)!important;background-attachment:fixed!important} 
-    body {
+ 
+  
+  body{background:linear-gradient(145deg,#e2e8f0,#cbd5e1)!important;background-attachment:fixed!important} 
+  
+   body {
       background: linear-gradient(145deg, #f5f7fa 0%, #e8eef5 100%);
       min-height: 100vh;
       padding-bottom: 85px;
@@ -1111,6 +1272,187 @@
     50% { transform: rotate(0deg); }
 }
   
+  /* ========== تعديل علامة "مروّج" إلى نجمة فقط ========== */
+  
+  
+.post-card.promoted::before {
+    content: "🔹 " !important;
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    background: transparent !important;
+    color: #fbbf24 !important;
+    font-size: 22px !important;
+    font-weight: normal !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    z-index: 2;
+    text-shadow: 0 0 15px #fbbf24, 0 0 30px #f59e0b !important;
+    animation: starPulse 1.5s ease-in-out infinite alternate !important;
+}
+
+@keyframes starPulse {
+    from { 
+        text-shadow: 0 0 5px #fbbf24, 0 0 10px #fbbf24; 
+        transform: scale(1) rotate(0deg); 
+    }
+    to { 
+        text-shadow: 0 0 20px #fbbf24, 0 0 40px #f59e0b; 
+        transform: scale(1.2) rotate(10deg); 
+    }
+}
+
+/* ========== إخفاء نصوص الترند والأفضل وإظهار أيقونات فقط ========== */
+
+  
+/* إخفاء النص الأصلي */
+.trend-badge {
+    background: transparent !important;
+    color: transparent !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    position: relative !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+/* الترند #1 - 🔥 */
+.trend-badge[style*="background:#dc2626"]::before,
+.trend-badge[style*="background: #dc2626"]::before {
+    content: "🔥" !important;
+    font-size: 24px !important;
+    color: #dc2626 !important;
+    background: transparent !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-shadow: 0 0 15px #dc2626, 0 0 30px #ef4444 !important;
+    animation: fireGlow 1s ease-in-out infinite alternate !important;
+}
+
+/* الترند #2 - ⚡ */
+.trend-badge[style*="background:#10b981"]::before,
+.trend-badge[style*="background: #10b981"]::before {
+    content: "⚡" !important;
+    font-size: 24px !important;
+    color: #10b981 !important;
+    background: transparent !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-shadow: 0 0 15px #10b981, 0 0 30px #34d399 !important;
+    animation: boltFlash 0.8s ease-in-out infinite alternate !important;
+}
+
+/* الترند #3 - 💫 */
+.trend-badge[style*="background:#3b82f6"]::before,
+.trend-badge[style*="background: #3b82f6"]::before {
+    content: "🔸 " !important;
+    font-size: 24px !important;
+    color: #3b82f6 !important;
+    background: transparent !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-shadow: 0 0 15px #3b82f6, 0 0 30px #60a5fa !important;
+    animation: starSpin 2s linear infinite !important;
+}
+
+/* الأفضل #1 - ⭐ */
+.trend-badge[style*="background:#dc2626"][style*="الأفضل"]::before,
+.post-card:not(.promoted) .trend-badge[style*="background:#dc2626"]::before {
+    content: "⭐" !important;
+    font-size: 24px !important;
+    color: #FFD700 !important;
+    text-shadow: 0 0 15px #FFD700, 0 0 30px #FFA500 !important;
+    animation: starTwinkle 1.5s ease-in-out infinite !important;
+}
+
+/* الأفضل #2 - 🌟 */
+.trend-badge[style*="background:#10b981"][style*="الأفضل"]::before,
+.post-card:not(.promoted) .trend-badge[style*="background:#10b981"]::before {
+    content: "🌟" !important;
+    font-size: 24px !important;
+    color: #10b981 !important;
+    text-shadow: 0 0 15px #10b981, 0 0 30px #34d399 !important;
+    animation: starTwinkle 1.8s ease-in-out infinite !important;
+}
+
+/* الأفضل #3 - 💎 */
+.trend-badge[style*="background:#3b82f6"][style*="الأفضل"]::before,
+.post-card:not(.promoted) .trend-badge[style*="background:#3b82f6"]::before {
+    content: "💠 " !important;
+    font-size: 24px !important;
+    color: #3b82f6 !important;
+    text-shadow: 0 0 15px #3b82f6, 0 0 30px #93c5fd !important;
+    animation: diamondShine 2s ease-in-out infinite !important;
+}
+
+/* ========== تأثيرات الحركة ========== */
+
+@keyframes fireGlow {
+    from { 
+        text-shadow: 0 0 5px #dc2626, 0 0 10px #ef4444;
+        transform: translate(-50%, -50%) scale(1); 
+    }
+    to { 
+        text-shadow: 0 0 20px #dc2626, 0 0 40px #ef4444;
+        transform: translate(-50%, -50%) scale(1.2); 
+    }
+}
+
+@keyframes boltFlash {
+    0%, 100% { 
+        text-shadow: 0 0 10px #10b981, 0 0 20px #34d399;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 30px #10b981, 0 0 60px #34d399;
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+}
+
+@keyframes starSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { 
+        text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 25px currentColor, 0 0 50px currentColor;
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+@keyframes diamondShine {
+    0%, 100% { 
+        text-shadow: 0 0 10px #3b82f6, 0 0 20px #93c5fd;
+        filter: brightness(1);
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 30px #3b82f6, 0 0 60px #bfdbfe;
+        filter: brightness(1.5);
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+/* ========== إخفاء أي نصوص إضافية ========== */
+.trend-badge::after {
+    display: none !important;
+}
+  
   </style>
 </head>
 <body>
@@ -1179,6 +1521,7 @@
     <i class="fas fa-bars"></i>
     <span>القائمة</span>
   </div>
+  
 </footer>
 
 <!-- نافذة النشر -->
@@ -1297,6 +1640,11 @@
     
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px 10px;">
       
+     <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Athreaa-man-chat/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
+    <i class="fas fa-crown" style="font-size: 40px; color: #FFD700; position: relative; z-index: 1; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #B8860B; position: relative; z-index: 1;">👑 الاثرياء</p>
+</div>
       <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Berrrrtdy/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(13, 148, 136, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
         <i class="fas fa-oil-can" style="font-size: 40px; color: #0d9488; position: relative; z-index: 1;"></i>
@@ -1578,6 +1926,7 @@
       console.error("خطأ في تحميل البيانات:", error);
     }
   }
+  
 
   function subscribeToUnreadMessages() {
     if (!currentUser) return;
