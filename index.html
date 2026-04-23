@@ -437,6 +437,10 @@ button,
     }
 
     /* تنسيق خاص للمعرف حسب عدد الأرقام */
+    /* ========== إخفاء المعرف من المنشورات ========== */
+.post-card .user-id-badge {
+    display: none !important;
+}
     .id-1-digit {
       color: #00ff00 !important;
       font-size: 16px !important;
@@ -1453,6 +1457,160 @@ button,
     display: none !important;
 }
   
+    /* ========== تنسيق التبويبين ========== */
+.publish-tab {
+    position: relative;
+    overflow: hidden;
+}
+
+.publish-tab::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+    transform: rotate(45deg);
+    animation: lightMove 3s infinite;
+    opacity: 0;
+}
+    /* ========== إطار الصورة (نفس الأثرياء) ========== */
+.avatar-frame-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* الإطار الافتراضي GIF */
+.avatar-ring {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background-image: url('https://iili.io/BrLrf6v.gif');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* الإطار المخصص من المتجر - يحل محل الـ GIF */
+.avatar-ring.custom-ring {
+    background-image: none !important;
+}
+
+.avatar-ring.custom-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* الصورة الشخصية فوق الإطار */
+.avatar-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 2;
+    position: relative;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.publish-tab.active::before {
+    opacity: 1;
+}
+
+.publish-tab i {
+    margin-left: 5px;
+}
+
+/* تحسين مظهر المعاينة */
+#mediaPreview {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#reelsSection {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+}
+    /* ========== صورة المنشور مع الإطار ========== */
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+    overflow: visible !important;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.post-avatar-ring {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+    background-image: url('https://iili.io/BrLrf6v.gif');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.post-avatar-ring.custom-ring {
+    background-image: none !important;
+}
+
+.post-avatar-ring.custom-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.post-avatar-inner {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+}
+
+.post-avatar-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
   </style>
 </head>
 <body>
@@ -1525,47 +1683,68 @@ button,
 </footer>
 
 <!-- نافذة النشر -->
+
+    <!-- نافذة النشر -->
 <div class="modal-overlay" id="publishModal">
   <div class="modal-sheet">
     <div class="modal-header">
-      <h3><i class="fas fa-feather-alt" style="color: #fbbf24; margin-left: 8px;"></i> ✍️ منشور جديد</h3>
+        
       <button class="close-btn" onclick="window.closeModal('publishModal')">&times;</button>
     </div>
+    
+    <!-- التبويبين -->
+    <div class="publish-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; background: #f1f5f9; border-radius: 40px; padding: 5px;">
+      <button id="tabBlog" class="publish-tab active" onclick="window.switchPublishTab('blog')" style="flex: 1; padding: 12px; border-radius: 40px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; background: #fbbf24; color: #0f172a;">
+        <i class="fas fa-blog"></i> مدونة
+      </button>
+      <button id="tabReels" class="publish-tab active" onclick="window.switchPublishTab('reels')" style="flex: 1; padding: 12px; border-radius: 40px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; background: transparent; color: #64748b;">
+        <i class="fas fa-video"></i> ريلز
+      </button>
+    </div>
+    
     <div class="publish-form">
-      <textarea id="postText" class="publish-textarea" placeholder="اكتب منشور اساسي..." rows="4"></textarea>
-      <input type="text" id="postMediaUrl" placeholder="منشور اضافي..." style="width:100%; padding:12px; border-radius:30px; border:2px solid #e2e8f0; margin:10px 0;">
-      <div style="margin:20px 0; display: flex; align-items: center; gap: 15px;">
-        <label style="font-weight:600; display: flex; align-items: center; gap: 8px;">
-          <i class="fas fa-chart-line" style="color: #fbbf24;"></i> ترويج (X):
-        </label>
-        <select id="promoDays" class="promo-select">
-          <option value="0">بدون ترويج</option>
-          <option value="1">يوم واحد - 1 إكسير</option>
-          <option value="7">7 أيام - 7 إكسير</option>
-          <option value="30">30 يوم - 30 إكسير</option>
-        </select>
+      <!-- حقل النص المشترك -->
+      <textarea id="postText" class="publish-textarea" placeholder="اكتب منشورك هنا..." rows="4"></textarea>
+      
+      <!-- قسم الريلز (يظهر فقط عند اختيار ريلز) -->
+      <div id="reelsSection" style="display: none;">
+        <div style="margin:15px 0;">
+          <label style="font-weight:600; display:block; margin-bottom:8px; color: #475569;">
+            <i class="fas fa-link"></i>
+          </label>
+          <input type="text" id="postMediaUrl" placeholder=📸 style="width:100%; padding:14px; border-radius:30px; border:2px solid #e2e8f0; font-size:14px;">
+        </div>
+        
+        <!-- معاينة سريعة للرابط -->
+        <div id="mediaPreview" style="display: none; margin: 15px 0; text-align: center; background: #f8fafc; border-radius: 20px; padding: 15px; border: 1px dashed #cbd5e1;">
+          <p style="color: #94a3b8; font-size: 12px;">👀 معاينة الوسائط</p>
+          <div id="mediaPreviewContent"></div>
+        </div>
       </div>
+      
+      <!-- الترويج -->
+      
+      <!-- العداد والزر -->
       <div style="display:flex; justify-content:space-between; align-items: center;">
-        <span id="charCounter" style="color: #64748b;">0/500</span>
-        <button class="btn-save" style="width:auto; padding:14px 30px;" onclick="window.publishPost()">
-          نشر <i class="fas fa-paper-plane"></i>
+        <span id="charCounter" style="color: #64748b; font-size: 13px;">0/500</span>
+        <button class="publish-tab active" style="width:auto; padding:14px 30px;margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;" onclick="window.publishPost()">
+          <i class="publish-tab active"></i> نشر
         </button>
       </div>
     </div>
   </div>
 </div>
-
 <!-- نافذة التعليقات -->
 <div class="modal-overlay" id="commentsModal">
   <div class="modal-sheet">
     <div class="modal-header">
-      <h3><i class="fas fa-comments" style="color: #fbbf24; margin-left: 8px;"></i> 💬 التعليقات</h3>
+      <h3><i class="fas fa-comments" style="color: #fbbf24; margin-left: 8px;margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"></i></h3>
       <button class="close-btn" onclick="window.closeModal('commentsModal')">&times;</button>
     </div>
-    <div id="commentsListContainer" style="max-height:60vh; overflow-y:auto;"></div>
-    <div style="display:flex; gap:10px; margin-top:20px;">
+    <div id="commentsListContainer" style="max-height:60vh; overflow-y:auto; "></div>
+    <div style="display:flex; gap:10px; margin-top:20px; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;">
       <input id="newCommentInput" placeholder="أضف تعليقاً..." style="flex:1; padding:14px; border-radius:30px; border:2px solid #e2e8f0;">
-      <button onclick="window.submitComment()" style="background:#1e293b; color:white; border:none; width:50px; border-radius:30px; font-size:16px; cursor:pointer;">
+      <button onclick="window.submitComment()" style="background:#1e293b; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; color:white; border:none; width:50px; border-radius:30px; font-size:16px; cursor:pointer;">
         <i class="fas fa-arrow-left"></i>
       </button>
     </div>
@@ -1576,7 +1755,7 @@ button,
 <div class="modal-overlay" id="accountModal">
   <div class="modal-sheet">
     <div class="modal-header">
-      <h3><i class="fas fa-user-cog" style="color: #fbbf24; margin-left: 8px;"></i> إعدادات الحساب</h3>
+      <h3><i class="fas fa-user-cog" style="color: #fbbf24; margin-left: 8px; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"></i> </h3>
       <button class="close-btn" onclick="window.closeModal('accountModal')">&times;</button>
     </div>
     <div id="accountEditForm"></div>
@@ -1589,7 +1768,7 @@ button,
   <div class="modal-sheet" style="background: #000000 !important; color: #ffffff !important; max-width: 600px; border-radius: 20px 20px 0 0;">
     <div class="modal-header" style="border-bottom: 1px solid #333; padding: 15px;">
       <h3 style="color: #ffffff !important; display: flex; align-items: center; gap: 8px;">
-        <i class="fas fa-user" style="color: #fbbf24;"></i> 
+        <i class="fas fa-user" style="color: #fbbf24; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"></i> 
         <span id="profileModalUsername">الملف الشخصي</span>
       </h3>
       <div style="display: flex; gap: 10px;">
@@ -1634,7 +1813,7 @@ button,
 <div class="modal-overlay" id="menuModal">
   <div class="modal-sheet">
     <div class="modal-header">
-      <h3><i class="fas fa-bars" style="color: #fbbf24; margin-left: 8px;"></i> القائمة الرئيسية</h3>
+      <h3><i class="fas fa-bars" style="color: #fbbf24; margin-left: 8px; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"></i></h3>
       <button class="close-btn" onclick="window.closeModal('menuModal')">&times;</button>
     </div>
     
@@ -1643,44 +1822,73 @@ button,
      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Athreaa-man-chat/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
     <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
     <i class="fas fa-crown" style="font-size: 40px; color: #FFD700; position: relative; z-index: 1; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></i>
-    <p style="font-weight: 800; margin: 10px 0 0; color: #B8860B; position: relative; z-index: 1;">👑 الاثرياء</p>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #B8860B; position: relative; z-index: 1; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"> الاثرياء</p>
 </div>
-      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Berrrrtdy/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Berrrrtdy/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(13, 148, 136, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
         <i class="fas fa-oil-can" style="font-size: 40px; color: #0d9488; position: relative; z-index: 1;"></i>
         <p style="font-weight: 800; margin: 10px 0 0; color: #115e59; position: relative; z-index: 1;">🛢️ بئر النفط</p>
       </div>
       
-      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Markiottody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Markiottody/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(220, 38, 38, 0.2), transparent); transform: rotate(45deg); animation: lightMove 3.5s infinite;"></div>
         <i class="fas fa-store" style="font-size: 40px; color: #dc2626; position: relative; z-index: 1;"></i>
-        <p style="font-weight: 800; margin: 10px 0 0; color: #7f1d1d; position: relative; z-index: 1;">🛒 المتجر</p>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #7f1d1d; position: relative; z-index: 1;"> المتجر</p>
       </div>
       
-      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Grftodyyy/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Grftodyyy/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.2), transparent); transform: rotate(45deg); animation: lightMove 5s infinite;"></div>
         <i class="fas fa-users" style="font-size: 40px; color: #8b5cf6; position: relative; z-index: 1;"></i>
-        <p style="font-weight: 800; margin: 10px 0 0; color: #4c1d95; position: relative; z-index: 1;">🏠 الغرف</p>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #4c1d95; position: relative; z-index: 1;"> الغرف</p>
       </div>
       
-      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Mshroatody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Mshroatody/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4.5s infinite;"></div>
         <i class="fas fa-layer-group" style="font-size: 40px; color: #3b82f6; position: relative; z-index: 1;"></i>
         <p style="font-weight: 800; margin: 10px 0 0; color: #1e3a8a; position: relative; z-index: 1;">المشاريع</p>
       </div>
       
-      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Hafdhtidy/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Hafdhtidy/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(22, 163, 74, 0.2), transparent); transform: rotate(45deg); animation: lightMove 3.8s infinite;"></div>
         <i class="fas fa-wallet" style="font-size: 40px; color: #16a34a; position: relative; z-index: 1;"></i>
-        <p style="font-weight: 800; margin: 10px 0 0; color: #14532e; position: relative; z-index: 1;">💰 المحفظة</p>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #14532e; position: relative; z-index: 1;"> المحفظة</p>
       </div>
       
-      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Logtody/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Logtody/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(245, 158, 11, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4.2s infinite;"></div>
         <i class="fas fa-user-plus" style="font-size: 40px; color: #f59e0b; position: relative; z-index: 1;"></i>
-        <p style="font-weight: 800; margin: 10px 0 0; color: #92400e; position: relative; z-index: 1;">📝 تسجيل</p>
+        <p style="font-weight: 800; margin: 10px 0 0; color: #92400e; position: relative; z-index: 1;"> تسجيل</p>
       </div>
       
+
+<!-- الدعم الفني -->
+<div onclick="window.location.href='https://amanhsn55555-eng.github.io/support/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #7dd3fc); border: none; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #38bdf8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6); border-radius: 30px; padding: 20px; display: flex; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
+    <i class="fas fa-headset" style="font-size: 40px; color: #3b82f6; position: relative; z-index: 1;"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #1e3a8a; position: relative; z-index: 1;"> الدعم الفني</p>
+</div>
+
+<!-- سياسة الخصوصية -->
+<div onclick="window.location.href='https://amanhsn55555-eng.github.io/privacy/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #7dd3fc); border: none; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #38bdf8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6); border-radius: 30px; padding: 20px; display: flex; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(147, 51, 234, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
+    <i class="fas fa-shield-haltered" style="font-size: 40px; color: #9333ea; position: relative; z-index: 1;"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #581c87; position: relative; z-index: 1;"> سياسة الخصوصية</p>
+</div>
+
+<!-- توقيع عقد -->
+<div onclick="window.location.href='https://amanhsn55555-eng.github.io/contract/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #7dd3fc); border: none; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #38bdf8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6); border-radius: 30px; padding: 20px; display: flex; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(245, 158, 11, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
+    <i class="fas fa-file-signature" style="font-size: 40px; color: #f59e0b; position: relative; z-index: 1;"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #92400e; position: relative; z-index: 1;"> توقيع عقد</p>
+</div>
+
+<!-- من نحن -->
+<div onclick="window.location.href='https://amanhsn55555-eng.github.io/about/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #7dd3fc); border: none; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #38bdf8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6); border-radius: 30px; padding: 20px; display: flex; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
+    <i class="fas fa-users" style="font-size: 40px; color: #10b981; position: relative; z-index: 1;"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #065f46; position: relative; z-index: 1;"> من نحن</p>
+</div>
+        
     </div>
   </div>
 </div>
@@ -1801,12 +2009,14 @@ button,
   import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, getDocs, addDoc, deleteDoc, onSnapshot, arrayUnion, arrayRemove, increment, serverTimestamp, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDYKCCTcurNcJslrNKqdiJCoIIK-YZArB4",
-    authDomain: "sbaq-fc46f.firebaseapp.com",
-    projectId: "sbaq-fc46f",
-    storageBucket: "sbaq-fc46f.firebasestorage.app",
-    appId: "1:1026865750415:web:0ee39a717bcafaa0d06bfa"
-  };
+  apiKey: "AIzaSyCPBrZMo6IYCwCDYV3HEfNcUmLUITR6VRc",
+  authDomain: "elahbes.firebaseapp.com",
+  projectId: "elahbes",
+  storageBucket: "elahbes.firebasestorage.app",
+  messagingSenderId: "800207969145",
+  appId: "1:800207969145:web:aa19b725d1c92dd48fada8",
+  measurementId: "G-EFT566SJMP"
+};
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -1863,12 +2073,65 @@ button,
 
   function renderAvatar(user) {
     if (!user) return '👤';
-    if (user.avatarType === 'image' && user.avatarUrl) {
-      return `<img src="${user.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.parentElement.innerHTML='👤'">`;
-    }
-    return user.emoji || '😎';
-  }
+    
+    // اكتشاف الإطار المخصص
+    const customFrame = user?.colors?.frame;
+    const hasCustomFrame = customFrame && 
+                           customFrame !== '#fbbf24' && 
+                           customFrame !== '#0f172a' && 
+                           customFrame.startsWith('http');
+    
+    // محتوى الصورة الشخصية
+    const photoContent = (user.avatarType === 'image' && user.avatarUrl)
+        ? `<img src="${user.avatarUrl}" class="avatar-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+        : '';
+    
+    const emojiContent = (!user.avatarType || user.avatarType !== 'image' || !user.avatarUrl)
+        ? `<span style="position:relative;z-index:2;font-size:24px;">${user.emoji || '😎'}</span>`
+        : '';
+    
+      
+    return `
+        <div class="avatar-frame-wrapper">
+            ${hasCustomFrame 
+                ? `<div class="avatar-ring custom-ring"><img src="${customFrame}" alt="frame"></div>`
+                : `<div class="avatar-ring"></div>`
+            }
+            ${photoContent}
+            ${emojiContent}
+        </div>
+    `;
+}
 
+    // دالة عرض الصورة مع الإطار (للمنشورات والتعليقات)
+function renderAvatarWithFrame(user) {
+    if (!user) return '<span style="font-size:20px;">👤</span>';
+    
+    const customFrame = user?.colors?.frame;
+    const hasCustomFrame = customFrame && 
+                           customFrame !== '#fbbf24' && 
+                           customFrame !== '#0f172a' && 
+                           customFrame.startsWith('http');
+    
+    const photoHtml = (user.avatarType === 'image' && user.avatarUrl)
+        ? `<img src="${user.avatarUrl}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+        : '';
+    
+    const emojiHtml = (!user.avatarType || user.avatarType !== 'image' || !user.avatarUrl)
+        ? user.emoji || '😎'
+        : '';
+    
+    return `
+        ${hasCustomFrame 
+            ? `<div class="post-avatar-ring custom-ring"><img src="${customFrame}"></div>`
+            : `<div class="post-avatar-ring"></div>`
+        }
+        <div class="post-avatar-inner">
+            ${photoHtml}
+            <span style="display:${photoHtml ? 'none' : 'flex'};align-items:center;justify-content:center;width:100%;height:100%;font-size:20px;">${emojiHtml}</span>
+        </div>
+    `;
+}
   function updateAccountIcon() {
     const avatarCircle = document.getElementById('accountAvatarCircle');
     if (!avatarCircle) return;
@@ -1928,6 +2191,112 @@ button,
   }
   
 
+    // ========== دوال التبويبين ==========
+
+// متغير لتتبع نوع المنشور الحالي
+let currentPublishType = 'blog';
+
+// تبديل التبويب
+window.switchPublishTab = function(type) {
+    currentPublishType = type;
+    
+    const tabBlog = document.getElementById('tabBlog');
+    const tabReels = document.getElementById('tabReels');
+    const reelsSection = document.getElementById('reelsSection');
+    const mediaUrlInput = document.getElementById('postMediaUrl');
+    const mediaPreview = document.getElementById('mediaPreview');
+    const postText = document.getElementById('postText');
+    
+    if (type === 'blog') {
+        // تفعيل تبويب المدونة
+        tabBlog.style.background = '#fbbf24';
+        tabBlog.style.color = '#0f172a';
+        tabReels.style.background = 'transparent';
+        tabReels.style.color = '#64748b';
+        
+        // إخفاء قسم الريلز
+        reelsSection.style.display = 'none';
+        mediaPreview.style.display = 'none';
+        
+        // تحديث placeholder
+        postText.placeholder = 'اكتب منشورك هنا...';
+        
+        // مسح الرابط إذا كان موجوداً
+        if (mediaUrlInput) mediaUrlInput.value = '';
+        
+    } else if (type === 'reels') {
+        // تفعيل تبويب الريلز
+        tabReels.style.background = '#fbbf24';
+        tabReels.style.color = '#0f172a';
+        tabBlog.style.background = 'transparent';
+        tabBlog.style.color = '#64748b';
+        
+        // إظهار قسم الريلز
+        reelsSection.style.display = 'block';
+        
+        // تحديث placeholder
+        postText.placeholder = 'اكتب وصف للريلز...';
+    }
+};
+
+// معاينة الوسائط
+window.previewMedia = function() {
+    const url = document.getElementById('postMediaUrl')?.value.trim();
+    const previewDiv = document.getElementById('mediaPreview');
+    const previewContent = document.getElementById('mediaPreviewContent');
+    
+    if (!url || !previewDiv || !previewContent) {
+        if (previewDiv) previewDiv.style.display = 'none';
+        return;
+    }
+    
+    previewDiv.style.display = 'block';
+    
+    // التحقق من نوع الرابط
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+        if (videoId) {
+            previewContent.innerHTML = `
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px;">
+                    <iframe src="https://www.youtube.com/embed/${videoId}" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 15px;" 
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+                <p style="color: #10b981; margin-top: 8px; font-size: 12px;">
+                    <i class="fab fa-youtube" style="color: #ff0000;"></i> فيديو يوتيوب ✓
+                </p>
+            `;
+        } else {
+            previewContent.innerHTML = '<p style="color: #ef4444;">⚠️ رابط يوتيوب غير صالح</p>';
+        }
+    } else if (url.match(/\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i) || url.includes('image')) {
+        previewContent.innerHTML = `
+            <img src="${url}" style="max-width: 100%; max-height: 200px; border-radius: 15px;" 
+                 onerror="this.parentElement.innerHTML='<p style=\'color:#ef4444;\'>⚠️ فشل تحميل الصورة</p>'">
+            <p style="color: #10b981; margin-top: 8px; font-size: 12px;">
+                <i class="fas fa-image"></i> صورة ✓
+            </p>
+        `;
+    } else {
+        previewContent.innerHTML = '<p style="color: #f59e0b;">🔗 الرابط مضاف (سيتم التحقق عند النشر)</p>';
+    }
+};
+
+// إعادة ضبط نافذة النشر عند فتحها
+const originalOpenPublishModal = window.openModal;
+window.openModal = function(id) {
+    if (id === 'publishModal') {
+        // إعادة تعيين إلى تبويب المدونة
+        window.switchPublishTab('blog');
+        
+        // مسح الحقول
+        document.getElementById('postText').value = '';
+        document.getElementById('postMediaUrl').value = '';
+        document.getElementById('mediaPreview').style.display = 'none';
+        document.getElementById('charCounter').textContent = '0/500';
+    }
+    originalOpenPublishModal(id);
+};
   function subscribeToUnreadMessages() {
     if (!currentUser) return;
     if (unsubscribeChats) unsubscribeChats();
@@ -2292,8 +2661,7 @@ button,
         ${trendBadge}
         ${followed && !isOwner ? '<div class="follow-badge"><i class="fas fa-check"></i> متابَع</div>' : ''}
         <div class="post-header">
-          <div class="post-avatar" onclick="window.openProfile('${post.userId}')" style="border-color: ${post.colors?.frame || '#fbbf24'};">${renderAvatar(post)}</div>
-          <div class="post-user-details">
+          <div class="post-avatar" onclick="window.openProfile('${post.userId}')">${renderAvatarWithFrame(post)}</div>          <div class="post-user-details">
             <div class="post-username" onclick="window.openProfile('${post.userId}')" style="color:${post.colors?.name || '#0f172a'}">
               ${post.username || 'مستخدم'}
               ${isVerified ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}
@@ -2876,37 +3244,50 @@ window.rejectReport = async function(reportId) {
     );
   };
 
-  window.publishPost = async function() {
+  
+  // تحديث دالة النشر
+window.publishPost = async function() {
     const content = document.getElementById('postText')?.value.trim();
     const mediaUrl = document.getElementById('postMediaUrl')?.value.trim();
-    if (!content && !mediaUrl) {
-        showToast('الرجاء كتابة نص أو إضافة  وسائط', false);
-        return;
+    
+    // التحقق من المحتوى حسب نوع المنشور
+    if (currentPublishType === 'blog') {
+        if (!content) {
+            showToast('الرجاء كتابة نص المدونة', false);
+            return;
+        }
+    } else if (currentPublishType === 'reels') {
+        if (!mediaUrl) {
+            showToast('الرجاء إضافة رابط الصورة أو اليوتيوب للريلز', false);
+            return;
+        }
     }
+    
     if (!currentUser) return;
     
     if (content.length > 500) {
-      showToast('الحد الأقصى 500 حرف', false);
-      return;
+        showToast('الحد الأقصى 500 حرف', false);
+        return;
     }
     
     const promoDays = parseInt(document.getElementById('promoDays')?.value || '0');
     if (promoDays > 0 && (resources.elixir || 0) < promoDays) { 
-      showToast('إكسير غير كافٍ', false); 
-      return; 
+        showToast('إكسير غير كافٍ', false); 
+        return; 
     }
     
     if (promoDays > 0) {
-      resources.elixir -= promoDays;
-      await setDoc(doc(db, "resources", currentUser.uid), resources);
+        resources.elixir -= promoDays;
+        await setDoc(doc(db, "resources", currentUser.uid), resources);
     }
     
+    // معالجة الوسائط للريلز
     let mediaType = null;
     let finalMediaUrl = mediaUrl;
-    if (mediaUrl) {
+    
+    if (currentPublishType === 'reels' && mediaUrl) {
         if (mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be')) {
             mediaType = 'youtube';
-            // تحويل إلى  تضمين
             const videoId = mediaUrl.split('v=')[1]?.split('&')[0] || mediaUrl.split('/').pop();
             finalMediaUrl = `https://www.youtube.com/embed/${videoId}`;
         } else {
@@ -2915,34 +3296,53 @@ window.rejectReport = async function(reportId) {
     }
     
     const newPost = {
-      userId: currentUserData?.userId || currentUser.uid.slice(0, 6),
-      username: currentUserData?.username || 'مستخدم',
-      emoji: currentUserData?.emoji || '😎',
-      avatarType: currentUserData?.avatarType || 'emoji',
-      avatarUrl: currentUserData?.avatarUrl || '',
-      colors: currentUserData?.colors || { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6', postText: '#334155', commentText: '#475569' },
-      verified: currentUserData?.verified || false,
-      content: content,
-      mediaUrl: finalMediaUrl,
-      mediaType: mediaType,
-      timestamp: Date.now(),
-      likes: 0,
-      likedBy: [],
-      comments: [],
-      views: 0,
-      shares: 0,
-      reports: [],
-      promotedUntil: promoDays > 0 ? Date.now() + promoDays * 86400000 : 0
+        userId: currentUserData?.userId || currentUser.uid.slice(0, 6),
+        username: currentUserData?.username || 'مستخدم',
+        emoji: currentUserData?.emoji || '😎',
+        avatarType: currentUserData?.avatarType || 'emoji',
+        avatarUrl: currentUserData?.avatarUrl || '',
+        colors: currentUserData?.colors || { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6', postText: '#334155', commentText: '#475569' },
+        verified: currentUserData?.verified || false,
+        content: content,
+        mediaUrl: finalMediaUrl,
+        mediaType: mediaType,
+        postType: currentPublishType, // نوع المنشور: blog أو reels
+        timestamp: Date.now(),
+        likes: 0,
+        likedBy: [],
+        comments: [],
+        views: 0,
+        shares: 0,
+        reports: [],
+        promotedUntil: promoDays > 0 ? Date.now() + promoDays * 86400000 : 0
     };
     
     await addDoc(collection(db, "posts"), newPost);
     
     updateResourcesUI();
     closeModal('publishModal');
+    
+    // تنظيف الحقول
     document.getElementById('postText').value = '';
     document.getElementById('postMediaUrl').value = '';
-    showToast('✨ تم نشر منشورك');
-  };
+    document.getElementById('mediaPreview').style.display = 'none';
+    
+    showToast('✨ تم نشر منشورك بنجاح');
+};
+
+// إضافة مستمع للرابط للمعاينة المباشرة
+document.addEventListener('DOMContentLoaded', function() {
+    const mediaInput = document.getElementById('postMediaUrl');
+    if (mediaInput) {
+        mediaInput.addEventListener('input', function() {
+            window.previewMedia();
+        });
+    }
+});
+
+// تصدير الدوال الجديدة
+window.switchPublishTab = window.switchPublishTab;
+window.previewMedia = window.previewMedia;
 
   window.deletePost = async function(postId) {
     showConfirmDialog(
@@ -3231,10 +3631,10 @@ window.openProfile = async function(userId) {
     if (isOwnProfile) {
         actionButtonsContainer.innerHTML = `
             <button onclick="window.openAccountSettings()" style="flex:1; background:#333; color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">
-                <i class="fas fa-cog"></i> الضبط
+                <i class="fas fa-cog"></i> تعديل الملف الشخصي
             </button>
             <button onclick="window.shareProfile()" style="flex:1; background:#333; color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">
-                <i class="fas fa-share-alt"></i> مشاركة الملف
+                <i class="fas fa-share-alt"></i>   مشاركة الملف الشخصي
             </button>
         `;
     } else {
