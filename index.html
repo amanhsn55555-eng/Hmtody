@@ -10,6 +10,8 @@
   
   
   /* عكس اتجاه الصفحة بالكامل - يصبح المحتوى من اليسار إلى اليمين */
+    
+    
   
 body, 
 .app-container, 
@@ -159,13 +161,29 @@ button,
     margin-right: 0 !important;
     margin-left: 15px !important;
 }
-
-/* أيقونات التفاعل في المنشورات */
-.post-interactions .interact-btn {
-    margin-right: 0 !important;
-    margin-left: 10px !important;
+/* عكس أيقونات التفاعل في المنشورات - من اليمين لليسار */
+.post-interactions {
+    direction: rtl !important;
 }
-  
+
+.post-interactions .interact-btn {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    direction: rtl !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    gap: 5px !important;
+}
+
+.post-interactions .interact-btn i {
+    margin-right: 0 !important;
+    margin-left: 5px !important;
+    order: 2 !important;
+}
+
+.post-interactions .interact-btn span {
+    order: 1 !important;
+}
   .post-card, .interact-btn, .interact-btn *, .post-interactions, .post-interactions * { transform: none !important; transition: none !important; animation: none !important; }
   
     #profileModal .modal-header { display: none !important; } #profileModal .settings-icon { display: none !important; } #profileModal .close-btn { display: flex !important; position: absolute !important; top: 15px !important; right: 15px !important; z-index: 9999 !important; background: #1a1a2e !important; color: #fff !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; align-items: center !important; justify-content: center !important; font-size: 22px !important; border: 2px solid #fbbf24 !important; cursor: pointer !important; }
@@ -1614,6 +1632,317 @@ animation: moveLight 18s infinite linear;
     object-fit: cover;
     border-radius: 50%;
 }
+    /* ========== وضع الظلام - شامل ========== */
+body.dark-mode {
+    background: linear-gradient(145deg, #0f172a, #1e293b) !important;
+    background-attachment: fixed !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .post-card {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    border: none !important;
+    box-shadow: inset 2px 2px 5px #475569, inset -2px -2px 5px #0f172a, 3px 3px 8px rgba(0,0,0,0.5), -1px -1px 4px rgba(255,255,255,0.05) !important;
+    color: #f1f5f9 !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6), -1px -1px 2px rgba(255,255,255,0.05) !important;
+}
+
+body.dark-mode .compact-header {
+    background: rgba(15, 23, 42, 0.97) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.3) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .compact-footer {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-top: 1px solid rgba(251, 191, 36, 0.3) !important;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .footer-icon {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    border: none !important;
+    box-shadow: inset 2px 2px 5px #475569, inset -2px -2px 5px #0f172a, 3px 3px 8px rgba(0,0,0,0.5), -1px -1px 4px rgba(255,255,255,0.05) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .footer-icon span {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .resource-item {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    border: none !important;
+    box-shadow: inset 2px 2px 5px #475569, inset -2px -2px 5px #0f172a, 3px 3px 8px rgba(0,0,0,0.3) !important;
+}
+
+body.dark-mode .resource-value {
+    color: #fbbf24 !important;
+    text-shadow: 0 0 10px rgba(251,191,36,0.3) !important;
+}
+
+body.dark-mode .resource-label {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .mini-search-wrapper {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    border: none !important;
+    box-shadow: inset 2px 2px 5px #475569, inset -2px -2px 5px #0f172a, 3px 3px 8px rgba(0,0,0,0.5), -1px -1px 4px rgba(255,255,255,0.05) !important;
+}
+
+body.dark-mode .mini-search-wrapper input {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .mini-search-wrapper input::placeholder {
+    color: #64748b !important;
+}
+
+body.dark-mode .mini-search-wrapper i {
+    color: #64748b !important;
+    text-shadow: none !important;
+}
+
+body.dark-mode .mini-search-wrapper button {
+    background: linear-gradient(145deg, #334155, #475569) !important;
+    color: #fbbf24 !important;
+    box-shadow: inset 1px 1px 3px #64748b, inset -1px -1px 3px #0f172a, 2px 2px 5px rgba(0,0,0,0.3) !important;
+}
+
+body.dark-mode .post-username {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .post-content {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .post-time {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .post-interactions {
+    border-top: 1px solid #475569 !important;
+}
+
+body.dark-mode .interact-btn {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    border: none !important;
+    box-shadow: inset 1px 1px 3px #475569, inset -1px -1px 3px #0f172a, 2px 2px 5px rgba(0,0,0,0.3) !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .interact-btn.liked {
+    background: linear-gradient(145deg, #4a1a2e, #5c2333) !important;
+    color: #fda4af !important;
+}
+
+body.dark-mode .modal-sheet {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #475569 !important;
+}
+
+body.dark-mode .modal-header h3 {
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .close-btn {
+    background: linear-gradient(145deg, #334155, #475569) !important;
+    border: none !important;
+    box-shadow: inset 1px 1px 3px #64748b, inset -1px -1px 3px #0f172a, 2px 2px 5px rgba(0,0,0,0.3) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .comment-item {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+    border: none !important;
+    box-shadow: inset 1px 1px 3px #475569, inset -1px -1px 3px #0f172a, 2px 2px 5px rgba(0,0,0,0.3) !important;
+}
+
+body.dark-mode .comment-author {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .comment-text {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .comment-time {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .publish-textarea {
+    background: #0f172a !important;
+    border: 2px solid #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .publish-textarea:focus {
+    border-color: #fbbf24 !important;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2) !important;
+}
+
+body.dark-mode .publish-tabs {
+    background: #1e293b !important;
+}
+
+body.dark-mode .publish-tab {
+    background: transparent !important;
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .publish-tab.active {
+    background: #fbbf24 !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode .color-row {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+}
+
+body.dark-mode .color-row label {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .color-row input[type="color"] {
+    border-color: #475569 !important;
+}
+
+body.dark-mode .user-id-section {
+    background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .user-id-section label {
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .btn-save {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode .btn-danger {
+    background: linear-gradient(135deg, #dc2626, #991b1b) !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .password-section {
+    background: linear-gradient(145deg, #2a1a1a, #3b2020) !important;
+}
+
+body.dark-mode .password-section h4 {
+    color: #fca5a5 !important;
+}
+
+body.dark-mode .password-input {
+    background: #0f172a !important;
+    border: 2px solid #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .password-input::placeholder {
+    color: #64748b !important;
+}
+
+body.dark-mode .followers-stats {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+}
+
+body.dark-mode .stat-item:hover {
+    background: #475569 !important;
+}
+
+body.dark-mode .stat-number {
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .stat-label {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .follower-item {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+}
+
+body.dark-mode .account-avatar-circle {
+    background: linear-gradient(135deg, #1e293b, #334155) !important;
+}
+
+body.dark-mode .account-label {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode #toastMsg {
+    background: #fbbf24 !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode .publish-form {
+    background: linear-gradient(145deg, #1e293b, #334155) !important;
+}
+
+body.dark-mode .stories-row {
+    background: rgba(30, 41, 59, 0.5) !important;
+}
+
+body.dark-mode .story-name {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .post-menu i {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .post-menu i:hover {
+    background: #475569 !important;
+    color: #fca5a5 !important;
+}
+
+body.dark-mode .relationship-status {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .trend-badge {
+    background: transparent !important;
+}
+
+/* إخفاء أيقونة التبديل في الوضع المظلم */
+.theme-toggle-icon {
+    position: fixed;
+    bottom: 515px;
+    right: 290px;
+    width: 6px;
+    height: 7px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+    border: none !important;
+    box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.2), -1px -1px 4px rgba(255,255,255,0.6) !important;
+    z-index: 999;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    color: #1e293b;
+}
+
+body.dark-mode .theme-toggle-icon {
+    background: linear-gradient(145deg, #fbbf24, #f59e0b) !important;
+    box-shadow: inset 2px 2px 5px #fef3c7, inset -2px -2px 5px #b45309, 0 0 20px rgba(251, 191, 36, 0.4) !important;
+    color: #0f172a;
+}
   </style>
 </head>
 <body>
@@ -1624,6 +1953,9 @@ animation: moveLight 18s infinite linear;
       <span class="resource-icon"><i class="fas fa-coins"></i></span>
       <div><span class="resource-value" id="goldAmount">0</span><span class="resource-label">D</span></div>
     </div>
+       
+    
+        <!-- زر تبديل الوضع المظلم -->
     <div class="resource-item elixir">
       <span class="resource-icon"><i class="fas fa-flask"></i></span>
       <div><span class="resource-value" id="elixirAmount">0</span><span class="resource-label">X</span></div>
@@ -1640,13 +1972,16 @@ animation: moveLight 18s infinite linear;
 <div class="search-row">
     <div class="mini-search-wrapper">
         <i class="fas fa-search"></i>
+        
         <input type="text" id="searchInput" placeholder="ابحث..." autocomplete="off">
         <!-- أيقونة الجرس بدل X -->
+        
         <button onclick="window.location.href='https://amanhsn55555-eng.github.io/Tnbehtodyyy/'" style="background: transparent; border: none; color: #fbbf24; padding: 7px 12px; cursor: pointer; font-size: 14px;">
             <i class="fas fa-bell" style="animation: bellRing 2s infinite;"></i>
         </button>
     </div>
 </div>
+    
 </div>
 
 <main class="app-container">
@@ -1657,6 +1992,7 @@ animation: moveLight 18s infinite linear;
     </div>
 </main>
 
+    
 <footer class="compact-footer">
   <div class="footer-icon messenger-icon-wrapper" onclick="window.open('https://amanhsn55555-eng.github.io/Msgtdy/', '_blank')">
     <i class="fab fa-facebook-messenger"></i>
@@ -1892,6 +2228,8 @@ animation: moveLight 18s infinite linear;
     <p style="font-weight: 800; margin: 10px 0 0; color: #065f46; position: relative; z-index: 1;"> من نحن</p>
 </div>
         
+        
+        
     </div>
   </div>
 </div>
@@ -1993,6 +2331,7 @@ animation: moveLight 18s infinite linear;
 </div>
 
 <!-- نافذة البلاغات (للإدارة) -->
+    
 <div class="modal-overlay" id="reportsModal">
   <div class="modal-sheet">
     <div class="modal-header">
@@ -2002,10 +2341,14 @@ animation: moveLight 18s infinite linear;
     <div id="reportsListContainer"></div>
   </div>
 </div>
-
+<!-- زر تبديل الوضع المظلم -->
+<button class="theme-toggle-icon" id="themeToggleBtn" onclick="toggleTheme()" title="تبديل الوضع المظلم">
+    <i class="fas fa-moon" id="themeIcon"></i>
+</button>
 <div id="toastMsg"></div>
 
   
+    
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
   import { getAuth, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
@@ -2662,7 +3005,7 @@ window.openModal = function(id) {
       return `
       <div class="post-card ${isPromoted ? 'promoted' : ''}" style="${trendStyle}">
         ${trendBadge}
-        ${followed && !isOwner ? '<div class="follow-badge"><i class="fas fa-check"></i> متابَع</div>' : ''}
+        ${followed && !isOwner ? '<div class="follow-badge"><i class="fas fa-check"></i></div>' : ''}
         <div class="post-header">
           <div class="post-avatar" onclick="window.openProfile('${post.userId}')">${renderAvatarWithFrame(post)}</div>          <div class="post-user-details">
             <div class="post-username" onclick="window.openProfile('${post.userId}')" style="color:${post.colors?.name || '#0f172a'}">
@@ -5279,6 +5622,40 @@ window.renderStoriesRow = function() {
     }).join('');
 };
 
+    // ========== نظام الوضع المظلم ==========
+function toggleTheme() {
+    const body = document.body;
+    const icon = document.getElementById('themeIcon');
+    
+    body.classList.toggle('dark-mode');
+    
+    if (body.classList.contains('dark-mode')) {
+        icon.className = 'fas fa-sun';
+        localStorage.setItem('theme', 'dark');
+        showToast('🌙 تم تفعيل الوضع المظلم');
+    } else {
+        icon.className = 'fas fa-moon';
+        localStorage.setItem('theme', 'light');
+        showToast('☀️ تم تفعيل الوضع المضيء');
+    }
+}
+
+// تحميل الإعدادات المحفوظة
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const icon = document.getElementById('themeIcon');
+    
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (icon) icon.className = 'fas fa-sun';
+    }
+}
+
+// استدعاء عند التحميل
+window.addEventListener('load', loadTheme);
+
+// تصدير الدالة
+window.toggleTheme = toggleTheme;
 // تحديث ستوريات الملف الشخصي
 window.renderProfileStories = function(userId) {
     const container = document.getElementById('profileStoriesContainer');
