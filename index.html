@@ -1920,8 +1920,8 @@ body.dark-mode .trend-badge {
 /* إخفاء أيقونة التبديل في الوضع المظلم */
 .theme-toggle-icon {
     position: fixed;
-    bottom: 661px;
-    right: 290px;
+    bottom: 11px;
+    right: 280px;
     width: 6px;
     height: 7px;
     border-radius: 50%;
@@ -1976,6 +1976,9 @@ body.dark-mode .theme-toggle-icon {
         <input type="text" id="searchInput" placeholder="ابحث..." autocomplete="off">
         <!-- أيقونة الجرس بدل X -->
         
+        <button class="theme-toggle-icon" id="themeToggleBtn" onclick="toggleTheme()" title="تبديل الوضع المظلم">
+    <i class="fas fa-moon" id="themeIcon"></i>
+</button>
         <button onclick="window.location.href='https://amanhsn55555-eng.github.io/Tnbehtodyyy/'" style="background: transparent; border: none; color: #fbbf24; padding: 7px 12px; cursor: pointer; font-size: 14px;">
             <i class="fas fa-bell" style="animation: bellRing 2s infinite;"></i>
         </button>
@@ -2152,13 +2155,13 @@ body.dark-mode .theme-toggle-icon {
 <div class="modal-overlay" id="menuModal">
   <div class="modal-sheet">
     <div class="modal-header">
-      <h3><i class="fas fa-bars" style="color: #fbbf24; margin-left: 8px; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"></i></h3>
+      <h3><i class="fas fa-bars" style="color: #fbbf24;  margin-left: 8px; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"></i></h3>
       <button class="close-btn" onclick="window.closeModal('menuModal')">&times;</button>
     </div>
     
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px 10px;">
+    <div style="display: grid; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px 10px;">
       
-     <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Athreaa-man-chat/'" style="text-align: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+     <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Athreaa-man-chat/'" style="text-align: center;  cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
     <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
     <i class="fas fa-crown" style="font-size: 40px; color: #FFD700; position: relative; z-index: 1; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></i>
     <p style="font-weight: 800; margin: 10px 0 0; color: #B8860B; position: relative; z-index: 1; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;"> الاثرياء</p>
@@ -2169,6 +2172,7 @@ body.dark-mode .theme-toggle-icon {
         <p style="font-weight: 800; margin: 10px 0 0; color: #115e59; position: relative; z-index: 1;">🛢️ بئر النفط</p>
       </div>
       
+        
       <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Markiottody/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(220, 38, 38, 0.2), transparent); transform: rotate(45deg); animation: lightMove 3.5s infinite;"></div>
         <i class="fas fa-store" style="font-size: 40px; color: #dc2626; position: relative; z-index: 1;"></i>
@@ -2200,7 +2204,18 @@ body.dark-mode .theme-toggle-icon {
       </div>
       
 
+      <div onclick="window.location.href='https://amanhsn55555-eng.github.io/IraqHack/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(239, 68, 68, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4.5s infinite;"></div>
+    <i class="fas fa-flag" style="font-size: 40px; color: #ef4444; position: relative; z-index: 1;"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #991b1b; position: relative; z-index: 1;"> عراق هاك</p>
+</div>  
 <!-- الدعم الفني -->
+        
+  <div onclick="window.location.href='https://amanhsn55555-eng.github.io/Magazine/'" style="text-align: center;background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center; cursor: pointer; padding: 20px; background: linear-gradient(145deg, #ffffff, #f8fafc); border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.15); position: relative; overflow: hidden; transition: all 0.3s;">
+    <div style="position: absolute; top: -50%; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
+    <i class="fas fa-newspaper" style="font-size: 40px; color: #6366f1; position: relative; z-index: 1;"></i>
+    <p style="font-weight: 800; margin: 10px 0 0; color: #3730a3; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px position: relative; z-index: 1;"> المجلة</p>
+</div>      
 <div onclick="window.location.href='https://amanhsn55555-eng.github.io/support/'" style="text-align: center; margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #7dd3fc); border: none; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #38bdf8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6); border-radius: 30px; padding: 20px; display: flex; align-items: center; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s;">
     <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.2), transparent); transform: rotate(45deg); animation: lightMove 4s infinite;"></div>
     <i class="fas fa-headset" style="font-size: 40px; color: #3b82f6; position: relative; z-index: 1;"></i>
@@ -2342,9 +2357,7 @@ body.dark-mode .theme-toggle-icon {
   </div>
 </div>
 <!-- زر تبديل الوضع المظلم -->
-<button class="theme-toggle-icon" id="themeToggleBtn" onclick="toggleTheme()" title="تبديل الوضع المظلم">
-    <i class="fas fa-moon" id="themeIcon"></i>
-</button>
+
 <div id="toastMsg"></div>
 
   
@@ -2368,8 +2381,32 @@ body.dark-mode .theme-toggle-icon {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+    
   let currentUser = null;
   let currentUserData = null;
+    // ========== نظام الإعدادات المركزية ==========
+async function loadAdminSettings() {
+  try {
+    const settingsList = [
+      'allow_posting', 'allow_comments', 'allow_stories', 'allow_create_rooms',
+      'registration_open', 'min_email_len', 'min_pass_len', 'banned_passwords',
+      'default_money', 'default_gold', 'default_elixir', 'default_oil', 'default_ddo',
+      'ddo_exchange_rate'
+    ];
+    
+    for (const key of settingsList) {
+      try {
+        const snap = await getDoc(doc(db, "admin_settings", key));
+        window['ADMIN_' + key] = snap.exists() ? snap.data().value : null;
+      } catch(e) {
+        window['ADMIN_' + key] = null;
+      }
+    }
+    console.log('✅ تم تحميل إعدادات الإدارة');
+  } catch(e) {
+    console.log('⚠️ فشل تحميل إعدادات الإدارة');
+  }
+}
   let resources = { gold: 10, elixir: 10, money: 1000, oil: 100 };
   let posts = [];
   let followers = {};
@@ -2384,7 +2421,7 @@ body.dark-mode .theme-toggle-icon {
   let unreadMessagesCount = 0;
   let stories = [];
 
-  const emojis = ['😎', '👑', '🦊', '🐼', '🐸', '🐶', '🦁', '🐧', '🐨', '🦝', '🐱', '🐻', '🦄', '🐙', '🦋', '👀', '⭐', '🌙', '☀️', '🔥', '💎', '🎮', '🫦', '💫'];
+  const emojis = ['😎', '👑', '🦊', '🐼', '🐸', '🐶', '🦁', '🐧', '🐨', '🦝', '🐱', '🐻', '🦄', '🐙', '🦋', '⭐', '🫦',];
   
   const imageUrls = [
     'https://i.pravatar.cc/150?img=1', 'https://i.pravatar.cc/150?img=2', 'https://i.pravatar.cc/150?img=3',
@@ -2392,7 +2429,78 @@ body.dark-mode .theme-toggle-icon {
     'https://i.pravatar.cc/150?img=7', 'https://i.pravatar.cc/150?img=8', 'https://i.pravatar.cc/150?img=9',
     'https://i.pravatar.cc/150?img=10', 'https://i.pravatar.cc/150?img=11', 'https://i.pravatar.cc/150?img=12'
   ];
+    // ========== مركز الإعدادات ==========
+async function loadGlobalSettings() {
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "allow_posting"));
+    if (snap.exists()) window.GLOBAL_allowPosting = snap.data().value;
+    else window.GLOBAL_allowPosting = true;
+  } catch(e) { window.GLOBAL_allowPosting = true; }
 
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "allow_comments"));
+    window.GLOBAL_allowComments = snap.exists() ? snap.data().value : true;
+  } catch(e) { window.GLOBAL_allowComments = true; }
+
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "allow_stories"));
+    window.GLOBAL_allowStories = snap.exists() ? snap.data().value : true;
+  } catch(e) { window.GLOBAL_allowStories = true; }
+
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "allow_create_rooms"));
+    window.GLOBAL_allowCreateRooms = snap.exists() ? snap.data().value : true;
+  } catch(e) { window.GLOBAL_allowCreateRooms = true; }
+
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "registration_open"));
+    window.GLOBAL_registrationOpen = snap.exists() ? snap.data().value : true;
+  } catch(e) { window.GLOBAL_registrationOpen = true; }
+
+  // القيود
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "min_email_len"));
+    window.GLOBAL_minEmailLen = snap.exists() ? snap.data().value : 5;
+  } catch(e) { window.GLOBAL_minEmailLen = 5; }
+
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "min_pass_len"));
+    window.GLOBAL_minPassLen = snap.exists() ? snap.data().value : 6;
+  } catch(e) { window.GLOBAL_minPassLen = 6; }
+
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "banned_passwords"));
+    window.GLOBAL_bannedPasswords = snap.exists() ? snap.data().value : [];
+  } catch(e) { window.GLOBAL_bannedPasswords = []; }
+
+  // الموارد الافتراضية
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "default_money"));
+    window.GLOBAL_defaultMoney = snap.exists() ? snap.data().value : 1000;
+  } catch(e) { window.GLOBAL_defaultMoney = 1000; }
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "default_gold"));
+    window.GLOBAL_defaultGold = snap.exists() ? snap.data().value : 10;
+  } catch(e) { window.GLOBAL_defaultGold = 10; }
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "default_elixir"));
+    window.GLOBAL_defaultElixir = snap.exists() ? snap.data().value : 10;
+  } catch(e) { window.GLOBAL_defaultElixir = 10; }
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "default_oil"));
+    window.GLOBAL_defaultOil = snap.exists() ? snap.data().value : 10;
+  } catch(e) { window.GLOBAL_defaultOil = 10; }
+  try {
+    const snap = await getDoc(doc(db, "admin_settings", "default_ddo"));
+    window.GLOBAL_defaultDdo = snap.exists() ? snap.data().value : 0;
+  } catch(e) { window.GLOBAL_defaultDdo = 0; }
+}
+
+// استدعها عند بداية التطبيق
+    
+loadGlobalSettings();
+
+    
   function showToast(msg, isSuccess = true) { 
     const t = document.getElementById('toastMsg'); 
     if (!t) return;
@@ -3501,6 +3609,11 @@ window.rejectReport = async function(reportId) {
   };
 
   window.submitComment = async function() {
+     
+    if (window.ADMIN_allow_comments === false) {
+        showToast('🚫 التعليقات معلقة حالياً', false);
+        return;
+    } 
     const inp = document.getElementById('newCommentInput');
     if (!inp) return;
     const text = inp.value.trim();
@@ -3593,8 +3706,16 @@ window.rejectReport = async function(reportId) {
   
   // تحديث دالة النشر
 window.publishPost = async function() {
+    
+    if (window.ADMIN_allow_posting === false) {
+        showToast('🚫 النشر معلق حالياً من قبل الإدارة', false);
+        return;
+    }
+    
+   
     const content = document.getElementById('postText')?.value.trim();
     const mediaUrl = document.getElementById('postMediaUrl')?.value.trim();
+    
     
     // التحقق من المحتوى حسب نوع المنشور
     if (currentPublishType === 'blog') {
@@ -4854,6 +4975,9 @@ window.invitePartner = async function() {
       currentUser = user;
       await loadUserData(user.uid);
       
+ 
+await loadAdminSettings(); // ← أضف هذا السطر       
+        
       if (!currentUserData?.userId) {
         const userId = user.uid.slice(0, 6);
         currentUserData = { ...currentUserData, userId: userId };
@@ -5023,6 +5147,10 @@ window.previewStory = function() {
 
 // نشر الستوري
 window.publishStory = async function() {
+       if (window.ADMIN_allow_stories === false) {
+        showToast('🚫 القصص معلقة حالياً', false);
+        return;
+    }
     if (!currentUserData) {
         showToast('يجب تسجيل الدخول', false);
         return;
