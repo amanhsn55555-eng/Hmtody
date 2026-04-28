@@ -5852,51 +5852,7 @@ console.log('✅ نظام الستوري المتكامل مع جميع المي
   window.showStoryCommentInput = window.showStoryCommentInput;
 
     
-    // ========== التنقل بدون تحميل ==========
-(function() {
-    var frame = document.createElement('iframe');
-    frame.id = 'pageFrame';
-    frame.style.cssText = 'display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:99999;';
-    document.body.appendChild(frame);
     
-    var stack = [];
-    
-    window.openPage = function(url) {
-        stack.push(url);
-        frame.style.display = 'block';
-        frame.src = url;
-    };
-    
-    window.closePage = function() {
-        stack.pop();
-        if (stack.length > 0) {
-            frame.src = stack[stack.length - 1];
-        } else {
-            frame.style.display = 'none';
-        }
-    };
-    
-    window.onpopstate = function() {
-        if (stack.length > 1) {
-            stack.pop();
-            frame.src = stack[stack.length - 1];
-        } else {
-            frame.style.display = 'none';
-            stack = [];
-        }
-    };
-    
-    // ربط الأزرار
-    setTimeout(function() {
-        document.querySelectorAll('[onclick]').forEach(function(btn) {
-            var oc = btn.getAttribute('onclick') || '';
-            var m = oc.match(/https?:\/\/[^'")\s]+/);
-            if (m && (oc.includes('location') || oc.includes('open'))) {
-                btn.setAttribute('onclick', "openPage('" + m[0] + "'); return false;");
-            }
-        });
-    }, 2000);
-})();
     
     </script>
 </body>
