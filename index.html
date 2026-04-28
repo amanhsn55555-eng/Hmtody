@@ -2353,6 +2353,8 @@ body.dark-mode .theme-toggle-icon {
 
   
     
+    
+    
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
   import { getAuth, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
@@ -2376,7 +2378,9 @@ body.dark-mode .theme-toggle-icon {
   let currentUser = null;
   let currentUserData = null;
     // ========== نظام الإعدادات المركزية ==========
-async function loadAdminSettings() {
+    
+
+    async function loadAdminSettings() {
   try {
     const settingsList = [
       'allow_posting', 'allow_comments', 'allow_stories', 'allow_create_rooms',
@@ -2398,6 +2402,7 @@ async function loadAdminSettings() {
     console.log('⚠️ فشل تحميل إعدادات الإدارة');
   }
 }
+    
   let resources = { gold: 10, elixir: 10, money: 1000, oil: 100 };
   let posts = [];
   let followers = {};
@@ -2491,6 +2496,7 @@ async function loadGlobalSettings() {
     
 loadGlobalSettings();
 
+    
     
   function showToast(msg, isSuccess = true) { 
     const t = document.getElementById('toastMsg'); 
@@ -5844,6 +5850,54 @@ console.log('✅ نظام الستوري المتكامل مع جميع المي
   window.editStory = window.editStory;
   window.deleteStory = window.deleteStory;
   window.showStoryCommentInput = window.showStoryCommentInput;
-</script>
+
+    
+    // ========== التنقل بدون تحميل ==========
+(function() {
+    var frame = document.createElement('iframe');
+    frame.id = 'pageFrame';
+    frame.style.cssText = 'display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:99999;';
+    document.body.appendChild(frame);
+    
+    var stack = [];
+    
+    window.openPage = function(url) {
+        stack.push(url);
+        frame.style.display = 'block';
+        frame.src = url;
+    };
+    
+    window.closePage = function() {
+        stack.pop();
+        if (stack.length > 0) {
+            frame.src = stack[stack.length - 1];
+        } else {
+            frame.style.display = 'none';
+        }
+    };
+    
+    window.onpopstate = function() {
+        if (stack.length > 1) {
+            stack.pop();
+            frame.src = stack[stack.length - 1];
+        } else {
+            frame.style.display = 'none';
+            stack = [];
+        }
+    };
+    
+    // ربط الأزرار
+    setTimeout(function() {
+        document.querySelectorAll('[onclick]').forEach(function(btn) {
+            var oc = btn.getAttribute('onclick') || '';
+            var m = oc.match(/https?:\/\/[^'")\s]+/);
+            if (m && (oc.includes('location') || oc.includes('open'))) {
+                btn.setAttribute('onclick', "openPage('" + m[0] + "'); return false;");
+            }
+        });
+    }, 2000);
+})();
+    
+    </script>
 </body>
 </html>
