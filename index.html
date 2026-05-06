@@ -2362,10 +2362,10 @@ body.dark-mode .theme-toggle-icon {
     
     
 <script type="module">
-    
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, getDocs, addDoc, deleteDoc, onSnapshot, arrayUnion, arrayRemove, increment, where } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+  import { getAuth, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, getDocs, addDoc, deleteDoc, onSnapshot, arrayUnion, arrayRemove, increment, serverTimestamp, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
   const firebaseConfig = {
   apiKey: "AIzaSyCPBrZMo6IYCwCDYV3HEfNcUmLUITR6VRc",
   authDomain: "elahbes.firebaseapp.com",
@@ -2375,12 +2375,12 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, getDoc
   appId: "1:800207969145:web:aa19b725d1c92dd48fada8",
   measurementId: "G-EFT566SJMP"
 };
- document.getElementById('postsContainer').innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i></div>';
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-       
+    
   let currentUser = null;
   let currentUserData = null;
     // ========== نظام الإعدادات المركزية ==========
@@ -3125,7 +3125,6 @@ window.openModal = function(id) {
   }
 
   function renderPosts() {
-       
     const container = document.getElementById('postsContainer');
     if (!container) return;
     
@@ -3193,7 +3192,7 @@ window.openModal = function(id) {
       }
       
       return `
-      <div class="post-card ${isPromoted ? 'promoted' : ''}" style="${trendStyle}" id="post-${post.id}">    
+      <div class="post-card ${isPromoted ? 'promoted' : ''}" style="${trendStyle}">
         ${trendBadge}
         ${followed && !isOwner ? '<div class="follow-badge"><i class="fas fa-check"></i></div>' : ''}
         <div class="post-header">
@@ -3648,14 +3647,20 @@ window.rejectReport = async function(reportId) {
         }
     }
 };
-window.openComments = async function(postId) {
+
+  window.openComments = async function(postId) {
     activePostId = postId;
     const post = posts.find(p => p.id === postId);
     if (!post) return;
     
-    // المشاهدة تنحسب تلقائي، هنا فقط نفتح التعليقات
-   
-   
+    if (!viewedPosts.has(postId)) {
+      viewedPosts.add(postId);
+      await updateDoc(doc(db, "posts", postId), { views: increment(1) });
+      await setDoc(doc(db, "viewed_posts", currentUser.uid), { 
+        posts: Array.from(viewedPosts) 
+      });
+    }
+    
     const comments = post.comments || [];
     const commentsHtml = comments.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).map(c => {
       const idClass = getIdClass(c.userId);
@@ -6273,96 +6278,9 @@ console.log('✅ نظام الستوري المتكامل مع جميع المي
   window.deleteStory = window.deleteStory;
   window.showStoryCommentInput = window.showStoryCommentInput;
 
-     
-     // =============================================
-// 🔒 قفل كامل للكونسول - منع التلاعب المباشر
-// =============================================
     
     
-(function() {
-  // منع الكتابة فوق الدوال المحمية
-  Object.defineProperty(window, 'addDoc', { writable: false, configurable: false });
-  Object.defineProperty(window, 'updateDoc', { writable: false, configurable: false });
-  Object.defineProperty(window, 'setDoc', { writable: false, configurable: false });
-  Object.defineProperty(window, 'deleteDoc', { writable: false, configurable: false });
-  
-  // تنظيف المتغيرات الحساسة من النطاق العام
-  var cleanUp = function() {
-    delete window.db;
-    delete window.auth;
-    delete window.firebase;
-  };
-  
-  // تنظيف كل 5 ثواني
-  setInterval(cleanUp, 5000);
-  
-  console.log = function() {
-    // تعطيل console.log لمنع استخراج المعلومات
-    return undefined;
-  };
-  
-  console.warn = function() {
-    return undefined;
-  };
-  
-  console.error = function() {
-    return undefined;
-  };
-  
-  console.info = function() {
-    return undefined;
-  };
-  
-  console.debug = function() {
-    return undefined;
-  };
-})();
-     
-    const SUPER_ADMIN = 'ad5@5.com';
-const BLOCKED_PATHS = ['admin_settings','withdraw_requests','system','products','reports','global_notifications','users_by_id','security_logs'];
-
-const _u = updateDoc, _s = setDoc, _d = deleteDoc;
-
-updateDoc = (ref, data) => {
-    const path = ref?.path || ref || '';
-    const blocked = BLOCKED_PATHS.some(p => path.includes(p));
-    if (blocked && auth?.currentUser?.email !== SUPER_ADMIN) return Promise.reject();
-    return _u(ref, data);
-};
-
-setDoc = (ref, data, opt) => {
-    const path = ref?.path || ref || '';
-    const blocked = BLOCKED_PATHS.some(p => path.includes(p));
-    if (blocked && auth?.currentUser?.email !== SUPER_ADMIN) return Promise.reject();
-    return _s(ref, data, opt);
-};
-
-deleteDoc = (ref) => {
-    const path = ref?.path || ref || '';
-    const blocked = BLOCKED_PATHS.some(p => path.includes(p));
-    if (blocked && auth?.currentUser?.email !== SUPER_ADMIN) return Promise.reject();
-    return _d(ref);
-}; 
-     // ✅ مشاهدات تلقائية
-function addView(postId) {
-    if (!currentUser || viewedPosts.has(postId)) return;
-    viewedPosts.add(postId);
-    updateDoc(doc(db, "posts", postId), { views: increment(1) });
-}
-
-setTimeout(function() {
-    if (!currentUser) return;
-    posts.forEach(function(p) {
-        if (document.getElementById('post-' + p.id)) addView(p.id);
-    });
-    setDoc(doc(db, "viewed_posts", currentUser.uid), { posts: Array.from(viewedPosts) });
-}, 3000);
-
-window.onload = function() {
-    document.body.style.opacity = '1';
-};
-document.body.style.opacity = '0';
-    document.body.style.opacity = '1';
+    
     </script>
 </body>
 </html>
