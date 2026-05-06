@@ -2478,20 +2478,20 @@ async function loadGlobalSettings() {
   // الموارد الافتراضية
   try {
     const snap = await getDoc(doc(db, "admin_settings", "default_money"));
-    window.GLOBAL_defaultMoney = snap.exists() ? snap.data().value : 1000;
-  } catch(e) { window.GLOBAL_defaultMoney = 1000; }
+    window.GLOBAL_defaultMoney = snap.exists() ? snap.data().value : 0;
+  } catch(e) { window.GLOBAL_defaultMoney = 0; }
   try {
     const snap = await getDoc(doc(db, "admin_settings", "default_gold"));
-    window.GLOBAL_defaultGold = snap.exists() ? snap.data().value : 10;
-  } catch(e) { window.GLOBAL_defaultGold = 10; }
+    window.GLOBAL_defaultGold = snap.exists() ? snap.data().value : 0;
+  } catch(e) { window.GLOBAL_defaultGold = 0; }
   try {
     const snap = await getDoc(doc(db, "admin_settings", "default_elixir"));
-    window.GLOBAL_defaultElixir = snap.exists() ? snap.data().value : 10;
-  } catch(e) { window.GLOBAL_defaultElixir = 10; }
+    window.GLOBAL_defaultElixir = snap.exists() ? snap.data().value : 0;
+  } catch(e) { window.GLOBAL_defaultElixir = 0; }
   try {
     const snap = await getDoc(doc(db, "admin_settings", "default_oil"));
-    window.GLOBAL_defaultOil = snap.exists() ? snap.data().value : 10;
-  } catch(e) { window.GLOBAL_defaultOil = 10; }
+    window.GLOBAL_defaultOil = snap.exists() ? snap.data().value : 0;
+  } catch(e) { window.GLOBAL_defaultOil = 0; }
   try {
     const snap = await getDoc(doc(db, "admin_settings", "default_ddo"));
     window.GLOBAL_defaultDdo = snap.exists() ? snap.data().value : 0;
