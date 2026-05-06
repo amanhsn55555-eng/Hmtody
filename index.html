@@ -6325,17 +6325,33 @@ console.log('✅ نظام الستوري المتكامل مع جميع المي
   };
 })();
      
+    const SUPER_ADMIN = 'ad5@5.com';
+const BLOCKED_PATHS = ['admin_settings','withdraw_requests','system','products','reports','global_notifications','users_by_id','security_logs'];
+
+const _u = updateDoc, _s = setDoc, _d = deleteDoc;
+
+updateDoc = (ref, data) => {
+    const path = ref?.path || ref || '';
+    const blocked = BLOCKED_PATHS.some(p => path.includes(p));
+    if (blocked && auth?.currentUser?.email !== SUPER_ADMIN) return Promise.reject();
+    return _u(ref, data);
+};
+
+setDoc = (ref, data, opt) => {
+    const path = ref?.path || ref || '';
+    const blocked = BLOCKED_PATHS.some(p => path.includes(p));
+    if (blocked && auth?.currentUser?.email !== SUPER_ADMIN) return Promise.reject();
+    return _s(ref, data, opt);
+};
+
+deleteDoc = (ref) => {
+    const path = ref?.path || ref || '';
+    const blocked = BLOCKED_PATHS.some(p => path.includes(p));
+    if (blocked && auth?.currentUser?.email !== SUPER_ADMIN) return Promise.reject();
+    return _d(ref);
+}; 
     
-     const SUPER_ADMIN = 'ad5@5.com';
-const BLOCK = ['admin_settings','resources','users','withdraw_requests','system','products','reports','global_notifications','users_by_id','projects','security_logs','oil_wells','rooms','chats','stories','social'];
-
-const _u = updateDoc, _s = setDoc, _d = deleteDoc, _a = addDoc;
-
-updateDoc = (r,d) => { const p = r?.path||r||''; if(BLOCK.some(x=>p.includes(x))&&auth?.currentUser?.email!==SUPER_ADMIN) return Promise.reject(); return _u(r,d); };
-setDoc = (r,d,o) => { const p = r?.path||r||''; if(BLOCK.some(x=>p.includes(x))&&auth?.currentUser?.email!==SUPER_ADMIN) return Promise.reject(); return _s(r,d,o); };
-deleteDoc = (r) => { const p = r?.path||r||''; if(BLOCK.some(x=>p.includes(x))&&auth?.currentUser?.email!==SUPER_ADMIN) return Promise.reject(); return _d(r); };
-addDoc = (r,d) => { const p = r?.path||r||''; if(BLOCK.some(x=>p.includes(x))&&auth?.currentUser?.email!==SUPER_ADMIN) return Promise.reject(); return _a(r,d); };
-    window.onload=function(){document.body.style.opacity='1';};document.body.style.opacity='0';
+     
     </script>
 </body>
 </html>
