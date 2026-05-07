@@ -6278,22 +6278,23 @@ console.log('✅ نظام الستوري المتكامل مع جميع المي
   window.deleteStory = window.deleteStory;
   window.showStoryCommentInput = window.showStoryCommentInput;
 
-     // ==========================================
+
+    // ==========================================
 // نظام التخزين المؤقت الشامل
 // يشمل: المنشورات + بيانات الحساب + الموارد
 // ==========================================
 
 const CACHE_KEYS = {
-    posts: 'cached_posts_v1',
-    postsTimestamp: 'cached_posts_timestamp',
-    userData: 'cached_user_data_v1',
-    resources: 'cached_resources_v1',
-    followers: 'cached_followers_v1',
+    posts: 'cached_posts_v2',
+    postsTimestamp: 'cached_posts_timestamp_v2',
+    userData: 'cached_user_data_v2',
+    resources: 'cached_resources_v2',
+    followers: 'cached_followers_v2',
     theme: 'theme'
 };
 
-const CACHE_DURATION = 30 * 60 * 1000; // 30 دقيقة
-const MAX_CACHED_POSTS = 4; // عدد المنشورات المخزنة
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة كاملة
+const MAX_CACHED_POSTS = 50; // 50 منشور مخزن
 
 // ========== دوال التخزين العامة ==========
 
@@ -6365,22 +6366,24 @@ function cacheUserData() {
     };
     
     saveToCache(CACHE_KEYS.userData, userDataToCache);
-    console.log('👤 تم تخزين بيانات الحساب محلياً');
+    console.log('👤 تم تخزين بيانات الحساب محلياً (24 ساعة صلاحية)');
 }
 
 function getCachedUserData() {
     const cached = getFromCache(CACHE_KEYS.userData);
     if (!cached) return null;
     
-    // التحقق من صلاحية الكاش
+    // التحقق من صلاحية الكاش (24 ساعة)
     const cacheAge = Date.now() - (cached.cachedAt || 0);
     if (cacheAge > CACHE_DURATION) {
-        console.log('⏰ بيانات الحساب منتهية الصلاحية');
+        console.log('⏰ بيانات الحساب منتهية الصلاحية (أكثر من 24 ساعة)');
         removeFromCache(CACHE_KEYS.userData);
         return null;
     }
     
-    console.log('👤 تم استرجاع بيانات الحساب من الكاش');
+    // حساب الوقت المتبقي
+    const remainingHours = Math.floor((CACHE_DURATION - cacheAge) / (60 * 60 * 1000));
+    console.log('👤 تم استرجاع بيانات الحساب من الكاش (متبقي', remainingHours, 'ساعة)');
     return cached;
 }
 
@@ -6404,7 +6407,6 @@ function applyCachedUserData() {
         }
     }
     
-    // يمكن إضافة المزيد من التطبيقات هنا
     return true;
 }
 
@@ -6422,7 +6424,7 @@ function cacheResources() {
     };
     
     saveToCache(CACHE_KEYS.resources, resourcesToCache);
-    console.log('💰 تم تخزين الموارد محلياً:', resourcesToCache);
+    console.log('💰 تم تخزين الموارد محلياً (24 ساعة صلاحية):', resourcesToCache);
 }
 
 function getCachedResources() {
@@ -6431,12 +6433,13 @@ function getCachedResources() {
     
     const cacheAge = Date.now() - (cached.cachedAt || 0);
     if (cacheAge > CACHE_DURATION) {
-        console.log('⏰ الموارد منتهية الصلاحية');
+        console.log('⏰ الموارد منتهية الصلاحية (أكثر من 24 ساعة)');
         removeFromCache(CACHE_KEYS.resources);
         return null;
     }
     
-    console.log('💰 تم استرجاع الموارد من الكاش:', cached);
+    const remainingHours = Math.floor((CACHE_DURATION - cacheAge) / (60 * 60 * 1000));
+    console.log('💰 تم استرجاع الموارد من الكاش (متبقي', remainingHours, 'ساعة):', cached);
     return cached;
 }
 
@@ -6459,19 +6462,31 @@ function applyCachedResources() {
     return true;
 }
 
-// ========== 3️⃣ تخزين المنشورات ==========
+// ========== 3️⃣ تخزين المنشورات (50 منشور) ==========
 
 function cachePosts(postsToCache) {
     try {
         if (postsToCache && postsToCache.length > 0) {
-            // ترتيب المنشورات وأخذ أول 4 فقط
-            const topPosts = [...postsToCache]
-                .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
-                .slice(0, MAX_CACHED_POSTS);
+            // ترتيب المنشورات: المثبتة أولاً ثم الأحدث
+            const sortedPosts = [...postsToCache].sort((a, b) => {
+                // المنشورات المروجة أولاً
+                const aPromoted = (a.promotedUntil || 0) > Date.now() ? 1 : 0;
+                const bPromoted = (b.promotedUntil || 0) > Date.now() ? 1 : 0;
+                if (aPromoted !== bPromoted) return bPromoted - aPromoted;
+                
+                // ثم الأحدث
+                return (b.timestamp || 0) - (a.timestamp || 0);
+            });
             
+            // أخذ أول 50 منشور
+            const topPosts = sortedPosts.slice(0, MAX_CACHED_POSTS);
+            
+            // حفظ المنشورات والتوقيت
             saveToCache(CACHE_KEYS.posts, topPosts);
             saveToCache(CACHE_KEYS.postsTimestamp, Date.now().toString());
-            console.log('📝 تم تخزين', topPosts.length, 'منشورات محلياً');
+            
+            console.log('📝 تم تخزين', topPosts.length, 'منشور محلياً (24 ساعة صلاحية)');
+            console.log('   📊 منها', topPosts.filter(p => (p.promotedUntil || 0) > Date.now()).length, 'منشور مروّج');
         }
     } catch (e) {
         console.warn('⚠️ فشل تخزين المنشورات:', e);
@@ -6485,15 +6500,19 @@ function getCachedPosts() {
         
         if (!cached || !timestamp) return null;
         
+        // التحقق من صلاحية الكاش (24 ساعة)
         const cacheAge = Date.now() - parseInt(timestamp);
         if (cacheAge > CACHE_DURATION) {
-            console.log('⏰ المنشورات منتهية الصلاحية');
+            console.log('⏰ المنشورات منتهية الصلاحية (أكثر من 24 ساعة)');
             removeFromCache(CACHE_KEYS.posts);
             removeFromCache(CACHE_KEYS.postsTimestamp);
             return null;
         }
         
-        console.log('📝 تم استرجاع', cached.length, 'منشورات من الكاش');
+        const remainingHours = Math.floor((CACHE_DURATION - cacheAge) / (60 * 60 * 1000));
+        const remainingMinutes = Math.floor(((CACHE_DURATION - cacheAge) % (60 * 60 * 1000)) / (60 * 1000));
+        
+        console.log('📝 تم استرجاع', cached.length, 'منشور من الكاش (متبقي', remainingHours, 'ساعة و', remainingMinutes, 'دقيقة)');
         return cached;
     } catch (e) {
         console.warn('⚠️ فشل استرجاع المنشورات');
@@ -6518,7 +6537,7 @@ function renderCachedPosts() {
         return;
     }
     
-    console.log('⚡ عرض المنشورات المحلية فوراً');
+    console.log('⚡ عرض', cachedPosts.length, 'منشور محلي فوراً');
     
     const now = Date.now();
     
@@ -6530,17 +6549,21 @@ function renderCachedPosts() {
         const idClass = getIdClass(post.userId);
         const isVerified = post.verified || false;
         
+        // إضافة علامة "مخزن محلياً" لأول منشور فقط
+        const cacheBadge = (index === 0) ? '<span style="position:absolute; top:5px; right:10px; background:#10b981; color:white; font-size:8px; padding:2px 8px; border-radius:20px; z-index:3;"></span>' : '';
+        
         let mediaHtml = '';
         if (post.mediaUrl) {
             if (post.mediaType === 'image') {
-                mediaHtml = `<div class="post-media"><img src="${post.mediaUrl}" onerror="this.style.display='none'"></div>`;
+                mediaHtml = `<div class="post-media"><img src="${post.mediaUrl}" onerror="this.style.display='none'" loading="lazy"></div>`;
             } else if (post.mediaType === 'youtube') {
-                mediaHtml = `<div class="post-media"><iframe src="${post.mediaUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+                mediaHtml = `<div class="post-media"><iframe src="${post.mediaUrl}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
             }
         }
         
         return `
-        <div class="post-card ${isPromoted ? 'promoted' : ''}">
+        <div class="post-card ${isPromoted ? 'promoted' : ''}" style="position:relative;">
+            ${cacheBadge}
             ${followed && !isOwner ? '<div class="follow-badge"><i class="fas fa-check"></i></div>' : ''}
             <div class="post-header">
                 <div class="post-avatar" onclick="window.openProfile('${post.userId}')">${renderAvatarWithFrame(post)}</div>
@@ -6567,18 +6590,22 @@ function renderCachedPosts() {
         </div>`;
     }).join('');
     
-    // إضافة مؤشر التحميل
+    // إضافة مؤشر التحميل الأنيق
     const loadingIndicator = document.createElement('div');
     loadingIndicator.id = 'liveUpdateIndicator';
     loadingIndicator.style.cssText = `
         text-align: center;
-        padding: 10px;
-        color: #94a3b8;
-        font-size: 12px;
-        margin-top: 5px;
+        padding: 15px;
+        margin: 10px 0;
+        background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+        border-radius: 20px;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
         animation: pulse 1.5s ease-in-out infinite;
+        border: 1px dashed #cbd5e1;
     `;
-    loadingIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> جاري تحديث المنشورات...';
+    loadingIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> جاري تحديث المنشورات من السيرفر...';
     container.appendChild(loadingIndicator);
 }
 
@@ -6602,12 +6629,14 @@ renderPosts = function() {
     // إزالة مؤشر التحميل
     const indicator = document.getElementById('liveUpdateIndicator');
     if (indicator) {
-        indicator.remove();
+        indicator.style.animation = 'fadeOut 0.3s ease forwards';
+        setTimeout(() => indicator.remove(), 300);
     }
     
-    // حفظ المنشورات بعد التحميل
+    // حفظ المنشورات بعد التحميل (50 منشور)
     if (posts && posts.length > 0) {
         cachePosts(posts);
+        console.log('🔄 تم تحديث الكاش -', Math.min(posts.length, MAX_CACHED_POSTS), 'منشور مخزن');
     }
 };
 
@@ -6650,46 +6679,78 @@ loadUserData = async function(uid) {
     }
 };
 
-// ========== 5️⃣ التشغيل عند تحميل الصفحة ==========
+// ========== 5️⃣ زر تحديث الكاش يدوياً ==========
+window.refreshCache = function() {
+    clearAllCache();
+    showToast('🗑️ تم مسح الكاش - جاري إعادة التحميل...');
+    setTimeout(() => {
+        if (posts && posts.length > 0) {
+            cachePosts(posts);
+        }
+        if (currentUserData) {
+            cacheUserData();
+        }
+        if (resources) {
+            cacheResources();
+        }
+        showToast('✅ تم تحديث الكاش بنجاح');
+    }, 500);
+};
+
+// ========== 6️⃣ التشغيل عند تحميل الصفحة ==========
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('═══════════════════════════════════');
+    console.log('🚀 بدء تشغيل النظام مع التخزين المحلي');
+    console.log('═══════════════════════════════════');
+    
     // عرض البيانات المحلية فوراً
     renderCachedPosts();
     
     // استعادة الثيم المخزن
     loadTheme();
     
-    console.log('🚀 النظام جاهز - جميع البيانات المحلية معروضة');
-    console.log('📦 المحتويات المخزنة:');
-    console.log('  👤 الحساب:', getCachedUserData() ? '✅ موجود' : '❌ غير موجود');
-    console.log('  💰 الموارد:', getCachedResources() ? '✅ موجودة' : '❌ غير موجودة');
-    console.log('  📝 المنشورات:', getCachedPosts() ? '✅ موجودة' : '❌ غير موجودة');
+    // عرض حالة الكاش
+    const userCache = getCachedUserData();
+    const resourcesCache = getCachedResources();
+    const postsCache = getCachedPosts();
+    
+    console.log('📦 حالة الكاش:');
+    console.log('  👤 الحساب:', userCache ? '✅ موجود (' + userCache.username + ')' : '❌ غير موجود');
+    console.log('  💰 الموارد:', resourcesCache ? '✅ موجودة (ذهب:' + resourcesCache.gold + ')' : '❌ غير موجودة');
+    console.log('  📝 المنشورات:', postsCache ? '✅ موجودة (' + postsCache.length + ' منشور)' : '❌ غير موجودة');
+    console.log('═══════════════════════════════════');
 });
 
-// ========== 6️⃣ تحديث بيانات الكاش عند تسجيل الخروج ==========
+// ========== 7️⃣ تحديث بيانات الكاش عند تسجيل الخروج ==========
 const originalHandleLogout = window.handleLogout;
 window.handleLogout = async function() {
     clearAllCache(); // مسح الكاش عند الخروج
     await originalHandleLogout();
 };
 
-// ========== 7️⃣ إضافة CSS للأنيميشن ==========
+// ========== 8️⃣ إضافة CSS للأنيميشن ==========
 const cacheStyles = document.createElement('style');
 cacheStyles.textContent = `
     @keyframes pulse {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.5; }
     }
+    
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-10px); }
+    }
 `;
 document.head.appendChild(cacheStyles);
 
+// ========== 9️⃣ معلومات النظام ==========
 console.log('✅ نظام التخزين الشامل جاهز:');
-console.log('   📝 4 منشورات محلية');
-console.log('   👤 بيانات الحساب');
+console.log('   📝 50 منشور محلي');
+console.log('   👤 بيانات الحساب كاملة');
 console.log('   💰 الموارد (ذهب، إكسير، أموال، نفط)');
-console.log('   ⏰ صلاحية 30 دقيقة');
+console.log('   ⏰ صلاحية 24 ساعة كاملة');
 console.log('   🔄 تحديث تلقائي عند توفر البيانات الحية');
-    
-    
+console.log('   🗑️ زر تحديث الكاش: window.refreshCache()');
     
     </script>
 </body>
