@@ -2422,6 +2422,8 @@ body.dark-mode .theme-toggle-icon {
   let viewedPosts = new Set();
   let unreadMessagesCount = 0;
   let stories = [];
+  let viewedPostsThisSession = JSON.parse(localStorage.getItem('viewed_posts_session') || '[]');
+let observer = null;
 
   const emojis = ['😎', '👑', '🦊', '🐼', '🐸', '🐶', '🦁', '🐧', '🐨', '🦝', '🐱', '🐻', '🦄', '🐙', '🦋', '⭐', '🫦',];
   
@@ -2904,6 +2906,8 @@ window.openModal = function(id) {
         posts.push({ id: doc.id, ...data });
       });
       renderPosts();
+// بعد كل تحديث للمنشورات، أعد تفعيل المراقب
+setTimeout(setupViewsObserver, 150);
     });
   }
 
@@ -3192,7 +3196,7 @@ window.openModal = function(id) {
       }
       
       return `
-      <div class="post-card ${isPromoted ? 'promoted' : ''}" style="${trendStyle}">
+      <div class="post-card ${isPromoted ? 'promoted' : ''}" style="${trendStyle}" data-post-id="${post.id}">
         ${trendBadge}
         ${followed && !isOwner ? '<div class="follow-badge"><i class="fas fa-check"></i></div>' : ''}
         <div class="post-header">
@@ -3218,8 +3222,54 @@ window.openModal = function(id) {
         </div>
       </div>`;
     }).join('');
+    
+    // تفعيل مراقب المشاهدات بعد إضافة المنشورات للصفحة
+    setTimeout(setupViewsObserver, 100);
   }
+  // دالة لحفظ المشاهدات في localStorage لمنع التكرار
+function markPostAsViewed(postId) {
+  if (!viewedPostsThisSession.includes(postId)) {
+    viewedPostsThisSession.push(postId);
+    localStorage.setItem('viewed_posts_session', JSON.stringify(viewedPostsThisSession));
+  }
+}
 
+// دالة لتسجيل مشاهدة واحدة
+async function registerView(postId) {
+  if (!currentUser) return;
+  if (viewedPostsThisSession.includes(postId)) return;
+  
+  markPostAsViewed(postId);
+  
+  try {
+    await updateDoc(doc(db, "posts", postId), { views: increment(1) });
+    console.log(`👁️ تم تسجيل مشاهدة للمنشور: ${postId}`);
+  } catch (error) {
+    console.error("خطأ في تسجيل المشاهدة:", error);
+  }
+}
+
+// مراقب المشاهدات - يتم تفعيله بعد تحميل المنشورات
+function setupViewsObserver() {
+  if (observer) observer.disconnect();
+  
+  const postCards = document.querySelectorAll('.post-card');
+  if (postCards.length === 0) return;
+  
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const postElement = entry.target;
+        const postId = postElement.getAttribute('data-post-id');
+        if (postId && !viewedPostsThisSession.includes(postId)) {
+          registerView(postId);
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  postCards.forEach(card => observer.observe(card));
+}
   window.sharePost = async function(postId) {
   const post = posts.find(p => p.id === postId);
   if (!post) return;
@@ -3653,13 +3703,7 @@ window.rejectReport = async function(reportId) {
     const post = posts.find(p => p.id === postId);
     if (!post) return;
     
-    if (!viewedPosts.has(postId)) {
-      viewedPosts.add(postId);
-      await updateDoc(doc(db, "posts", postId), { views: increment(1) });
-      await setDoc(doc(db, "viewed_posts", currentUser.uid), { 
-        posts: Array.from(viewedPosts) 
-      });
-    }
+    // تم إزالة الكود الذي كان يزيد views هنا
     
     const comments = post.comments || [];
     const commentsHtml = comments.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).map(c => {
@@ -4688,6 +4732,7 @@ window.filterProfilePosts = function(type) {
       </div>
     `}).join('');
   }
+
 
   window.followUser = async function() {
     if (!activeProfileUserId || !currentUser) return;
@@ -6529,7 +6574,7 @@ function renderCachedPosts() {
     applyCachedResources();
     
     // تطبيق بيانات الحساب المحلية
-    applyCachedUserData();
+    
     
     const cachedPosts = getCachedPosts();
     if (!cachedPosts || cachedPosts.length === 0) {
