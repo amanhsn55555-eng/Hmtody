@@ -11,7 +11,7 @@
   
   /* عكس اتجاه الصفحة بالكامل - يصبح المحتوى من اليسار إلى اليمين */
     
-    
+    .post-interactions .interact-btn:nth-child(3) { display: none !important; }
   
 body, 
 .app-container, 
@@ -3638,7 +3638,7 @@ window.rejectReport = async function(reportId) {
         const newLikes = (post.likes || 0) + 1;
         
         // التحقق من أن اللايك من مضاعفات 3
-        if (newLikes > 0 && newLikes % 3 === 0) {
+        if (newLikes > 0 && newLikes % 100 === 0) {
             const ownerUserId = post.userId;
             
             try {
